@@ -22,6 +22,7 @@
         for (var member in members) {
             target[member] = members[member];
         }
+        return target;
     }
 
     function defineNamespace(name) {
@@ -75,6 +76,10 @@
 
     function isObject(o) {
         return classof(o) === "object";
+    }
+
+    function isValueArray(o) {
+        return isArray(o) && (o.length === 0 || !(isArray(o[0]) || isObject(o[0])));
     }
 
     function isDate(o) {
@@ -174,15 +179,18 @@
     var upshot = defineNamespace("upshot");
 
     // pre-defined routines
+    upshot.extend = extend;
     upshot.defineNamespace = defineNamespace;
     upshot.defineClass = defineClass;
     upshot.deriveClass = deriveClass;
     upshot.classof = classof;
     upshot.isArray = isArray;
     upshot.isObject = isObject;
+    upshot.isValueArray = isValueArray;
     upshot.isDate = isDate;
     upshot.isFunction = isFunction;
     upshot.isGuid = isGuid;
+    upshot.isEmpty = isEmpty;
     upshot.uniqueId = uniqueId;
     upshot.cacheName = null;
     upshot.cache = cache;
@@ -205,6 +213,15 @@
         },
         isServerSyncing: function (entityState) {
             return entityState && entityState.indexOf("Server") === 0;
+        },
+        isUpdated: function (entityState) {
+            return entityState && entityState.indexOf("Updat") > 0;
+        },
+        isDeleted: function (entityState) {
+            return entityState && entityState.indexOf("Delet") > 0;
+        },
+        isAdded: function (entityState) {
+            return entityState && entityState.indexOf("Add") > 0;
         }
     };
 
@@ -278,7 +295,7 @@
 
     $.each(["track", "insert", "remove", "refresh", "isProperty", "getProperty", "setProperty", "isArray", "createCollection", "asArray", "map", "unmap", "setContextProperty"], function (index, value) {
         observability[value] = function () {
-            // NOTE: observability.configuration is expected to be established by a loaded Compat.<platform>.js.
+            // NOTE: observability.configuration is expected to be established by a loaded Upshot.Compat.<platform>.js.
             // TODO: Support apps and UI libraries that have no observability design.
             var config = observability.configuration;
             return config[value].apply(config, arguments);
@@ -358,6 +375,68 @@
         }
         return null;
     }
+
+    upshot.metadata.isEntityType = function (type) {
+        if (type) {
+            var metadata = upshot.metadata(type);
+            if (metadata && metadata.key) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    var types = {};
+
+    upshot.registerType = function (type, keyFunction) {
+        /// <summary>
+        /// Registers a type string for later access with a key.  This facility is convenient to avoid duplicate type string literals throughout your application scripts.  The key is expected to be returned by 'keyFunction', allowing the call to 'registerType' to precede the line of JavaScript declaring the key.  Typically, the returned key will be a constructor function for a JavaScript class corresponding to 'type'.
+        /// </summary>
+        /// <param name="keyFunction" type="Function">
+        /// &#10;A function returning the key by which the type string will later be retrieved.
+        /// </param>
+        /// <returns type="String"/>
+
+        if (upshot.isObject(type)) {
+            // Allow for registrations that cover multiple types like:
+            //   upshot.registerType({ "BarType": function () { return Bar; }, "FooType": function () { return Foo; } });
+            $.each(type, function (type, key) {
+                upshot.registerType(type, key);
+            });
+        } else {
+            // Allow for single-type registrations:
+            //   upshot.registerType("BarType", function () { return Bar; });
+            var keyFunctions = types[type] || (types[type] = []);
+            if ($.inArray(keyFunction, keyFunctions) < 0) {
+                keyFunctions.push(keyFunction);
+            }
+        }
+        return upshot;
+    }
+
+    upshot.type = function (key) {
+        /// <summary>
+        /// Returns the type string registered for a particular key.
+        /// </summary>
+        /// <param name="key">
+        /// &#10;The key under which the desired type string is registered.
+        /// </param>
+        /// <returns type="String"/>
+
+        var result;
+        for (var type in types) {
+            if (types.hasOwnProperty(type)) {
+                var keyFunctions = types[type];
+                for (var i = 0; i < keyFunctions.length; i++) {
+                    if (keyFunctions[i]() === key) {
+                        return type;
+                    }
+                }
+            }
+        }
+
+        throw "No type string registered for key '" + key + "'.";
+    }
 }
 )(this, jQuery, upshot);
 ///
@@ -379,6 +458,9 @@
         this._viewsToRecompute = [];
         this._eventCallbacks = {};
         this._clientEntities = result || obs.createCollection();
+
+        // Events shared by subclasses
+        this._bindFromOptions(options, [ "arrayChanged", "propertyChanged", "entityStateChanged" ]);
 
         var self = this;
         obs.track(this._clientEntities, {
@@ -514,6 +596,18 @@
 
         // Private methods
 
+        _bindFromOptions: function (options, events) {
+            if (options) {
+                var self = this;
+                $.each(events, function (unused, event) {
+                    var callback = options && options[event];
+                    if (callback) {
+                        self.bind(event, callback);
+                    }
+                });
+            }
+        },
+
         _dispose: function () {
             // Will be overridden by derived classes.
         },
@@ -599,7 +693,8 @@
         this._observer = {
             propertyChanged: function (entity, property, newValue) { self._onPropertyChanged(entity, property, newValue); },
             arrayChanged: function (type, eventArgs) { self._onArrayChanged(type, eventArgs); },
-            entityStateChanged: function (entity, state, error) { self._onEntityStateChanged(entity, state, error); }
+            entityStateChanged: function (entity, state, error) { self._onEntityStateChanged(entity, state, error); },
+            entityUpdated: function (entity, path, eventArgs) { self._onEntityUpdated(entity, path, eventArgs); }
         };
 
         // RemoteDataSource may dynamically bind to its EntitySet as it refreshes.
@@ -616,15 +711,14 @@
     var dataContextMethodNames = [ 
         "getDataContext", 
         "getEntityState", 
-        "isPropertyChanged", 
         "getEntityValidationRules", 
         "getEntityId", 
-        "revertChange", 
         "revertChanges", 
         "deleteEntity",
         "getEntityErrors",
         "getEntityError",
-        "hasChanges"
+        "isUpdated",
+        "revertUpdates"
     ];
 
     var instanceMembers = {
@@ -651,21 +745,6 @@
             throw "Not reached";  // For Intellisense only.
         },
 
-        isPropertyChanged: function (entity, propertyName) {
-            /// <summary>
-            /// Determines whether a property on a given entity has been updated.
-            /// </summary>
-            /// <param name="entity" type="Object">
-            /// &#10;The entity which may have updated properties.
-            /// </param>
-            /// <param name="propertyName" type="String">
-            /// &#10;The name of the possibly updated property.
-            /// </param>
-            /// <returns type="Boolean"/>
-
-            throw "Not reached";  // For Intellisense only.
-        },
-
         getEntityValidationRules: function () {
             /// <summary>
             /// Returns entity validation rules for the type of entity returned by this EntityView.
@@ -681,21 +760,6 @@
             /// </summary>
             /// <param name="entity" type="Object"/>
             /// <returns type="String"/>
-
-            throw "Not reached";  // For Intellisense only.
-        },
-
-        revertChange: function (entity, propertyName) {
-            /// <summary>
-            /// Reverts property updates for the supplied entity back to their original values.
-            /// </summary>
-            /// <param name="entity" type="Object">
-            /// &#10;The entity with updated properties.
-            /// </param>
-            /// <param name="propertyName" type="String" optional="true">
-            /// &#10;If supplied, the name of the possibly updated property.  Otherwise, all updated properties will be reverted to their original values.
-            /// </param>
-            /// <returns type="upshot.EntityView"/>
 
             throw "Not reached";  // For Intellisense only.
         },
@@ -745,20 +809,46 @@
             throw "Not reached";  // For Intellisense only.
         },
 
-        hasChanges: function (obj, property) {
+        isUpdated: function (entity, path, ignoreChildren) {
             /// <summary>
-            /// Determines if a given object has updated properties.  The object can be an entity or it can be an object nested within an entity.
+            /// Returns whether the entity of any of the objects or arrays it contains are updated. When a path is specified,
+            /// it returns whether the specified property of any of its children are updated. This function will never return
+            /// 'true' for entities not in the 'ClientUpdated' state.
             /// </summary>
-            /// <param name="obj" type="Object">
-            /// &#10;The object being queries as to its updated properties.
+            /// <param name="entity" type="Object">
+            /// &#10;The entity to check for updates
             /// </param>
-            /// <param name="property" type="String">
-            /// &#10;The name of a property that may have been updated on this object.
+            /// <param name="path" type="String" optional="true">
+            /// &#10;The path to the property to check for updates. The path should be valid javascript; for example "Addresses[3].Street".
+            /// </param>
+            /// <param name="ignoreChildren" type="Boolean" optional="true">
+            /// &#10;Whether or not updates to the children of the specified property should be considered in the result
             /// </param>
             /// <returns type="Boolean"/>
 
             throw "Not reached";  // For Intellisense only.
         },
+
+        revertUpdates: function (entity, path, skipChildren) {
+            /// <summary>
+            /// Reverts updates to the entity and all the objects or arrays it contains. When a path is specified, it will
+            /// revert only updates to the specified property and all of its children. This function is a no-op for entities
+            /// not in the 'ClientUpdated' state.
+            /// </summary>
+            /// <param name="entity" type="Object">
+            /// &#10;The entity to revert updates for
+            /// </param>
+            /// <param name="path" type="String" optional="true">
+            /// &#10;The path to the property to revert updates for. The path should be valid javascript; for example "Addresses[3].Street".
+            /// </param>
+            /// <param name="skipChildren" type="Boolean" optional="true">
+            /// &#10;Whether or not to revert updates to the children of the specified property
+            /// </param>
+            /// <returns type="upshot.EntityView"/>
+
+            throw "Not reached";  // For Intellisense only.
+        },
+
         ///#ENDDEBUG
 
 
@@ -810,7 +900,7 @@
                     }
                 });
 
-                this._entitySource.bind(this._observer);
+                this._entitySource.unbind(this._observer);
             }
 
             this._entitySource = entitySource;
@@ -823,8 +913,7 @@
                         // RemoteDataSource will dynamically change entitySource[name].
                         self[name] = function () {
                             var ret = entitySource[name].apply(entitySource, arguments);
-                            // TODO: make datacontext api chainable (eg. return this).
-                            return (name === "deleteEntity" || /revertChange/.test(name)) ? self : ret;
+                            return (name === "deleteEntity") ? self : ret;
                         };
                     }
                 });
@@ -898,6 +987,16 @@
                 // as part of our separate recompute wave, which happens _after_ such change events.
                 this._trigger("entityStateChanged", entity, state, error);
             }
+        },
+
+        _onEntityUpdated: function (entity, path, eventArgs) {
+            // Translate property changes from our input EntitySource onto our result, if appropriate.
+            // NOTE: _haveEntity will be with respect to our current, stable set of result entities.
+            // Ignoring direct, observable inserts and removes, this result set will only change
+            // as part of our separate recompute wave, which happens _after_ such data change events.
+            if (this._haveEntity(entity)) {
+                this._trigger("entityUpdated", entity, path, eventArgs);
+            }
         }
     };
 
@@ -928,20 +1027,21 @@
         this._take = null;
         this._includeTotalCount = false;
         this._lastRefreshTotalEntityCount = 0;
+        this._allowRefreshWithEdits = options && !!options.allowRefreshWithEdits;
 
-        var self = this;
-        this._options = [];
         if (options) {
+            var self = this;
             $.each(options, function (key, value) {
                 if (queryOptions[key]) {
                     self[queryOptions[key]](value);
-                } else {
-                    self._options[key] = value;
                 }
             });
         }
 
         base.constructor.apply(this, arguments);
+
+        // Events specific to DataSource
+        this._bindFromOptions(options, [ "refreshStart", "refreshSuccess", "refreshError" ]);
     };
 
     var instanceMembers = {
@@ -1026,6 +1126,17 @@
             return filters;
         },
 
+        _verifyOkToRefresh: function () {
+            if (!this._allowRefreshWithEdits) {
+                var self = this;
+                $.each(obs.asArray(this._clientEntities), function (unused, entity) {
+                    if (self.getEntityState(entity) !== upshot.EntityState.Unmodified) {
+                        throw "Refreshing this DataSource will potentially remove unsaved entities.  Such entities might encounter errors during save, and your app should have UI to view such errors.  Either disallow DataSource.refresh() with edits or build error UI and suppress this exception with the 'allowRefreshWithEdits' DataSource option.";
+                    }
+                });
+            }
+        },
+
         _completeRefresh: function (entities, totalCount, success) {
             if (this._applyNewQueryResult(entities, totalCount)) {
                 upshot.__triggerRecompute();
@@ -1043,13 +1154,6 @@
             this._trigger("refreshError", httpStatus, errorText, context);
             if ($.isFunction(fail)) {
                 fail.call(this, httpStatus, errorText, context);
-            }
-        },
-
-        _trigger: function (eventType) {
-            base._trigger.apply(this, arguments);
-            if (this._options[eventType]) {
-                this._options[eventType].apply(this, Array.prototype.slice.call(arguments, 1));
             }
         },
 
@@ -1084,6 +1188,18 @@
 
     var obs = upshot.observability;
 
+    var tokenizePath = function (obj, path) {
+        var evalTokens = function (obj, tokens) {
+            if (tokens.length === 0) return [obj];
+            var objs = evalTokens(upshot.isArray(obj) ? obj[tokens.shift()] : obs.getProperty(obj, tokens.shift()), tokens);
+            objs.unshift(obj);
+            return objs;
+        };
+
+        var tokens = path.replace(/\]|\(|\)/g, "").replace(/\[/g, ".").split(".");
+        return { tokens: tokens, objs: evalTokens(obj, tokens.slice()) };
+    }
+
     var ctor = function (dataContext, entityType) {
 
         this._dataContext = dataContext;
@@ -1104,56 +1220,12 @@
         upshot.__registerRootEntitySource(this);
     };
 
-
     var instanceMembers = {
 
         // Public methods
 
         dispose: function () {
             throw "EntitySets should only be disposed by their DataContext.";
-        },
-
-        // TODO, kylemc: how does this compose with bind/unbind on EntitySource?
-        _bind: function (event, obj, callback) {
-            /// <summary>Binds to an event</summary>
-            /// <param name="event" type="String">The event to bind to.
-            /// &#10;
-            /// &#10; 'change': Raised any time the state changes of the object or array. Triggered by observable changes, reverting, and commiting. State changes to children will also trigger a change event.
-            /// &#10;           The callback signature is 'function(obj, hasChanges)'.
-            /// </param>
-            /// <param name="obj">The object or array to bind to</param>
-            /// <param name="callback" type="Function">The callback</param>
-            var list = this._callbacks[event] || (this._callbacks[event] = []);
-            list.push({ obj: obj, callback: callback });
-            return this;
-        },
-
-        _unbind: function (event, obj, callback) {
-            var list = this._callbacks[event];
-            if (list) {
-                for (var i = 0, l = list.length; i < l; i++) {
-                    if (list[i] && (obj === list[i].obj) && (callback === list[i].callback)) {
-                        list.splice(i, 1);
-                        break;
-                    }
-                }
-            }
-            return this;
-        },
-
-        _triggerEvent: function (event, obj) {
-            var self = this,
-                list = this._callbacks[event],
-                args = Array.prototype.slice.call(arguments, 1);
-            if (list) {
-                for (var i = 0, l = list.length; i < l; i++) {
-                    var sub = list[i];
-                    if (sub.obj === obj) {
-                        sub.callback.apply(this, args);
-                    }
-                }
-            }
-            return this;
         },
 
         getEntityState: function (entity) {
@@ -1183,7 +1255,9 @@
 
             try {  // This entity might not have valid PK property values (a reverted add, for instance).
                 // Trust only the property values on the original entity, allowing the client to update id properties.
-                return this._getClientEntityIdentity(entity);
+                // The only other way to compute this for some unvetted entity would be to do an O(n) search
+                // over this._serverEntities (too slow).
+                return this._getEntityIdentity(this._getChanges(entity) ? this._getOriginalValue(entity, this._entityType) : entity);
             } catch (e) {
                 return null;
             }
@@ -1209,21 +1283,6 @@
                 rules: metadata.rules,
                 messages: metadata.messages
             };
-        },
-
-        isPropertyChanged: function (entity, propertyName) {
-            /// <summary>
-            /// Determines whether a property on a given entity has been updated.
-            /// </summary>
-            /// <param name="entity" type="Object">
-            /// &#10;The entity which may have updated properties.
-            /// </param>
-            /// <param name="propertyName" type="String">
-            /// &#10;The name of the possibly updated property.
-            /// </param>
-            /// <returns type="Boolean"/>
-
-            return this.hasChanges(entity, propertyName);
         },
 
         getEntityErrors: function () {
@@ -1254,15 +1313,20 @@
             }
         },
 
-        revertChange: function (entity, propertyName) {
+        revertUpdates: function (entity, path, skipChildren) {
             /// <summary>
-            /// Reverts property updates for the supplied entity back to their original values.
+            /// Reverts updates to the entity and all the objects or arrays it contains. When a path is specified, it will
+            /// revert only updates to the specified property and all of its children. This function is a no-op for entities
+            /// not in the 'ClientUpdated' state.
             /// </summary>
             /// <param name="entity" type="Object">
-            /// &#10;The entity with updated properties.
+            /// &#10;The entity to revert updates for
             /// </param>
-            /// <param name="propertyName" type="String" optional="true">
-            /// &#10;If supplied, the name of the possibly updated property.  Otherwise, all updated properties will be reverted to their original values.
+            /// <param name="path" type="String" optional="true">
+            /// &#10;The path to the property to revert updates for. The path should be valid javascript; for example "Addresses[3].Street".
+            /// </param>
+            /// <param name="skipChildren" type="Boolean" optional="true">
+            /// &#10;Whether or not to revert updates to the children of the specified property
             /// </param>
             /// <returns type="upshot.EntitySet"/>
 
@@ -1270,33 +1334,70 @@
 
             var state = id !== null && this._entityStates[id];
             if (!state || state === upshot.EntityState.Deleted) {
-                throw "Entity no longer cached in data context.";
-            }
-
-            if (!propertyName) {
-                if (state === upshot.EntityState.ClientDeleted || state === upshot.EntityState.ClientUpdated) {
-                    // Do this before the model change, so listeners on data change events see consistent entity state.
-                    this._updateEntityState(id, upshot.EntityState.Unmodified);
-
-                    this._restoreOriginalValues(entity, this._entityType, null);
-                    // TODO -- Might we sniff the entity and revert to "ClientUpdated" from "ClientDeleted" for
-                    // a entity where a property has been updated then the entity deleted?  Confusing?
-                } else if (state === upshot.EntityState.ClientAdded) {
-                    this._purgeUncommittedAddedEntity(this._getAddedEntityFromId(id), true);
-                } else {
-                    throw "Entity changes cannot be reverted for entity in state '" + state + "'.";
-                }
+                throw "Entity not cached in data context.";
+            } else if (upshot.EntityState.isServerSyncing(state)) {
+                throw "Can't revert an entity while changes are being committed.";
+            } else if (state !== upshot.EntityState.ClientUpdated) {
+                return this;
+            } else if (!path) {
+                return this.revertChanges(entity);
             } else {
-                if (state !== upshot.EntityState.ClientUpdated) {
-                    throw "Property change cannot be reverted for entity in state '" + state + "'.";
-                } else {
-                    // Do this before the model change, so listeners on data change events see consistent entity state.
-                    this._changeEntityStateForUpdate(entity);
-                    this._restoreOriginalValues(entity, this._entityType, propertyName);
-                    // TODO -- Check if propertyName should exist on entity according to metadata?
-                    // TODO -- Should we reason over errors and GC those pertaining to propertyName here?
-                    // TODO -- Extend support to parent entity properties?
+                var tokens = tokenizePath(entity, path);
+
+                var snapshot = this._clearChangesOnPath(tokens.objs.slice(), tokens.tokens.slice(), skipChildren);
+                !this.isUpdated(entity) && this._updateEntityState(id, upshot.EntityState.Unmodified);
+                this._restoreOriginalValues(entity, this._entityType, snapshot);
+                this._triggerEntityUpdated(entity);
+
+                ///#DEBUG
+                this._verifyConsistency(entity, id);
+                ///#ENDDEBUG
+
+                upshot.__triggerRecompute();
+
+                return this;
+            }
+        },
+
+        revertChanges: function (entities) {
+            /// <summary>
+            /// Reverts the specified entities back to their original state.
+            /// </summary>
+            /// <param name="entities" type="Array" optional="true">
+            /// &#10;One or more entities to revert. This parameter is optional. When omitted, all entities will be reverted.
+            /// </param>
+            /// <returns type="upshot.EntitySet"/>
+
+            if (!entities) {
+                this.__revertChanges();
+            } else {
+                if (!upshot.isArray(entities)) {
+                    entities = [entities];
                 }
+                var self = this;
+                $.each(entities, function (index, entity) {
+                    var id = self.getEntityId(entity);
+
+                    var state = id !== null && self._entityStates[id];
+                    if (!state || state === upshot.EntityState.Deleted) {
+                        throw "Entity no longer cached in data context.";
+                    } else if (upshot.EntityState.isServerSyncing(state)) {
+                        throw "Can't revert an entity while changes are being committed.";
+                    } else if (state === upshot.EntityState.Unmodified) {
+                        return;
+                    } else if (state === upshot.EntityState.ClientDeleted || state === upshot.EntityState.ClientUpdated) {
+                        // Do this before the model change, so listeners on data change events see consistent entity state.
+                        self._updateEntityState(id, upshot.EntityState.Unmodified);
+
+                        var snapshot = self._clearChanges(entity, true);
+                        self._restoreOriginalValues(entity, self._entityType, snapshot);
+                        self._triggerEntityUpdated(entity);
+                    } else if (state === upshot.EntityState.ClientAdded) {
+                        self._purgeUncommittedAddedEntity(self._getAddedEntityFromId(id), true);
+                    } else {
+                        throw "Entity changes cannot be reverted for entity in state '" + state + "'.";
+                    }
+                });
             }
 
             upshot.__triggerRecompute();
@@ -1304,46 +1405,48 @@
             return this;
         },
 
-        revertChanges: function (all) {
+        isUpdated: function (entity, path, ignoreChildren) {
             /// <summary>
-            /// Reverts any edits to model data (to entities) back to original entity values.
+            /// Returns whether the entity of any of the objects or arrays it contains are updated. When a path is specified,
+            /// it returns whether the specified property of any of its children are updated. This function will never return
+            /// 'true' for entities not in the 'ClientUpdated' state.
             /// </summary>
-            /// <param name="all" type="Boolean" optional="true">
-            /// &#10;Revert all model edits in the underlying DataContext (to all types of entities).  Otherwise, revert changes only to those entities of the type cached by this EntitySet.
+            /// <param name="entity" type="Object">
+            /// &#10;The entity to check for updates
             /// </param>
-            /// <returns type="upshot.EntitySet"/>
-
-            if (!!all) {
-                this._dataContext.revertChanges();
-            } else {
-                this.__revertChanges();
-                upshot.__triggerRecompute();
-            }
-
-            return this;
-        },
-
-        hasChanges: function (obj, property) {
-            /// <summary>
-            /// Determines if a given object has updated properties.  The object can be an entity or it can be an object nested within an entity.
-            /// </summary>
-            /// <param name="obj" type="Object">
-            /// &#10;The object being queries as to its updated properties.
+            /// <param name="path" type="String" optional="true">
+            /// &#10;The path to the property to check for updates. The path should be valid javascript; for example "Addresses[3].Street".
             /// </param>
-            /// <param name="property" type="String">
-            /// &#10;The name of a property that may have been updated on this object.
+            /// <param name="ignoreChildren" type="Boolean" optional="true">
+            /// &#10;Whether or not updates to the children of the specified property should be considered in the result
             /// </param>
             /// <returns type="Boolean"/>
+            var id = this.getEntityId(entity);
 
-            if (upshot.isArray(obj) && property) {
-                throw "Property is not a supported parameter when inspecting array changes";
+            var state = id !== null && this._entityStates[id];
+            if (!state || !upshot.EntityState.isUpdated(state)) {
+                return false;
+            }
+
+            var obj = entity,
+                property,
+                child;
+            if (path) {
+                var tokens = tokenizePath(entity, path);
+                // objs) [obj, A, B], [obj, A, B, B[0]], [obj, "str"]
+                // tokens) ["A", "B"], ["A", "B", "0"], ["C"]
+                obj = tokens.objs[tokens.objs.length - 2];
+                child = tokens.objs[tokens.objs.length - 1];
+                if (!upshot.isArray(obj)) {
+                    property = tokens.tokens[tokens.tokens.length - 1];
+                }
             }
 
             var changes = this._getChanges(obj);
             if (!changes) { return false; }
-            if (!property) { return true; }
+            if (!path) { return true; }
 
-            return changes.original.hasOwnProperty(property);
+            return (property ? changes.original.hasOwnProperty(property) : false) || (ignoreChildren ? false : this._getChanges(child) !== null);
         },
 
         deleteEntity: function (entity) {
@@ -1356,35 +1459,29 @@
             /// <returns type="upshot.EntitySet"/>
 
             var id = this.getEntityId(entity),
-            index = id !== null && this._getEntityIndexFromId(id),
-            addedEntityBeingDeleted = id !== null && this._getAddedEntityFromId(id),
-            deletingAddedEntity = index < 0 && addedEntityBeingDeleted;
-            if (deletingAddedEntity) {
-                var entityState = this._entityStates[id];
-                if (entityState === upshot.EntityState.ClientAdded) {
-                    // Deleting a entity that is uncommitted and only on the client.
-                    // TODO -- Reconsider whether we shouldn't throw here, force clients to revert instead.
-                    this._purgeUncommittedAddedEntity(addedEntityBeingDeleted, true);
-                } else {
-                    // To be in addedEntities but not in entities, entity should either be in a
-                    // pre-commit or committing state.
-                    ///#DEBUG
-                    upshot.assert(entityState === upshot.EntityState.ServerAdding);
-                    ///#ENDDEBUG
-
-                    // TODO -- Need to detect and enqueue dependent commits?
-                    throw "NYI -- Can't edit a entity while previous edits are being committed.";
-                }
-            } else if (index < 0) {
-                throw "Entity no longer cached in data context.";
+                entityState = id !== null && this._entityStates[id];
+            if (!entityState) {
+                throw "Entity not cached in data context.";
+            } else if (entityState === upshot.EntityState.ClientAdded) {
+                // Deleting a entity that is uncommitted and only on the client.
+                this._purgeUncommittedAddedEntity(this._getAddedEntityFromId(id));
+            } else if (upshot.EntityState.isServerSyncing(entityState)) {
+                // Force the application to block deletes while saving any edit to this same entity.
+                // We don't have a mechanism to enqueue this edit, then apply when the commit succeeds,
+                // possibly discard it when the commit fails.
+                throw "Can't delete an entity while previous changes are being committed.";
             } else {
-                if (upshot.EntityState.isServerSyncing(this._entityStates[id])) {
-                    // TODO -- Need to detect and enqueue dependent commits?
-                    throw "NYI -- Can't edit a entity while previous edits are being committed.";
-                }
-
+                // If the entity is ClientUpdated, we'll implicitly switch to ClientDeleted.
+                // This saves extra app code that would revert the update before allowing the delete.
                 this._updateEntityState(id, upshot.EntityState.ClientDeleted);
 
+                ///#DEBUG
+                this._verifyConsistency(entity, id);
+                ///#ENDDEBUG
+
+                // This treats the case where the entity is already ClientDeleted but an implicit
+                // commit failed.  As a convenience, a subsequent deleteEntity call will retry
+                // the failed commit.
                 this._dataContext.__queueImplicitCommit();
             }
 
@@ -1402,16 +1499,6 @@
             });
             upshot.__deregisterRootEntitySource(this);
             base.dispose.call(this);
-        },
-
-        __hasUncommittedEdits: function () {
-            var hasUncommittedEdits = false;
-            $.each(this._entityStates, function (key, value) {
-                if (value !== upshot.EntityState.Unmodified) {
-                    hasUncommittedEdits = true;
-                }
-            });
-            return hasUncommittedEdits;
         },
 
         __loadEntities: function (entities) {
@@ -1449,9 +1536,6 @@
         },
 
         __getEntityEdit: function (entity) {
-            // TODO -- Throughout here, we should consult schema and strip off fields that aren't
-            // compliant (like jQuery's __events__ field).
-
             var id = this.getEntityId(entity),
             self = this,
             submittingState,
@@ -1498,6 +1582,10 @@
                 operation: operation,
                 updateEntityState: function () {
                     self._updateEntityState(id, submittingState, lastError);
+
+                    ///#DEBUG
+                    self._verifyConsistency(entity, id);
+                    ///#ENDDEBUG
                 },
                 succeeded: function (result) {
                     self._handleSubmitSucceeded(id, operation, result);
@@ -1518,38 +1606,18 @@
                 }
             });
             if (synchronizing) {
-                throw "Can't revert changes while a commit is in progress.";
+                throw "Can't revert changes to all entities while previous changes are being committed.  Try 'revertChanges(entity)' for entities not presently being committed.";
             }
 
-            var self = this;
-            var uncommittedAddedEntities = $.grep(this._addedEntities, function (addedEntity) {
-                return addedEntity.entity && self._getEntityIndex(addedEntity.entity) < 0;
-            });
-
-            // Remove uncommitted added entities.
-            if (uncommittedAddedEntities.length > 0) {
-                this._addedEntities = $.grep(this._addedEntities, function (addedEntity) {
-                    return $.inArray(addedEntity, uncommittedAddedEntities) < 0;
-                });
-                $.each(uncommittedAddedEntities, function (index, addedEntity) {
-                    self._purgeUncommittedAddedEntity(addedEntity, true);
-                });
-            }
-
-            // Revert "Client"-* entity states to "Unmodified" and discard changes to entities.
+            var entities = [];
             for (var id in this._entityStates) {
                 if (upshot.EntityState.isClientModified(this._entityStates[id])) {
-                    // Do this before the model change, so listeners on data change events see consistent entity state.
-                    this._updateEntityState(id, upshot.EntityState.Unmodified);
-
-                    var entity = this._getEntityFromId(id);
-                    this._restoreOriginalValues(entity, this._entityType, null);
+                    entities.push(this._getEntityFromId(id));
                 }
             }
-
-            ///#DEBUG
-            upshot.assert(this._errors.length === 0, "must be empty!");
-            ///#ENDDEBUG
+            if (entities.length > 0) {
+                this.revertChanges(entities);
+            }
         },
 
         __flushEntityStateChangedEvents: function () {
@@ -1574,24 +1642,28 @@
 
             // NOTE: Cribbed from _getTracker/afterChange.  Keep in sync.
             this._addTracking([value], upshot.metadata.getPropertyType(this._entityType, propertyName), entity, propertyName);
-            this._bubbleChange(entity, null, eventArguments);
+            this._bubbleChange(entity, null, "", eventArguments);
         },
 
 
         // Private methods
 
         _loadEntity: function (entity, entitiesNewToEntitySet) {
-            var serverIdentity = this._getEntityIdentity(entity),
-                index = this._getEntityIndexFromIdentity(serverIdentity);
+            var identity = this._getEntityIdentity(entity),
+                index = this._getEntityIndexFromIdentity(identity);
             if (index >= 0) {
                 entity = this._merge(this._serverEntities[index].entity, entity);
             } else {
-                var id = serverIdentity;  // Ok to use this as an id, as this is a new, unmodified server entity.
+                var id = identity;  // Ok to use this as an id, as this is a new, unmodified server entity.
                 this._addTracking([entity], this._entityType);
                 this._entityStates[id] = upshot.EntityState.Unmodified;
                 this._serverEntities.push({ entity: entity, identity: id });
                 this._updateEntityState(id, upshot.EntityState.Unmodified, null, entity);
                 this._addAssociationProperties(entity);
+
+                ///#DEBUG
+                this._verifyConsistency(entity, id);
+                ///#ENDDEBUG
 
                 entitiesNewToEntitySet.push(entity);
             }
@@ -1599,7 +1671,7 @@
         },
 
         _handleEntityAdd: function (entity) {
-            if (this._getEntityIndex(entity) >= 0 ||  // ...in entities from last query
+            if (this._getEntityIndex(entity) >= 0 ||  // ...in server entities
                 this._getAddedEntityFromEntity(entity)) {  // ...in added entities
                 throw "Entity already in data source.";
             }
@@ -1614,48 +1686,46 @@
             this._updateEntityState(id, upshot.EntityState.ClientAdded);
             this._addAssociationProperties(entity);
 
+            ///#DEBUG
+            this._verifyConsistency(entity, id);
+            ///#ENDDEBUG
+
             this._dataContext.__queueImplicitCommit();
 
             base._handleEntityAdd.apply(this, arguments);
         },
 
         _changeEntityStateForUpdate: function (entity) {
-            var index = this._getEntityIndex(entity),
-            updatingAddedEntity = index < 0 && this._getAddedEntityFromEntity(entity);
-            if (updatingAddedEntity) {
-                var entityState = this._entityStates[this.getEntityId(entity)];
-                if (entityState === upshot.EntityState.ClientAdded) {
-                    // Updating a entity that is uncommitted and only on the client.
-                    // Edit state remains "ClientAdded".  We won't event an edit state change (so clients had
-                    // better be listening on "change").
-                    // Fall through and do implicit commit, if appropriate.
-                } else {
-                    // To be in addedEntities but not in entities, entity should either be in a
-                    // pre-commit or committing state.
-                    ///#DEBUG
-                    upshot.assert(entityState === upshot.EntityState.ServerAdding);
-                    ///#ENDDEBUG
 
-                    // TODO -- What do we do if this entity is in the process of being added to the server?
-                    // We'll have to enqueue this update and treat it properly with respect to errors on the add, just
-                    // as we'll enqueue any dependent edits?
-                    throw "NYI -- Can't update an added entity while it's being committed.";
-                }
-            } else if (index < 0) {
-                throw "Entity no longer cached in data context.";
+            var id = this.getEntityId(entity),
+                entityState = id !== null && this._entityStates[id];
+            if (!entityState) {
+                throw "Entity not cached in data context.";
+            } else if (entityState === upshot.EntityState.ClientAdded) {
+                // Updating a entity that is uncommitted and only on the client.
+                // Edit state remains "ClientAdded".  We won't event an edit state change (so clients had
+                // better be listening on "change").
+                // Fall through and do implicit commit.
+            } else if (upshot.EntityState.isServerSyncing(entityState)) {
+                // Force the application to block updates while saving any edit to this same entity.
+                // We don't have a mechanism to enqueue this edit, then apply when the commit succeeds,
+                // possibly discard it when the commit fails.
+                throw "Can't update an entity while previous changes are being committed.";
             } else {
-                var id = this.getEntityId(entity);
-
-                if (upshot.EntityState.isServerSyncing(this._entityStates[id])) {
-                    // TODO -- Need to detect and enqueue dependent commits?
-                    throw "NYI -- Can't edit a entity while previous edits are being committed.";
-                }
-
-                // TODO -- What if entity is in the "ClientDeleted" state?  Should we discard the delete or throw?
+                // If this entity is ClientDeleted, we'll implicitly switch to ClientUpdated.
+                // This saves extra app code that would revert the delete before allowing updates.
                 this._updateEntityState(id, upshot.EntityState.ClientUpdated, this.getEntityError(entity));
+
+                ///#DEBUG
+                this._verifyConsistency(entity, id);
+                ///#ENDDEBUG
             }
 
+            // This treats the case where the entity is already ClientAdded/ClientUpdated but an implicit
+            // commit failed.  As a convenience, a subsequent update will retry the failed commit.
             this._dataContext.__queueImplicitCommit();
+
+            // The caller is responsible for calling upshot.__triggerRecompute().
         },
 
         _updateEntityState: function (id, state, error, entity) {
@@ -1669,16 +1739,15 @@
                 this._entityStates[id] = state;
                 if (oldState !== state) {
                     // TODO: The change event for EntityState won't be deferred here, like it is for _raiseEntityStateChangedEvent.
-                    obs.setContextProperty(entity, "EntityState", state); // TODO -- do we want this 'reserved' property to be configurable?
+                    obs.setContextProperty(entity, "entity", "state", state);
                 }
             }
 
             var errorChanged = this._updateEntityError(entity, error);
 
-            // TODO -- Use "error" to maintain lists of uncommitted and of in-error operations.
-            // Allow for resolve/retry on in-error operations.
-
             if (oldState !== state || errorChanged) {
+                // We defer entityStateChange events here so that -- for adds -- they follow 
+                // "insert" events for LocalDataSource, AssociationEntitiesView.
                 this._deferredEntityStateChangeEvents.push([entity, state, error]);
             }
         },
@@ -1715,61 +1784,53 @@
             }
 
             if (changed) {
-                obs.setContextProperty(entity, "EntityError", newError); // TODO -- do we want this 'reserved' property to be configurable?            
+                obs.setContextProperty(entity, "entity", "error", newError);
             }
             return changed;
         },
 
-        _purgeEntityAtIndex: function (indexToPurge) {
-            var entityToPurge = this._serverEntities[indexToPurge].entity,
-            idToPurge = this.getEntityId(entityToPurge);
+        _purgeUncommittedAddedEntity: function (addedEntity) {
+            this._purgeEntityInternal(addedEntity.entity, addedEntity.clientId);
+        },
+
+        _purgeServerEntity: function (entity, id) {
+            this._serverEntities.splice(this._getEntityIndex(entity), 1);
+            this._purgeEntityInternal(entity, id);
+        },
+
+        _purgeEntityInternal: function (entity, id) {
+            var entityState = this._entityStates[id];
+
+            // Do this before the model change, so listeners on data change events see consistent entity state.
+            this._updateEntityState(id, upshot.EntityState.Deleted, null, entity);
 
             // Remove our observable extensions from the entity being purged.
-            this._removeTracking([entityToPurge]);
-
-            this._serverEntities.splice(indexToPurge, 1);
-            this._purgeEntity(entityToPurge);
-
-            delete this._entityStates[idToPurge];
-            this._disposeAssociationEntitiesViews(idToPurge);
-
-            if (this._getAddedEntityFromId(idToPurge)) {
-                this._addedEntities = $.grep(this._addedEntities, function (entity) { return entity.clientId !== idToPurge; });
+            this._clearChanges(entity);
+            this._removeTracking([entity]);
+            // Remove this entity from _addedEntities, if it's there.
+            for (var i = 0; i < this._addedEntities.length; i++) {
+                if (this._addedEntities[i].clientId === id) {
+                    this._addedEntities.splice(i, 1);
+                    break;
+                }
             }
+            delete this._entityStates[id];
+            this._disposeAssociationEntitiesViews(id);
+            this._purgeEntity(entity);  // Superclass method that removes entity from EntitySource.getEntities().
 
-            // TODO -- Have a specific event for entities leaving the cache?
+            ///#DEBUG
+            this._verifyConsistency(entity, id, true);
+            ///#ENDDEBUG
         },
 
         _getEntityIdentity: function (entity) {
             return upshot.EntitySet.__getIdentity(entity, this._entityType);
         },
 
-        _getEntityIndexFromId: function (id) {
-            var addedEntity = this._getAddedEntityFromId(id),
-            idToFind;
-            if (!addedEntity) {
-                idToFind = id;
-            } else if (addedEntity.serverId === undefined) {
-                return -1;
-            } else {
-                idToFind = addedEntity.serverId;
-            }
-
+        _getEntityIndexFromIdentity: function (identity) {
             var index = -1;
             for (var i = 0; i < this._serverEntities.length; i++) {
-                if (this._serverEntities[i].identity === idToFind) {
-                    index = i;
-                    break;
-                }
-            }
-
-            return index;
-        },
-
-        _getEntityIndexFromIdentity: function (id) {
-            var index = -1;
-            for (var i = 0; i < this._serverEntities.length; i++) {
-                if (this._serverEntities[i].identity === id) {
+                if (this._serverEntities[i].identity === identity) {
                     index = i;
                     break;
                 }
@@ -1788,11 +1849,6 @@
             }
 
             return index;
-        },
-
-        // This will get client-side identity (if has changed, use the original value).
-        _getClientEntityIdentity: function (entity) {
-            return this._getEntityIdentity(this.hasChanges(entity) ? this._getOriginalValue(entity, this._entityType) : entity);
         },
 
         _addTracking: function (objects, type, parent, property) {
@@ -1826,7 +1882,7 @@
                 if (upshot.isArray(obj)) {
                     // Primitive values don't get mapped.  Avoid iteration over the potentially large array.
                     // TODO: This precludes heterogeneous arrays.  Should we test for primitive element type here instead?
-                    if(obj.length > 0 && (upshot.isArray(obj[0]) || upshot.isObject(obj[0]))) {
+                    if (!upshot.isValueArray(obj)) {
                         // Since we're recursing through the entity, we won't need to use asArray on collection-typed properties
                         var self = this;
                         $.each(obj, function (index, value) {
@@ -1863,7 +1919,7 @@
                             } else {
                                 self._addTracking(self._getNewFromEvent(type, eventArguments), tracking.type, target);
                             }
-                            self._bubbleChange(target, null, eventArguments);
+                            self._bubbleChange(target, null, [], eventArguments);
                         }
                     },
                     afterEvent: function (target, type, eventArguments) {
@@ -1909,7 +1965,7 @@
 
             var id = this.getEntityId(target);
             if (id === null || !(id in this._entityStates)) {
-                throw "Entity no longer cached in data context.";
+                throw "Entity not cached in data context.";
             }
 
             // Determine the single property whose value is being set.
@@ -1954,7 +2010,7 @@
                     if (upshot.isArray(obj)) {
                         // Primitive values don't get mapped.  Avoid iteration over the potentially large array.
                         // TODO: This precludes heterogeneous arrays.  Should we test for primitive element type here instead? 
-                        if(obj.length > 0 && (upshot.isArray(obj[0]) || upshot.isObject(obj[0]))) {
+                        if (!upshot.isValueArray(obj)) {
                             var self = this;
                             $.each(obj, function (index, value) {
                                 self._removeTrackingRecursive(value);
@@ -2028,24 +2084,25 @@
             return tracking ? this._getTracking(obj).changes : null;
         },
 
-        _bubbleChange: function (obj, child, eventArguments) {
-            var parentId = this._getTracking(obj).parentId;
+        _bubbleChange: function (obj, child, path, eventArguments) {
+            var tracking = this._getTracking(obj);
 
             if (child) {
                 this._recordChangedChild(obj, child);
             }
 
-            if (parentId === null) {
-                if (upshot.isArray(obj)) {
-                    this._handleArrayChangeInternal(obj);
-                } else {
-                    this._handlePropertyChangeInternal(obj, eventArguments, child === null);
+            if (tracking.parentId === null) {
+                if (path.length > 1) {
+                    // strip the '.' off the path
+                    path = path.slice(1);
                 }
+                this._handlePropertyChange(obj, eventArguments, child === null);
+                this._triggerEntityUpdated(obj, path, eventArguments);
             } else {
-                this._bubbleChange(this._tracked[parentId].obj, obj, eventArguments);
+                var parent = this._tracked[tracking.parentId].obj;
+                path = (tracking.property ? "." + tracking.property : "[" + $.inArray(obj, parent) + "]") + path;
+                this._bubbleChange(parent, obj, path, eventArguments);
             }
-
-            this._triggerEvent("change", obj, true);
         },
 
         _copyOnWrite: function (obj, eventArguments) {
@@ -2075,6 +2132,7 @@
 
             $.each(oldValues, function (key, value) {
                 changes.original.hasOwnProperty(key) || (changes.original[key] = value);
+                obs.setContextProperty(obj, "property", key, true);
             });
         },
 
@@ -2106,21 +2164,80 @@
             changes.children[childId] = childId;
         },
 
-        _clearChanges: function (obj) {
+        _clearChanges: function (obj, revert) {
             var tracking = this._getTracking(obj),
-                changes = tracking.changes;
+                changes = tracking.changes,
+                snapshot = { original: {}, children: {} };
 
             if (changes) {
-                tracking.changes = null;
-                if (!tracking.active) {
-                    this._deleteTracking(obj);
+                if (upshot.isArray(obj)) {
+                    snapshot.original = changes.original;
+                } else {
+                    $.each(changes.original, function (key, value) {
+                        snapshot.original[key] = value;
+                        delete changes.original[key];
+                        obs.setContextProperty(obj, "property", key, false);
+                    });
                 }
-                this._triggerEvent("change", obj, false);
+
                 var self = this;
                 $.each(changes.children, function (key, value) {
-                    self._clearChanges(self._tracked[value].obj);
+                    var childTracking = self._tracked[value];
+                    snapshot.children[value] = self._clearChanges(childTracking.obj, revert);
                 });
+
+                tracking.changes = null;
+                if (!revert && !tracking.active) {
+                    this._deleteTracking(obj);
+                }
             }
+            return snapshot;
+        },
+
+        _clearChangesOnPath: function (objs, tokens, skipChildren) { // This is only used for revert scenarios
+            // objs) [obj, A, B], [obj, A, B, B[0]], [obj, "str"]
+            // tokens) ["A", "B"], ["A", "B", "0"], ["C"]
+            var obj = objs.shift(),
+                property = tokens.shift(),
+                tracking = this._getTracking(obj),
+                changes = tracking.changes,
+                snapshot = { original: {}, children: {} };
+
+            if (changes) {
+                if (tokens.length === 0) {
+                    var children = [objs[0]];
+                    if (changes.original.hasOwnProperty(property)) {
+                        children.push(changes.original[property]);
+                        snapshot.original[property] = children[1];
+                        delete changes.original[property];
+                        obs.setContextProperty(obj, "property", property, false);
+                    }
+
+                    if (!skipChildren) {
+                        var self = this;
+                        $.each(children, function (index, child) {
+                            var childId = self._getTrackingId(child);
+                            if (childId && changes.children.hasOwnProperty(childId)) {
+                                snapshot.children[childId] = self._clearChanges(child, true);
+                                delete changes.children[childId];
+                            }
+                        });
+                    }
+                } else {
+                    var childId = this._getTrackingId(objs[0]);
+                    if (childId && changes.children.hasOwnProperty(childId)) {
+                        snapshot.children[childId] = this._clearChangesOnPath(objs, tokens, skipChildren);
+                        if (this._tracked[childId].changes === null) {
+                            delete changes.children[childId];
+                        }
+                    }
+                }
+
+                if (upshot.isEmpty(changes.original) && upshot.isEmpty(changes.children)) {
+                    tracking.changes = null;
+                }
+            }
+            return snapshot;
         },
 
         _getOriginalValue: function (obj, type, property) {
@@ -2133,9 +2250,9 @@
                 original;
 
             if (property) {
-                return this._getOriginalValue(
-                    changes && changes.original.hasOwnProperty(property) ? changes.original[property] : obs.getProperty(obj, property),
-                    upshot.metadata.getPropertyType(type, property));
+                return changes && changes.original.hasOwnProperty(property) ?
+                    changes.original[property] :
+                    obs.getProperty(obj, property);
             } else if (upshot.isArray(obj)) {
                 original = (changes ? changes.original || obj : obj).slice(0);
                 $.each(original, function (index, value) {
@@ -2145,7 +2262,7 @@
             } else if (upshot.isObject(obj)) {
                 original = {};
                 $.each(upshot.metadata.getProperties(obj, type), function (index, prop) {
-                    var value = changes && changes.original && changes.original.hasOwnProperty(prop.name) ? changes.original[prop.name] : obs.getProperty(obj, prop.name);
+                    var value = self._getOriginalValue(obj, type, prop.name);
                     original[prop.name] = self._getOriginalValue(value, prop.type);
                 });
                 return original;
@@ -2153,63 +2270,28 @@
             return obj;
         },
 
-        _restoreOriginalValues: function (obj, type, property) {
-            if (upshot.isArray(obj) && property) {
-                throw "property is not a supported parameter when restoring array values";
-            }
-
-            var changes = this._getChanges(obj);
-
+        _restoreOriginalValues: function (obj, type, changes) {
             if (changes) {
                 var self = this;
-                if (property) {
-                    if (changes.original.hasOwnProperty(property)) {
-                        var originalValue = changes.original[property];
-                        // Delete this before _setProperty, so isPropertyChanged/hasChanges is accurate during 
-                        // property changed callbacks.
-                        delete changes.original[property];
-                        this._setProperty(obj, type, property, originalValue);
+                if (upshot.isArray(obj)) {
+                    if (changes.original !== null) {
+                        self._arrayRefresh(obj, type, changes.original);
                     }
-                    // TODO: Review.  Do we want revertChange(entity, propertyName) to be deep by default?  Opt-in?
-                    // Do we not want a more general revertChange(obj, propertyName)?
-                    // Will there be multiple children for a given propertyName (some detached/inactive)?
-                    $.each(changes.children, function (key, value) {
-                        var tracking = self._tracked[value];
-                        if (tracking.property === property) {
-                            self._restoreOriginalValues(tracking.obj, tracking.type, null);
-                        }
-                    });
                 } else {
-                    if (upshot.isArray(obj)) {
-                        if (changes.original !== null) {
-                            self._arrayRefresh(obj, type, changes.original);
-                        }
-                    } else {
-                        // Develop stable keys so we can GC from changes.original as we restore.
-                        var keys = [];
-                        $.each(changes.original, function (key) { keys.push(key); });
-
-                        $.each(keys, function (index, key) {
-                            var value = changes.original[key];
-                            // Delete this before _setProperty, so isPropertyChanged/hasChanges is accurate during 
-                            // property changed callbacks.
-                            delete changes.original[key];
-                            self._setProperty(obj, type, key, value);
-                        });
-                    }
-
-                    $.each(changes.children, function (key, value) {
-                        var tracking = self._tracked[value];
-                        self._restoreOriginalValues(tracking.obj, tracking.type, null);
+                    $.each(changes.original, function (key, value) {
+                        self._setProperty(obj, upshot.metadata.getPropertyType(type, key), key, value);
                     });
-
-                    this._clearChanges(obj);
                 }
+
+                $.each(changes.children, function (key, value) {
+                    var tracking = self._tracked[key];
+                    self._restoreOriginalValues(tracking.obj, tracking.type, value);
+                });
             }
         },
 
         _merge: function (entity, _new) {
-            if (!this.hasChanges(entity)) {
+            if (!this.isUpdated(entity)) {
                 // Only merge entities without changes
                 this._mergeObject(entity, _new, this._entityType);
             }
@@ -2230,11 +2312,10 @@
                 if (oldValue !== value) {
                     if (upshot.classof(oldValue) === upshot.classof(value)) {
                         // We only try to deep-merge when classes match
-                        if (upshot.isArray(oldValue) &&
-                            (oldValue.length > 0 ? upshot.isObject(oldValue[0]) : upshot.isObject(value[0]))) {
-                            // We only deep-merge arrays that contain objects
-                            // TODO: Revisit this.  What's the rationale?
-                            self._mergeArray(oldValue, value, prop.type);
+                        if (upshot.isArray(oldValue)) {
+                            if (!upshot.isValueArray(oldValue)) {
+                                self._mergeArray(oldValue, value, prop.type);
+                            }
                             return;
                         } else if (upshot.isObject(oldValue)) {
                             self._mergeObject(oldValue, value, prop.type);
@@ -2261,9 +2342,7 @@
             }
         },
 
-        // NOTE: "Internal" suffix disambiguates _handleArrayChangeInternal/_handlePropertyChangeInternal
-        // from base class _handleArrayChange method.
-        _handlePropertyChangeInternal: function (entity, eventArguments, raisePropertyChanged) {
+        _handlePropertyChange: function (entity, eventArguments, raisePropertyChanged) {
             // TODO, suwatch: to support N properties
             var path, value;
             for (var propertyName in eventArguments.newValues) {
@@ -2289,12 +2368,6 @@
             this._changeEntityStateForUpdate(entity);
         },
 
-        // NOTE: "Internal" suffix disambiguates _handleArrayChangeInternal/_handlePropertyChangeInternal
-        // from base class _handleArrayChange method.
-        _handleArrayChangeInternal: function (entity) {
-            this._changeEntityStateForUpdate(entity);
-        },
-
         _setProperty: function (obj, type, key, value) {
             var parentId = this._getTracking(obj).parentId;
 
@@ -2305,8 +2378,6 @@
                 // Only raise "propertyChanged" for entity-level property changes.
                 this._trigger("propertyChanged", obj, key, value);
             }
-            this._triggerEvent("change", obj, true); // TODO -- can we untie this from property changes?
-            // TODO: Why doesn't this "change" bubble like tracked changes ones?
         },
 
         _arrayRefresh: function (array, type, values) {
@@ -2323,6 +2394,13 @@
         _arrayInsert: function (array, type, index, items) {
             obs.insert(array, index, items);
             this._addTracking(items, type, array);
+        },
+
+        _triggerEntityUpdated: function (entity, path, eventArguments) {
+            // Only raise events when the entity is updated or being reverted or accepted
+            if (this.isUpdated(entity) || !eventArguments) {
+                this._trigger("entityUpdated", entity, path, eventArguments);
+            }
         },
 
         _getAddedEntityFromId: function (id) {
@@ -2350,29 +2428,34 @@
                     this._updateEntityState(id, upshot.EntityState.Unmodified);
 
                     // Keep entity in addedEntities to maintain its synthetic id as the client-known id.
-                    var addedEntity = this._getAddedEntityFromId(id);
-                    var identity = this._getEntityIdentity(result.Entity);
-                    addedEntity.serverId = identity;
+                    this._getAddedEntityFromId(id).committed = true;
 
-                    this._serverEntities.push({ entity: addedEntity.entity, identity: identity });
-                    this._clearChanges(addedEntity.entity);
-                    this._merge(addedEntity.entity, result.Entity);
+                    this._serverEntities.push({ entity: entity, identity: this._getEntityIdentity(result.Entity) });
+                    this._clearChanges(entity, false);
+                    this._merge(entity, result.Entity);
+
+                    ///#DEBUG
+                    this._verifyConsistency(entity, id, false, true);
+                    ///#ENDDEBUG
+
                     break;
 
                 case 3:
                     // Do this before the model change, so listeners on data change events see consistent entity state.
                     this._updateEntityState(id, upshot.EntityState.Unmodified);
 
-                    this._clearChanges(entity);
+                    this._clearChanges(entity, false);
                     this._merge(entity, result.Entity);
+                    this._triggerEntityUpdated(entity);
+
+                    ///#DEBUG
+                    this._verifyConsistency(entity, id);
+                    ///#ENDDEBUG
+
                     break;
 
                 case 4:
-                    // Do this before the model change, so listeners on data change events see consistent entity state.
-                    this._updateEntityState(id, upshot.EntityState.Deleted, null, entity);
-
-                    var indexToPurge = this._getEntityIndexFromId(id);
-                    this._purgeEntityAtIndex(indexToPurge, true);
+                    this._purgeServerEntity(entity, id);  // This updates entity state to Deleted, verifies consistency.
                     break;
             }
 
@@ -2392,38 +2475,23 @@
             }
 
             this._updateEntityState(id, state, error);
-        },
 
-        _purgeUncommittedAddedEntity: function (addedEntityBeingPurged) {
-            var id = addedEntityBeingPurged.clientId,
-                entity = addedEntityBeingPurged.entity;
-
-            // Do this before the model change, so listeners on data change events see consistent entity state.
-            this._updateEntityState(id, upshot.EntityState.Deleted, null, entity);
-
-            // Remove our observable extensions from the entity being purged.
-            this._removeTracking([entity]);
-            this._addedEntities = $.grep(this._addedEntities, function (addedEntity) { return addedEntity !== addedEntityBeingPurged; });
-            delete this._entityStates[id];
-            this._disposeAssociationEntitiesViews(id);
-            this._purgeEntity(entity);
+            ///#DEBUG
+            this._verifyConsistency(entity, id);
+            ///#ENDDEBUG
         },
 
         _getEntityFromId: function (id) {
-            // Similar logic as _getEntityIndexFromId
-            var addedEntity = this._getAddedEntityFromId(id),
-                idToFind;
-            if (!addedEntity) {
-                idToFind = id;
-            } else if (addedEntity.serverId === undefined) {
+            var addedEntity = this._getAddedEntityFromId(id);
+            if (addedEntity) {
+                // 'id' is one of our synthesized ones for client-added entities.
                 return addedEntity.entity;
             } else {
-                idToFind = addedEntity.serverId;
-            }
-
-            for (var i = 0; i < this._serverEntities.length; i++) {
-                if (this._serverEntities[i].identity === idToFind) {
-                    return this._serverEntities[i].entity;
+                // 'id' is one computed based on server identity, which is assumed to be immutable.
+                for (var i = 0; i < this._serverEntities.length; i++) {
+                    if (this._serverEntities[i].identity === id) {
+                        return this._serverEntities[i].entity;
+                    }
                 }
             }
         },
@@ -2496,6 +2564,49 @@
             }
             delete this._associatedEntitiesViews[id];
         },
+
+        ///#DEBUG
+        _verifyConsistency: function (entity, id, isPurged, isNewlyCommittedAdd) {
+            var entityState = this._entityStates[id];
+            upshot.assert(isPurged || entityState, "Entities in EntitySet always have an entity state.");
+            upshot.assert(entityState !== upshot.EntityState.Deleted,
+                   "The Deleted entity state is only for the 'entityStateChanged' event.  It's never in _entityStates.");
+            entityState = entityState || upshot.EntityState.Deleted;
+
+            // isNewlyCommittedAdded is only supplied as true for a client-added entity that has
+            // just been committed (and is now in the Unmodified state).
+            upshot.assert(!isNewlyCommittedAdd || entityState === upshot.EntityState.Unmodified);
+
+            var addedEntity = this._getAddedEntityFromId(id);
+            upshot.assert(!(isNewlyCommittedAdd || entityState === upshot.EntityState.ClientAdded || entityState === upshot.EntityState.ServerAdding) ||
+                   addedEntity,
+                   "Client-added entities are always tracked in _addedEntities");
+
+            var committedAdd = addedEntity && addedEntity.committed;
+            upshot.assert(!committedAdd || !upshot.EntityState.isAdded(entityState),
+                   "Committed, client-added entities should never be in the ClientAdded/ServerAdding states");
+
+            var isInServerEntities = this._getEntityIndex(entity) >= 0;
+            upshot.assert(!committedAdd || isInServerEntities, "Committed, client-added entities should always be in _serverEntities");
+
+            var uncommittedAdd = addedEntity && !addedEntity.committed;
+            upshot.assert(!uncommittedAdd || !isInServerEntities, "Uncommitted, client-added entities should never be in _serverEntities");
+
+            upshot.assert(entityState !== upshot.EntityState.Deleted ||
+                   !(isInServerEntities || addedEntity || (id in this._entityStates) || this.getEntityError(entity)),
+                  "Deleted/purged entities should never be found in EntitySet");
+
+            upshot.assert(entityState === upshot.EntityState.Deleted || this.getEntityId(entity) === id,
+                   "Entities in an entity set always have a non-null, stable id");
+
+            upshot.assert(!(entityState === upshot.EntityState.Unmodified || entityState === upshot.EntityState.Deleted) ||
+                   !this.getEntityError(entity),
+                   "Unmodified and Deleted/purged entities should never have errors");
+
+            upshot.assert(upshot.EntityState.isUpdated(entityState) === this.isUpdated(entity),
+                          "An entity 'isUpdated' iff ClientUpdated/ServerUpdating");
+        },
+        ///#ENDDEBUG
 
         _getSerializableEntity: function (entity) {
             if (!this._dataContext.__manageAssociations) {
@@ -2706,6 +2817,8 @@
                     throw "For a given type, DataContext.addMapping must be supplied the same map/unmap functions.";
                 }
             });
+
+            return this;
         },
 
         getEntitySet: function (entityType) {
@@ -2812,7 +2925,6 @@
                     obs.setProperty(entity, "__type", type);
                 });
 
-                // TODO -- Add CT + shredding support
                 var entitySet = self.getEntitySet(type);
                 entitySet.__loadEntities(entities);
             });
@@ -2872,12 +2984,6 @@
         },
 
         __load: function (options, success, error) {
-
-            $.each(this._entitySets, function (type, entitySet) {
-                if (entitySet.__hasUncommittedEdits()) {
-                    throw "Load is not allowed while the data source contains uncommitted edits.";
-                }
-            });
 
             var dataProvider = this._dataProvider,
                 self = this,
@@ -3264,6 +3370,8 @@
 {
     var base = upshot.DataSource.prototype;
 
+    var commitEvents = ["commitStart", "commitSuccess", "commitError"];
+
     var ctor = function (options) {
         /// <summary>
         /// RemoteDataSource is used to load model data matching a query that is evaluated on the server.
@@ -3309,6 +3417,11 @@
                 dataProvider = new dataProvider();
             }
 
+            // Acceptable formats for "mapping":
+            // { entityType: "Customer", mapping: Customer }
+            // { entityType: "Customer", mapping: { map: Customer, unmap: unmapCustomer } }
+            // { mapping: { "Customer": Customer } }
+            // { mapping: { "Customer": { map: Customer, unmap: unmapCustomer } } }
             mapping = options.mapping;
             if (mapping &&
                 ($.isFunction(mapping) ||  // Mapping supplied as a "map" function.
@@ -3350,7 +3463,7 @@
 
         // define commit[Start,Success,Error] observers
         var observer = {};
-        $.each(["commitStart", "commitSuccess", "commitError"], function (unused, name) {
+        $.each(commitEvents, function (unused, name) {
             observer[name] = function () {
                 self._trigger.apply(self, [name].concat(Array.prototype.slice.call(arguments)));
             };
@@ -3377,6 +3490,9 @@
         }
 
         base.constructor.call(this, options);
+
+        // Events specific to RemoteDataSource
+        this._bindFromOptions(options, commitEvents);
     };
 
     var instanceMembers = {
@@ -3429,6 +3545,8 @@
             /// </param>
             /// <returns type="upshot.RemoteDataSource"/>
 
+            this._verifyOkToRefresh();
+
             if ($.isFunction(options)) {
                 error = success;
                 success = options;
@@ -3440,9 +3558,6 @@
             var self = this,
                 onSuccess = function (entitySet, entities, totalCount) {
                     self._bindToEntitySource(entitySet);
-                    // TODO -- This means that we can't do CUD on this data source until we've refreshed it once.
-                    // Allow client to pass the entityType, which would allow us to _not_ require a refresh to prime.
-
                     self._completeRefresh(entities, totalCount, success);
                 },
                 onError = function (httpStatus, errorText, context) {
@@ -3488,6 +3603,19 @@
         _dispose: function () {
             this._dataContext.unbind(this._dataContextObserver);
             base._dispose.apply(this, arguments);
+        },
+
+        _bindToEntitySource: function (entitySource) {
+
+            base._bindToEntitySource.call(this, entitySource);
+
+            // Reverting changes at this level with no "entities" arguments will revert all changes in the data context.
+            // TODO -- should AssociatedEntitiesView do the same thing with respect to revertChanges
+            this.revertChanges = function () {
+                return arguments.length > 0
+                    ? this._entitySource.revertChanges.apply(this._entitySource, arguments)
+                    : this._dataContext.revertChanges();
+            };
         }
 
     };
@@ -3773,6 +3901,9 @@
 
         base.constructor.call(this, options);
 
+        // Events specific to LocalDataSource
+        this._bindFromOptions(options, [ "refreshNeeded" ]);
+
         if (this._autoRefresh) {
             this.refresh();
         }
@@ -3828,6 +3959,8 @@
             /// &#10;An error callback with signature function(httpStatus, errorText, context).
             /// </param>
             /// <returns type="upshot.LocalDataSource"/>
+
+            this._verifyOkToRefresh();
 
             if ($.isFunction(options)) {
                 fail = success;
@@ -4072,13 +4205,18 @@
             var sortFunction = this._getSortFunction(),
             sortedEntities;
             if (sortFunction) {
+                // "sort" modifies filtered entities, so we must be operating against a copy
+                // by this point.  Otherwise, we'll potentially update the LDS input array.
+                if (filteredEntities === entities) {
+                    filteredEntities = filteredEntities.slice(0);
+                }
                 sortedEntities = filteredEntities.sort(sortFunction);
             } else {
                 sortedEntities = filteredEntities;
             }
 
             var skip = this._skip || 0,
-                pagedEntities = sortedEntities.slice(skip);
+                pagedEntities = skip > 0 ? sortedEntities.slice(skip) : sortedEntities;
             if (this._take) {
                 pagedEntities = pagedEntities.slice(0, this._take);
             }

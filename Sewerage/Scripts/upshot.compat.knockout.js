@@ -12,7 +12,7 @@
 // ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ///
-/// Compat.Knockout.js
+/// Upshot.Compat.Knockout.js
 ///
 
 (function (global, ko, upshot, undefined)
@@ -21,7 +21,10 @@
         stateProperty = "EntityState",
         errorProperty = "EntityError",
         updatedProperty = "IsUpdated",
-        canSaveProperty = "CanSave",
+        addedProperty = "IsAdded",
+        deletedProperty = "IsDeleted",
+        changedProperty = "IsChanged",
+        canDeleteProperty = "CanDelete",
         validationErrorProperty = "ValidationError";
     
     var splice = function (array, start, howmany, items) {
@@ -247,16 +250,16 @@
         return collection();
     }
 
-    function map(item, entityType, mapNested, context) {
+    function map(item, type, mapNested, context) {
         if (upshot.isArray(item)) {
             var array;
-            if(item.length === 0 || !(upshot.isArray(item[0]) || upshot.isObject(item[0]))) {
+            if (upshot.isValueArray(item)) {
                 // Primitive values don't get mapped.  Avoid iteration over the potentially large array.
                 // TODO: This precludes heterogeneous arrays.  Should we test for primitive element type here instead?
                 array = item;
             } else {
                 array = ko.utils.arrayMap(item, function (value) {
-                    return (mapNested || map)(value, entityType);
+                    return (mapNested || map)(value, type);
                 });
             }
             return ko.observableArray(array);
@@ -264,10 +267,16 @@
             var obj = context || {};
             // Often, server entities will not carry null-valued nullable-type properties.
             // Use getProperties here so that we'll map missing property value like these to observables.
-            ko.utils.arrayForEach(upshot.metadata.getProperties(item, entityType, true), function (prop) {
+            ko.utils.arrayForEach(upshot.metadata.getProperties(item, type, true), function (prop) {
                 var value = (mapNested || map)(item[prop.name], prop.type);
                 obj[prop.name] = ko.isObservable(value) ? value : ko.observable(value);
             });
+            if (upshot.metadata.isEntityType(type)) {
+                upshot.addEntityProperties(obj, type);
+            }
+            // addUpdatedProperties is applied shallowly. This allows map (which is applied deeply) to add the
+            // properties at each level or for custom type mapping to decide whether the properties should be added
+            upshot.addUpdatedProperties(obj, type);
             return obj;
         }
         return item;
@@ -296,9 +305,26 @@
         return item;
     }
 
-    function setContextProperty(item, name, value) {
-        if ((name === stateProperty || name === errorProperty) && ko.isObservable(item[name])) {
-            setProperty(item, name, value);
+    function setContextProperty(item, kind, name, value) {
+        if (kind === "entity") {
+            // TODO -- do we want these 'reserved' properties to be configurable?
+            var prop;
+            if (name === "state") {
+                // set item.EntityState
+                prop = stateProperty;
+            } else if (name === "error") {
+                // set item.EntityError
+                prop = errorProperty;
+            }
+            if (ko.isObservable(item[prop])) {
+                setProperty(item, prop, value);
+            }
+        } else if (kind === "property") {
+            // set item.name.IsUpdated
+            if (ko.isObservable(item[name])) {
+                var observable = item[name][updatedProperty];
+                observable && observable(value);
+            }
         }
     }
 
@@ -351,18 +377,39 @@
         entity[stateProperty] = ko.observable(upshot.EntityState.Unmodified);
         entity[errorProperty] = ko.observable();
 
-        // Minimize view boilerplate by exposing convenient status properties
+        // Minimize view boilerplate by exposing state flags
+        var containsState = function (states) {
+            return ko.utils.arrayIndexOf(states, entity[stateProperty]()) !== -1;
+        };
+        var es = upshot.EntityState;
         entity[updatedProperty] = ko.computed(function () {
-            return entity[stateProperty]() === upshot.EntityState.ClientUpdated
+            return containsState([es.ClientUpdated, es.ServerUpdating]);
         });
-        entity[canSaveProperty] = ko.computed(function () {
-            return entity.IsUpdated()
-                || entity[stateProperty]() === upshot.EntityState.ClientAdded;
+        entity[addedProperty] = ko.computed(function () {
+            return containsState([es.ClientAdded, es.ServerAdding]);
+        });
+        entity[deletedProperty] = ko.computed(function () {
+            return containsState([es.ClientDeleted, es.ServerDeleting, es.Deleted]);
+        });
+        entity[changedProperty] = ko.computed(function () {
+            return !containsState([es.Unmodified, es.Deleted]);
+        });
+        entity[canDeleteProperty] = ko.computed(function () {
+            return !(entity[addedProperty]() || entity[deletedProperty]());
         });
 
-        // Adds properties to each tracked observable that will be managed by upshot
+        // TODO -- these are only applied a single level deep; see if there's a consistent way to apply CTs
         ko.utils.arrayForEach(upshot.metadata.getProperties(entity, entityType, true), function (prop) {
             addValidationErrorProperty(entity, prop.name);
+        });
+    }
+
+    upshot.addUpdatedProperties = function (obj, type) {
+        ko.utils.arrayForEach(upshot.metadata.getProperties(obj, type, false), function (prop) {
+            var observable = obj[prop.name];
+            if (ko.isObservable(observable)) {
+                observable[updatedProperty] = ko.observable(false);
+            }
         });
     }
 }

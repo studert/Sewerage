@@ -13,95 +13,21 @@
 
 
 (function (ko, upshot, undefined) {
-    upshot.RemoteDataSource.prototype.getFirstEntity = function () {
-        var allEntities = this.getEntities();
-        return ko.computed(function () { return allEntities()[0] });
-    };
-
-    upshot.RemoteDataSource.prototype.getEntitiesWithStatus = function (options) {
-        var result = this.getEntities();
-        if (!result.loaded) {
-            result.loaded = ko.observable(false);
-            result.error = ko.observable(null);
-
-            var capacity = options && options.capacity;
-            if (capacity) {
-                this.setPaging({ take: capacity, includeTotalCount: true });
-            }
-
-            this.bind({
-                refreshStart: function () { result.error(null); result.loaded(false); },
-                refreshError: function (httpStatus, message) { result.error(message); },
-                refreshSuccess: function (data, count) {
-                    // Raise a suitable notification if there are too many results 
-                    // to fit in the requested capacity
-                    if (capacity && count > capacity) {
-                        result.error("Too many items");
-                    } else {
-                        result.error(null);
-                        result.loaded(true);
-                    }
-                }
-            });
-        }
-        return result;
-    };
-
-    upshot.PagingModel = function (dataSource, opts) {
-        // Underlying private data
-        opts = opts || {};
-        var self = this;
-        var _dataSource = dataSource;
-        var _pageIndex = ko.observable();
-        var _pageSize = ko.observable();
-        var _totalItems = ko.observable();
-
-        // Read-only properties computed from the above        
-        self.totalItems = ko.computed(_totalItems);
-        self.totalPages = ko.computed(function () { return Math.ceil(_totalItems() / _pageSize()) });
-        self.canMoveNext = ko.computed(function () { return Number(_pageIndex()) < self.totalPages() });
-        self.canMovePrev = ko.computed(function () { return Number(_pageIndex()) > 1 });
-
-        // Operations
-        self.moveNext = function () { self.pageIndex(self.pageIndex() + 1) }
-        self.movePrev = function () { self.pageIndex(self.pageIndex() - 1) }
-        self.moveFirst = function () { self.pageIndex(1) }
-        self.moveLast = function () { self.pageIndex(self.totalPages()) }
-        self.moveTo = function (pageIndex, pageSize) {
-            _pageIndex(Number(pageIndex));
-            _pageSize(Number(pageSize));
-            _dataSource.setPaging({ skip: (_pageIndex() - 1) * _pageSize(), take: _pageSize(), includeTotalCount: true });
+    upshot.RemoteDataSource.prototype.findById = function (id, updateTarget) {
+        function search() {
+            var self = this;
+            var foundEntity = $.grep(ko.utils.unwrapObservable(self.getEntities()), function (entity) {
+                return self.getEntityId(entity) === updateTarget._id;
+            })[0];
+            updateTarget(foundEntity);
         }
 
-        // If you don't specify an onPageChange callback, the default is just to update & refresh the underlying dataSource
-        // This won't update your URL, so if you're doing client-side navigation, you'll want to override this
-        var onPageChangeHandler = opts.onPageChange || function (pageIndex, pageSize) {
-            self.moveTo(pageIndex, pageSize);
-            _dataSource.refresh();
-        };
-
-        // Read-write properties that trigger an "onPageChange" callback when you write new values to them
-        self.pageIndex = ko.computed({
-            read: _pageIndex,
-            write: function (val) {
-                val = Number(val);
-                if (val !== _pageIndex())
-                    onPageChangeHandler(val, self.pageSize());
-            }
-        });
-        self.pageSize = ko.computed({
-            read: _pageSize,
-            write: function (val) {
-                val = Number(val);
-                if (val !== _pageSize())
-                    onPageChangeHandler(1, val);
-            }
-        });
-
-        // Capture the total items count whenever it changes
-        _dataSource.bind({
-            refreshSuccess: function (data, count) { _totalItems(count) }
-        });
+        if (!('_id' in updateTarget)) {
+            // TODO: What is the provision to 'unbind' here?
+            this.bind("refreshSuccess", search);
+        }
+        updateTarget._id = id;
+        search.call(this);
     };
 
     ko.bindingHandlers.autovalidate = {
@@ -129,21 +55,6 @@
             // Respond to any 'resetFormOnChange' value by removing any error messages
             ko.utils.unwrapObservable(valueAccessor().resetFormOnChange);
             $(element).validate().resetForm();
-        }
-    };
-
-    ko.bindingHandlers.flash = {
-        update: function (element, valueAccessor) {
-            var options = valueAccessor(), text = ko.utils.unwrapObservable(options.text);
-
-            // Unfortunately, .stop() doesn't clear .delay()s in jQuery 1.6, so we'll have to 
-            // manage the animation queue manually (http://bugs.jquery.com/ticket/6150)
-            clearTimeout($(element).data("flashQueue"));
-            if (text) {
-                $(element).slideDown(250).text(text);
-                $(element).data("flashQueue", setTimeout(function () { $(element).slideUp(250) }, options.duration || 5000));
-            } else
-                $(element).hide();
         }
     };
 }

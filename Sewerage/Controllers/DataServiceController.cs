@@ -6,9 +6,9 @@ namespace Sewerage.Controllers
 {
     public class DataServiceController : DbDataController<AppDbContext>
     {
-        public IQueryable<Project> GetProjects()
+        public IQueryable<Observation> GetObservations()
         {
-            return DbContext.Projects.OrderBy(x => x.Name);
+            return DbContext.Observations.Include("Inspection").OrderBy(x => x.ObservationId);
         }
 
         public void InsertProject(Project project) { InsertEntity(project); }

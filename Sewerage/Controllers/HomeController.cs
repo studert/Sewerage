@@ -6,6 +6,7 @@ namespace Sewerage.Controllers
     {
         public ActionResult Index()
         {
+            ViewBag.Message = "The inspection tool.";
             return View();
         }
     }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 
 namespace Sewerage.Models
@@ -24,21 +23,19 @@ namespace Sewerage.Models
         {
             protected override void Seed(AppDbContext context)
             {
-                //var o1 = new Observation { Description = "Observation 1" }; context.Observations.Add(o1);
-                //var o2 = new Observation { Description = "Observation 2" }; context.Observations.Add(o2);
-                //var o3 = new Observation { Description = "Observation 3" }; context.Observations.Add(o3);
-                //var o4 = new Observation { Description = "Observation 4" }; context.Observations.Add(o4);
-                //var o5 = new Observation { Description = "Observation 5" }; context.Observations.Add(o5);
+                var p1 = new Project { Name = "Project 1", Description = "Project 1 Description" }; context.Projects.Add(p1);
+                context.SaveChanges();
 
-                //var i1 = new Inspection { StartDate = DateTime.Now.AddDays(1), EndDate = DateTime.Now.AddDays(8), Observations = new List<Observation> { o1, o2, o3 } }; context.Inspections.Add(i1);
-                //var i2 = new Inspection { StartDate = DateTime.Now.AddDays(8), EndDate = DateTime.Now.AddDays(9), Observations = new List<Observation> { o4, o5 } }; context.Inspections.Add(i2);
-                ////context.SaveChanges();
+                var s1 = new Section { Number = 1, Project = p1 }; context.Sections.Add(s1);
 
-                //var s1 = new Section { Number = 1, Inspections = new List<Inspection> { i1, i2 } }; context.Sections.Add(s1);
-                ////context.SaveChanges();
+                var i1 = new Inspection { StartDate = DateTime.Now.AddDays(1), EndDate = DateTime.Now.AddDays(8), Section = s1 }; context.Inspections.Add(i1);
+                var i2 = new Inspection { StartDate = DateTime.Now.AddDays(8), EndDate = DateTime.Now.AddDays(9), Section = s1 }; context.Inspections.Add(i2);
 
-                //context.Projects.Add(new Project {Description = "Project 1", Sections = new List<Section> {s1}});
-                //context.SaveChanges();
+                context.Observations.Add(new Observation {Description = "Observation 1", Inspection = i1});
+                context.Observations.Add(new Observation {Description = "Observation 2", Inspection = i1});
+                context.Observations.Add(new Observation {Description = "Observation 3", Inspection = i1});
+                context.Observations.Add(new Observation {Description = "Observation 4", Inspection = i2});
+                context.Observations.Add(new Observation {Description = "Observation 5", Inspection = i2});
             }
         }
     }

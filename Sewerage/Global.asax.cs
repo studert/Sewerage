@@ -22,8 +22,8 @@ namespace Sewerage
 
             routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                routeTemplate: "api/{controller}/{action}",
+                defaults: new { controller = "Sewerage", action = "GetProjects" }
             );
 
             routes.MapRoute(

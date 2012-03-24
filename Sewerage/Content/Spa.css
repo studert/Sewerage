@@ -1,4 +1,5 @@
-﻿.added { background-color: rgb(180,255,180) }
+﻿.selected { background-color: rgb(180,255,180) }
+.added { background-color: rgb(180,255,180) }
 .updated { background-color: rgb(255,255,180) }
 .deleted { background-color: rgb(255,180,180) }
 tr.error { font-weight: bold; }

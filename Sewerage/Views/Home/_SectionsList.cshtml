@@ -1,0 +1,7 @@
+﻿<div>
+    <ul data-bind="foreach: $root.chosenProjectData">
+        <li data-bind="css: { selected: SectionId == $root.chosenSectionId() }, click: $root.goToSection">
+            <span data-bind="text: Number"></span>
+        </li>
+    </ul>
+</div>

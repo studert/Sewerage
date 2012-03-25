@@ -25,5 +25,12 @@ namespace Sewerage.Controllers
                 .Where(x => x.SectionId == sectionId)
                 .OrderBy(x => x.StartDate);
         }
+
+        public IQueryable<Observation> GetInspectionObservations(int inspectionId)
+        {
+            return DbContext.Observations
+                .Where(x => x.InspectionId == inspectionId)
+                .OrderBy(x => x.ObservationId);
+        }
     }
 }

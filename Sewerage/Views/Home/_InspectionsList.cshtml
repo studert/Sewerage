@@ -1,0 +1,8 @@
+﻿<div>
+    <ul data-bind="foreach: $root.chosenSectionData">
+        <li data-bind="css: { selected: InspectionId == $root.chosenInspectionId() }, click: $root.goToInspection">
+            <span data-bind="text: StartDate"></span>
+            <span data-bind="text: EndDate"></span>
+        </li>
+    </ul>
+</div>

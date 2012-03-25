@@ -15,10 +15,10 @@
 }
 @(Html.UpshotContext(bufferChanges: true).DataSource<SewerageController>(x => x.GetProjects()))
 
-<h3>Projects</h3>
-<div>
+<aside>
+    <h3>Projects</h3>
     @Html.Partial("_ProjectsList")
-</div>
+</aside>
 
 <h3>Sections</h3>
 <div>

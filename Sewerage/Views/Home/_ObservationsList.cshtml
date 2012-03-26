@@ -1,8 +1,20 @@
-﻿<div>
-    <ul data-bind="foreach: $root.chosenInspectionData">
-        <li data-bind="css: { selected: ObservationId == $root.chosenObservationId() }, click: $root.goToObservation">
-            <span data-bind="text: Description"></span>
-            <span data-bind="text: SecondsIntoVideo"></span>
-        </li>
-    </ul>
+﻿<div data-bind="if: $root.chosenInspectionId() != null">
+    <table class="observationTable">
+        <tr>
+            <thead>
+                <th>Position</th>
+                <th>Tag</th>
+                <th>Description</th>
+                <th>Video</th>         
+            </thead>
+            <tbody data-bind="foreach: $root.chosenInspectionData">
+                <tr data-bind="css: { selected: ObservationId == $root.chosenObservationId() }, click: $root.goToObservation">
+                    <td data-bind="text: Position"></td>
+                    <td data-bind="text: Tag"></td>
+                    <td data-bind="text: Description"></td>
+                    <td data-bind="text: SecondsIntoVideo"></td>
+                </tr>
+            </tbody>
+        </tr>
+    </table>
 </div>

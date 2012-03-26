@@ -108,6 +108,10 @@ h5, h6 {
 .right.col { background-color: #fff;}
 .top.row.left.col { background-color: #fff;}
 
+table{ text-align: left;}
+th {background-color: #e2e2e2;}
+.sectionTable,.observationTable{ width: 100%;}
+
 /* site title
 ----------------------------------------------------------*/
 .site-title {

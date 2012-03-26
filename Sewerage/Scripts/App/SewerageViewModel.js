@@ -55,9 +55,11 @@ function SewerageViewModel() {
         self.chosenSectionData(null);
         self.chosenInspectionId(null);
         self.chosenInspectionData(null);
+        self.chosenObservationId(null);
         self.sectionsDataSourceParameters.projectId = project.ProjectId;
         self.sectionsDataSource.refresh();
         self.chosenProjectData(self.sectionsDataSource.getEntities());
+        setMedia("");
         stop();
     };
 
@@ -65,14 +67,17 @@ function SewerageViewModel() {
         self.chosenSectionId(section.SectionId);
         self.chosenInspectionId(null);
         self.chosenInspectionData(null);
+        self.chosenObservationId(null);
         self.inspectionsDataSourceParameters.sectionId = section.SectionId;
         self.inspectionsDataSource.refresh();
         self.chosenSectionData(self.inspectionsDataSource.getEntities());
+        setMedia("");
         stop();
     };
 
     self.goToInspection = function (inspection) {
         self.chosenInspectionId(inspection.InspectionId);
+        self.chosenObservationId(null);
         self.observationsDataSourceParameters.inspectionId = inspection.InspectionId;
         self.observationsDataSource.refresh();
         self.chosenInspectionData(self.observationsDataSource.getEntities());

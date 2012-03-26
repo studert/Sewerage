@@ -1,7 +1,20 @@
-﻿<div>
-    <ul data-bind="foreach: $root.chosenProjectData">
-        <li data-bind="css: { selected: SectionId == $root.chosenSectionId() }, click: $root.goToSection">
-            <span data-bind="text: Number"></span>
-        </li>
-    </ul>
+﻿<div data-bind="if: $root.chosenProjectData() != null">
+    <table class="sectionTable">
+        <tr>
+            <thead>
+                <th>Number</th>
+                <th>Length</th>
+                <th>City</th>
+                <th>Street</th>         
+            </thead>
+            <tbody data-bind="foreach: $root.chosenProjectData">
+                <tr data-bind="css: { selected: SectionId == $root.chosenSectionId() }, click: $root.goToSection">
+                    <td data-bind="text: Number"></td>
+                    <td data-bind="text: Length"></td>
+                    <td data-bind="text: City"></td>
+                    <td data-bind="text: Street"></td>
+                </tr>
+            </tbody>
+        </tr>
+    </table>
 </div>

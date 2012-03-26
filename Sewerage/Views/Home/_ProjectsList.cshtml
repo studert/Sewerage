@@ -1,7 +1,7 @@
 ﻿<div>
-    <ul data-bind="foreach: projects">
+    <ul class="projectList" data-bind="foreach: projects">
         <li data-bind="css: { selected: ProjectId == $root.chosenProjectId() }, click: $root.goToProject">
-            <span data-bind="text: Name"></span>
+            <strong data-bind="text: Name"></strong><br/>
             <em data-bind="text: Description"></em>
         </li>
     </ul>

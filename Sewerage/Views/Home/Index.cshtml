@@ -3,36 +3,45 @@
     ViewBag.Title = "Sewerage";
 }
 
-@section featured {
-<section class="featured">
-    <div class="content-wrapper">
-        <hgroup class="title">
-            <h1 data-bind="text: $root.chosenProject().Name"></h1>
-            <h2 data-bind="text: $root.chosenProject().Description"></h2>
-        </hgroup>
-    </div>
-</section>
-}
 @(Html.UpshotContext(bufferChanges: true).DataSource<SewerageController>(x => x.GetProjects()))
 
-<aside>
-    <h3>Projects</h3>
-    @Html.Partial("_ProjectsList")
-</aside>
+@section navigation
+{
+    <div class="scroll-y">
+        <h3>Projects</h3>
+        @Html.Partial("_ProjectsList")
+    </div>
+}
 
-<h3>Sections</h3>
-<div>
-    @Html.Partial("_SectionsList")
+@section ribbon
+{
+    <p>ribbon goes here</p>
+}
+
+@section footer
+{
+    <p>footer goes here</p>
+}
+
+<div class="top row">
+    <div class="top row left col scroll-y">
+        <h3>Sections</h3>
+        @Html.Partial("_SectionsList")
+    </div>
+    <div class="top row right col">
+        @Html.Partial("_Player")
+    </div>
 </div>
 
-<h3>Inspections</h3>
-<div>
-    @Html.Partial("_InspectionsList")
-</div>
-
-<h3>Observations</h3>
-<div>
-    @Html.Partial("_ObservationsList")
+<div class="bottom row scroll-x scroll-y">
+    <div>
+        <h3>Inspections</h3>
+        @Html.Partial("_InspectionsList")
+    </div>
+    <div>
+        <h3>Observations</h3>
+        @Html.Partial("_ObservationsList")
+    </div>
 </div>
 
 <script src="~/Scripts/App/SewerageViewModel.js" type="text/javascript"></script>

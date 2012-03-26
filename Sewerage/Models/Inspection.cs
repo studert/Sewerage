@@ -7,6 +7,7 @@ namespace Sewerage.Models
         public int InspectionId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public string VideoUrl { get; set; }
         public virtual int SectionId { get; set; }
         public virtual Section Section { get; set; }
     }

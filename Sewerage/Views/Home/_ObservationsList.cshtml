@@ -1,7 +1,8 @@
 ﻿<div>
     <ul data-bind="foreach: $root.chosenInspectionData">
-        <li>
+        <li data-bind="css: { selected: ObservationId == $root.chosenObservationId() }, click: $root.goToObservation">
             <span data-bind="text: Description"></span>
+            <span data-bind="text: SecondsIntoVideo"></span>
         </li>
     </ul>
 </div>

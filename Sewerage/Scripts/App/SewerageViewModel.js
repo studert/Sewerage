@@ -1,4 +1,5 @@
 ﻿/// <reference path="../_references.js" />
+/// <reference path="../silverlight.player.js"/>
 
 function SewerageViewModel() {
     // Data
@@ -44,6 +45,8 @@ function SewerageViewModel() {
     self.chosenInspectionId = ko.observable();
     self.chosenInspectionData = ko.observable();
 
+    self.chosenObservationId = ko.observable();
+
     // Behaviours
     self.goToProject = function (project) {
         self.chosenProject(project);
@@ -55,6 +58,7 @@ function SewerageViewModel() {
         self.sectionsDataSourceParameters.projectId = project.ProjectId;
         self.sectionsDataSource.refresh();
         self.chosenProjectData(self.sectionsDataSource.getEntities());
+        stop();
     };
 
     self.goToSection = function (section) {
@@ -64,6 +68,7 @@ function SewerageViewModel() {
         self.inspectionsDataSourceParameters.sectionId = section.SectionId;
         self.inspectionsDataSource.refresh();
         self.chosenSectionData(self.inspectionsDataSource.getEntities());
+        stop();
     };
 
     self.goToInspection = function (inspection) {
@@ -71,5 +76,12 @@ function SewerageViewModel() {
         self.observationsDataSourceParameters.inspectionId = inspection.InspectionId;
         self.observationsDataSource.refresh();
         self.chosenInspectionData(self.observationsDataSource.getEntities());
+        setMedia("http://localhost/Videos/" + inspection.VideoUrl() + "/Manifest");
+        play();
+    };
+
+    self.goToObservation = function (observation) {
+        self.chosenObservationId(observation.ObservationId);
+        seekToPosition(observation.SecondsIntoVideo());
     };
 }

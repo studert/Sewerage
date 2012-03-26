@@ -5,3 +5,4 @@ obj
 App_Data
 /packages
 _ReSharper.Sewerage
+*.xap

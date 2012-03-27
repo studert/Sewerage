@@ -4,3 +4,4 @@
 /// <reference path="knockout.debug.js" />
 /// <reference path="modernizr-2.5.3.js" />
 /// <reference path="upshot.js" />
+/// <reference path="nav.js" />

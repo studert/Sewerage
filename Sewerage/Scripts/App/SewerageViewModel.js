@@ -36,7 +36,7 @@ function SewerageViewModel() {
     self.projects = self.projectDataSource.getEntities();
 
     self.chosenProjectId = ko.observable();
-    self.chosenProjectData = ko.observableArray();
+    self.chosenProjectData = ko.observable();
 
     self.chosenSectionId = ko.observable();
     self.chosenSectionData = ko.observable();
@@ -46,8 +46,22 @@ function SewerageViewModel() {
 
     self.chosenObservationId = ko.observable();
 
+    // Navigation
+    self.currentSection = ko.observable();
+    self.nav = new NavHistory({
+        params: { view: 'default', sectionId: null },
+        onNavigate: function (navEntry) {
+            var requestedSectionId = navEntry.params.sectionId;
+            self.sectionsDataSource.findById(requestedSectionId, self.currentSection);
+        }
+    });
+
+    self.nav.initialize({ linkToUrl: true });
+
+
     // Behaviours
     self.goToProject = function (project) {
+        self.nav.navigate({ view: 'default', sectionId: null });
         self.chosenProjectId(project.ProjectId);
         self.chosenSectionId(null);
         self.chosenSectionData(null);
@@ -62,6 +76,7 @@ function SewerageViewModel() {
     };
 
     self.goToSection = function (section) {
+        self.nav.navigate({ view: 'default', sectionId: null });
         self.chosenSectionId(section.SectionId);
         self.chosenInspectionId(null);
         self.chosenInspectionData(null);
@@ -74,6 +89,7 @@ function SewerageViewModel() {
     };
 
     self.goToInspection = function (inspection) {
+        self.nav.navigate({ view: 'default', sectionId: null });
         self.chosenInspectionId(inspection.InspectionId);
         self.chosenObservationId(null);
         self.observationsDataSourceParameters.inspectionId = inspection.InspectionId;
@@ -84,11 +100,13 @@ function SewerageViewModel() {
     };
 
     self.goToObservation = function (observation) {
+        self.nav.navigate({ view: 'default', sectionId: null });
         self.chosenObservationId(observation.ObservationId);
         seekToPosition(observation.SecondsIntoVideo());
     };
 
     // Operations
+    self.showSection = function(section) { self.nav.navigate({ view: 'section', sectionId: section.SectionId() }) };
     self.saveObservations = function () { self.observationsDataSource.commitChanges(); };
     self.revertObservations = function() { self.observationsDataSource.revertChanges(); };
 }

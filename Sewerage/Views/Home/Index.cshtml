@@ -25,8 +25,14 @@
 
 <div class="top row">
     <div class="top row left col scroll-y">
-        <h3>Sections</h3>
-        @Html.Partial("_SectionsList")
+        <div data-bind="if: nav.params().view == 'default'">
+            <h3>Sections</h3>
+            @Html.Partial("_SectionsList")
+        </div>
+
+        <div data-bind="with: currentSection">
+            @Html.Partial("_SectionDetails")
+        </div>
     </div>
     <div class="top row right col">
         @Html.Partial("_Player")

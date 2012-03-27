@@ -1,4 +1,4 @@
-﻿<div data-bind="if: $root.chosenProjectData() != null">
+﻿<div data-bind="if: $root.chosenProjectId() != null">
     <table class="sectionTable">
         <tr>
             <thead>
@@ -8,11 +8,11 @@
                 <th>Street</th>         
             </thead>
             <tbody data-bind="foreach: $root.chosenProjectData">
-                <tr data-bind="css: { selected: SectionId == $root.chosenSectionId() }, click: $root.goToSection">
+                <tr data-bind="css: { selected: SectionId == $root.chosenSectionId(), updated: IsUpdated }, click: $root.goToSection">
                     <td data-bind="text: Number"></td>
-                    <td data-bind="text: Length"></td>
-                    <td data-bind="text: City"></td>
-                    <td data-bind="text: Street"></td>
+                    <td><input data-bind="value: Length" /></td>
+                    <td><input data-bind="value: City" /></td>
+                    <td><input data-bind="value: Street" /></td>
                 </tr>
             </tbody>
         </tr>

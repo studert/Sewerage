@@ -32,5 +32,13 @@ namespace Sewerage.Controllers
                 .Where(x => x.InspectionId == inspectionId)
                 .OrderBy(x => x.ObservationId);
         }
+
+        public void InsertSection(Section section) { InsertEntity(section); }
+        public void UpdateSection(Section section) { UpdateEntity(section); }
+        public void DeleteSection(Section section) { DeleteEntity(section); }
+
+        public void InsertObservation(Observation observation) { InsertEntity(observation); }
+        public void UpdateObservation(Observation observation) { UpdateEntity(observation); }
+        public void DeleteObservation(Observation observation) { DeleteEntity(observation); }
     }
 }

@@ -42,6 +42,7 @@ nav, section {
 .highlight, .selected {
     background-color: #a6dbed;
 }
+.updated { background-color: rgb(255,255,180) }
 
 .clear-fix:after {
     content: ".";

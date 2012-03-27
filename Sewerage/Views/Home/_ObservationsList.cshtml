@@ -8,13 +8,16 @@
                 <th>Video</th>         
             </thead>
             <tbody data-bind="foreach: $root.chosenInspectionData">
-                <tr data-bind="css: { selected: ObservationId == $root.chosenObservationId() }, click: $root.goToObservation">
+                <tr data-bind="css: { selected: ObservationId == $root.chosenObservationId(), updated: IsUpdated }, click: $root.goToObservation">
                     <td data-bind="text: Position"></td>
-                    <td data-bind="text: Tag"></td>
-                    <td data-bind="text: Description"></td>
-                    <td data-bind="text: SecondsIntoVideo"></td>
+                    <td><input data-bind="value: Tag"/></td>
+                    <td><input data-bind="value: Description"/></td>
+                    <td><input data-bind="value: SecondsIntoVideo"/></td>
                 </tr>
             </tbody>
         </tr>
     </table>
+    
+    <button data-bind="click: saveObservations">Save observations</button>
+    <button data-bind="click: revertObservations">Revert changes</button>
 </div>

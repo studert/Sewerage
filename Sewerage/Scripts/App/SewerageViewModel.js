@@ -10,7 +10,7 @@ function SewerageViewModel() {
     self.sectionsDataSource = new upshot.RemoteDataSource({
         providerParameters: { url: "/api/Sewerage", operationName: "GetProjectSections", operationParameters: self.sectionsDataSourceParameters },
         entityType: "Section:#Sewerage.Models",
-        bufferChanges: true,
+        bufferChanges: false,
         dataContext: undefined,
         mapping: { }
     });
@@ -35,9 +35,8 @@ function SewerageViewModel() {
 
     self.projects = self.projectDataSource.getEntities();
 
-    self.chosenProject = ko.observable({ Name: "Sewerage Inspector.", Description: "Please pick a project." });
     self.chosenProjectId = ko.observable();
-    self.chosenProjectData = ko.observable();
+    self.chosenProjectData = ko.observableArray();
 
     self.chosenSectionId = ko.observable();
     self.chosenSectionData = ko.observable();
@@ -49,7 +48,6 @@ function SewerageViewModel() {
 
     // Behaviours
     self.goToProject = function (project) {
-        self.chosenProject(project);
         self.chosenProjectId(project.ProjectId);
         self.chosenSectionId(null);
         self.chosenSectionData(null);
@@ -89,4 +87,8 @@ function SewerageViewModel() {
         self.chosenObservationId(observation.ObservationId);
         seekToPosition(observation.SecondsIntoVideo());
     };
+
+    // Operations
+    self.saveObservations = function () { self.observationsDataSource.commitChanges(); };
+    self.revertObservations = function() { self.observationsDataSource.revertChanges(); };
 }

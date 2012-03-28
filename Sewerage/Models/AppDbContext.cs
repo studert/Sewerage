@@ -19,6 +19,11 @@ namespace Sewerage.Models
             Database.SetInitializer(new TestDataInitializer());
         }
 
+        public AppDbContext() : base("DefaultConnection")
+        {
+            
+        }
+
         private class TestDataInitializer : DropCreateDatabaseIfModelChanges<AppDbContext>
         {
             protected override void Seed(AppDbContext context)

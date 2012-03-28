@@ -70,11 +70,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.SilverlightMediaFramework.Core" />
-    <Reference Include="Microsoft.SilverlightMediaFramework.Plugins" />
-    <Reference Include="Microsoft.SilverlightMediaFramework.Plugins.SmoothStreaming" />
-    <Reference Include="Microsoft.SilverlightMediaFramework.Utilities" />
-    <Reference Include="Microsoft.Web.Media.SmoothStreaming" />
+    <Reference Include="Microsoft.SilverlightMediaFramework.Core, Version=2.2011.1101.0, Culture=neutral, PublicKeyToken=6687ff884a90c6a6, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SilverlightMediaFramework.Plugins, Version=2.2011.1101.0, Culture=neutral, PublicKeyToken=3dd5df9571bfd1e7, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SilverlightMediaFramework.Plugins.SmoothStreaming, Version=2.2011.1101.0, Culture=neutral, PublicKeyToken=17913f4360e6936c, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SilverlightMediaFramework.Utilities, Version=2.2011.1101.0, Culture=neutral, PublicKeyToken=2018901a52f7a62c, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Web.Media.SmoothStreaming, Version=1.5.938.94, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="mscorlib" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
@@ -104,6 +104,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AppManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="3rdParty\Silverlight Media Framework\Microsoft.SilverlightMediaFramework.Core.dll" />
+    <Content Include="3rdParty\Silverlight Media Framework\Microsoft.SilverlightMediaFramework.Plugins.dll" />
+    <Content Include="3rdParty\Silverlight Media Framework\Microsoft.SilverlightMediaFramework.Plugins.SmoothStreaming.dll" />
+    <Content Include="3rdParty\Silverlight Media Framework\Microsoft.SilverlightMediaFramework.Utilities.dll" />
+    <Content Include="3rdParty\Silverlight Media Framework\Microsoft.Web.Media.SmoothStreaming.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -9,7 +9,7 @@ namespace Sewerage.Controllers
         public IQueryable<Project> GetProjects()
         {
             return DbContext.Projects
-                .OrderBy(x => x.Name);
+                .OrderBy(x => x.ProjectId);
         }
 
         public IQueryable<Section> GetProjectSections(int projectId)

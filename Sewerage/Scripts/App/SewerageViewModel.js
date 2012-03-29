@@ -95,7 +95,7 @@ function SewerageViewModel() {
         self.observationsDataSourceParameters.inspectionId = inspection.InspectionId;
         self.observationsDataSource.refresh();
         self.chosenInspectionData(self.observationsDataSource.getEntities());
-        setMedia("http://localhost/Videos/" + inspection.VideoUrl() + "/Manifest");
+        setMedia("/Videos/" + inspection.VideoUrl() + "/Manifest");
         play();
     };
 

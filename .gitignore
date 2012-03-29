@@ -6,3 +6,4 @@ App_Data
 /packages
 _ReSharper.Sewerage
 *.xap
+*.Publish.xml

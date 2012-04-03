@@ -33,6 +33,9 @@ function SewerageViewModel() {
         mapping: {}
     });
 
+    // Url
+    self.url = window.location.protocol + "//" + window.location.host + "/";
+
     self.projects = self.projectDataSource.getEntities();
 
     self.chosenProjectId = ko.observable();
@@ -95,7 +98,8 @@ function SewerageViewModel() {
         self.observationsDataSourceParameters.inspectionId = inspection.InspectionId;
         self.observationsDataSource.refresh();
         self.chosenInspectionData(self.observationsDataSource.getEntities());
-        setMedia("/Videos/" + inspection.VideoUrl() + "/Manifest");
+        self.videoUrl = self.url + "Videos/" + inspection.VideoUrl() + "/Manifest";
+        setMedia(self.videoUrl);
         play();
     };
 

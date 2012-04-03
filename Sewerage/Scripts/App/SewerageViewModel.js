@@ -10,7 +10,7 @@ function SewerageViewModel() {
     self.sectionsDataSource = new upshot.RemoteDataSource({
         providerParameters: { url: "/api/Sewerage", operationName: "GetProjectSections", operationParameters: self.sectionsDataSourceParameters },
         entityType: "Section:#Sewerage.Models",
-        bufferChanges: false,
+        bufferChanges: true,
         dataContext: undefined,
         mapping: { }
     });
@@ -33,27 +33,41 @@ function SewerageViewModel() {
         mapping: {}
     });
 
-    // Url
+    // Helpers
     self.url = window.location.protocol + "//" + window.location.host + "/";
+    self.ribbon = ko.observable("project");
 
+    // Entities
     self.projects = self.projectDataSource.getEntities();
-
     self.chosenProjectId = ko.observable();
     self.chosenProjectData = ko.observable();
-
     self.chosenSectionId = ko.observable();
     self.chosenSectionData = ko.observable();
-
     self.chosenInspectionId = ko.observable();
     self.chosenInspectionData = ko.observable();
-
     self.chosenObservationId = ko.observable();
+
+    // Behaviours
+    self.chosenProjectId.subscribe(function () {
+        self.chosenSectionId(null);
+        self.chosenSectionData(null);
+    });
+
+    self.chosenSectionId.subscribe(function () {
+        self.chosenInspectionId(null);
+        self.chosenInspectionData(null);
+    });
+
+    self.chosenInspectionId.subscribe(function () {
+        self.chosenObservationId(null);
+    });
 
     // Navigation
     self.currentSection = ko.observable();
     self.nav = new NavHistory({
         params: { view: 'default', sectionId: null },
         onNavigate: function (navEntry) {
+
             var requestedSectionId = navEntry.params.sectionId;
             self.sectionsDataSource.findById(requestedSectionId, self.currentSection);
         }
@@ -62,55 +76,65 @@ function SewerageViewModel() {
     self.nav.initialize({ linkToUrl: true });
 
 
-    // Behaviours
+    // Operations
     self.goToProject = function (project) {
-        self.nav.navigate({ view: 'default', sectionId: null });
         self.chosenProjectId(project.ProjectId);
-        self.chosenSectionId(null);
-        self.chosenSectionData(null);
-        self.chosenInspectionId(null);
-        self.chosenInspectionData(null);
-        self.chosenObservationId(null);
-        self.sectionsDataSourceParameters.projectId = project.ProjectId;
+
+        self.nav.navigate({ view: 'default', sectionId: null });
+        self.ribbon("project");
+
+        self.sectionsDataSourceParameters.projectId = self.chosenProjectId();
         self.sectionsDataSource.refresh();
         self.chosenProjectData(self.sectionsDataSource.getEntities());
+        
         setMedia("");
         stop();
     };
 
     self.goToSection = function (section) {
-        self.nav.navigate({ view: 'default', sectionId: null });
         self.chosenSectionId(section.SectionId);
-        self.chosenInspectionId(null);
-        self.chosenInspectionData(null);
-        self.chosenObservationId(null);
-        self.inspectionsDataSourceParameters.sectionId = section.SectionId;
+        
+        self.nav.navigate({ view: 'default', sectionId: null });
+        self.ribbon("section");
+
+        self.inspectionsDataSourceParameters.sectionId = self.chosenSectionId();
         self.inspectionsDataSource.refresh();
         self.chosenSectionData(self.inspectionsDataSource.getEntities());
+        
         setMedia("");
         stop();
     };
 
     self.goToInspection = function (inspection) {
-        self.nav.navigate({ view: 'default', sectionId: null });
         self.chosenInspectionId(inspection.InspectionId);
-        self.chosenObservationId(null);
-        self.observationsDataSourceParameters.inspectionId = inspection.InspectionId;
+
+        self.nav.navigate({ view: 'default', sectionId: null });
+        self.ribbon("inspection");
+
+        self.observationsDataSourceParameters.inspectionId = self.chosenInspectionId();
         self.observationsDataSource.refresh();
         self.chosenInspectionData(self.observationsDataSource.getEntities());
+        
         self.videoUrl = self.url + "Videos/" + inspection.VideoUrl() + "/Manifest";
         setMedia(self.videoUrl);
         play();
     };
 
     self.goToObservation = function (observation) {
-        self.nav.navigate({ view: 'default', sectionId: null });
         self.chosenObservationId(observation.ObservationId);
+        
+        self.nav.navigate({ view: 'default', sectionId: null });
+        self.ribbon("observation");
+        
         seekToPosition(observation.SecondsIntoVideo());
     };
 
-    // Operations
-    self.showSection = function(section) { self.nav.navigate({ view: 'section', sectionId: section.SectionId() }) };
+    self.showSection = function (section) { self.nav.navigate({ view: 'section', sectionId: section.SectionId() }) };
+    self.newSection = function () { alert("not implemented yet"); };
+    self.saveSections = function () { self.sectionsDataSource.commitChanges(); };
+    self.revertSections = function () { self.sectionsDataSource.revertChanges(); };
+
+    self.newObservation = function () { alert("not implemented yet"); };
     self.saveObservations = function () { self.observationsDataSource.commitChanges(); };
     self.revertObservations = function() { self.observationsDataSource.revertChanges(); };
 }

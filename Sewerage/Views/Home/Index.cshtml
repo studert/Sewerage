@@ -15,12 +15,12 @@
 
 @section ribbon
 {
-    <p>ribbon goes here</p>
-}
-
-@section footer
-{
-    <p>footer goes here</p>
+    <nav>
+        <div data-bind="if: ribbon() == 'project'">@Html.Partial("_ProjectsMenu")</div>
+        <div data-bind="if: ribbon() == 'section'">@Html.Partial("_SectionsMenu")</div>
+        <div data-bind="if: ribbon() == 'inspection'">@Html.Partial("_InspectionsMenu")</div>
+        <div data-bind="if: ribbon() == 'observation'">@Html.Partial("_ObservationsMenu")</div>
+    </nav>
 }
 
 <div class="top row">
@@ -28,6 +28,9 @@
         <div data-bind="if: nav.params().view == 'default'">
             <h3>Sections</h3>
             @Html.Partial("_SectionsList")
+            
+            <h3>Inspections</h3>
+            @Html.Partial("_InspectionsList")
         </div>
 
         <div data-bind="with: currentSection">
@@ -40,10 +43,6 @@
 </div>
 
 <div class="bottom row scroll-x scroll-y">
-    <div>
-        <h3>Inspections</h3>
-        @Html.Partial("_InspectionsList")
-    </div>
     <div>
         <h3>Observations</h3>
         @Html.Partial("_ObservationsList")

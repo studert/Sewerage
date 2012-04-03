@@ -132,27 +132,54 @@ th {background-color: #e2e2e2;}
 /* menu
 ----------------------------------------------------------*/
 ul#menu {
-    font-size: 1.3em;
-    font-weight: 600;
     margin: 0;
-    text-align: right;
+    padding: 0;
+    height: 75px;
 }
 
     ul#menu li {
         display: inline;
         list-style: none;
-        padding-left: 15px;
+        padding-right: 15px;
     }
 
-        ul#menu li a {
+        ul#menu li a 
+        {
+            display: inline-block;
             background: none;
-            color: #999;
-            text-decoration: none;
+            height: 75px;
+            width: 75px;
+            background-repeat: no-repeat;
+            background-position: center center;
         }
 
         ul#menu li a:hover {
             color: #333;
             text-decoration: none;
+        }
+        
+        ul#menu li a.icon-newproject {
+            background-image: url("../Images/Icons/Add48.png"); 
+        }
+        
+        ul#menu li a.icon-newsection {
+            background-image: url("../Images/Icons/Add48.png"); 
+        }
+        
+        ul#menu li a.icon-newinspection {
+            background-image: url("../Images/Icons/Add48.png"); 
+        }
+        
+        ul#menu li a.icon-newobservation {
+            background-image: url("../Images/Icons/Add48.png"); 
+        }
+        
+        ul#menu li a.icon-save {
+            background-image: url("../Images/Icons/Save48.png"); 
+        }
+        
+        ul#menu li a.icon-revert {
+            background-image: url("../Images/Icons/Cancel48.png"); 
         }
 
 

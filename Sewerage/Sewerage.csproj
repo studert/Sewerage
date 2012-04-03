@@ -341,7 +341,7 @@
     <Content Include="Views\Home\_SectionsMenu.cshtml" />
     <Content Include="Views\Home\_InspectionsMenu.cshtml" />
     <Content Include="Views\Home\_ObservationsMenu.cshtml" />
-    <None Include="Views\Home\_ProjectsMenu.cshtml" />
+    <Content Include="Views\Home\_ProjectsMenu.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -71,6 +71,9 @@
         self.ChosenInspectionId = ko.observable();
         self.ChosenObservationId = ko.observable();
 
+        // editing items
+        self.EditingSection = ko.observable();
+
         // helpers
         self.Url = window.location.protocol + "//" + window.location.host + "/";
         self.Ribbon = ko.observable("project");
@@ -133,6 +136,15 @@
             self.ChosenObservationId(null);
         });
 
+        // client side navigation
+        self.nav = new NavHistory({
+            params: { edit: null },
+            onNavigate: function (navEntry, navInfo) {
+                // todo
+            }
+
+        }).initialize({ linkToUrl: true });
+
         // operations
         self.selectProject = function (project) {
             self.ChosenProjectId(project.ProjectId);
@@ -151,6 +163,8 @@
             setMedia("");
             stop();
         };
+        // experimental
+        self.editSection = function (section) { self.nav.navigate({ edit: section.SectionId() }); };
 
         self.selectInspection = function (inspection) {
             self.ChosenInspectionId(inspection.InspectionId);

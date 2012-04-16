@@ -1,4 +1,4 @@
-﻿<div data-bind="if: $root.chosenInspectionId() != null">
+﻿<div data-bind="if: $root.ChosenInspectionId() != null">
     <table class="observationTable">
         <tr>
             <thead>
@@ -7,8 +7,8 @@
                 <th>Description</th>
                 <th>Video</th>         
             </thead>
-            <tbody data-bind="foreach: $root.chosenInspectionData">
-                <tr data-bind="css: { selected: ObservationId == $root.chosenObservationId(), updated: IsUpdated }, click: $root.goToObservation">
+            <tbody data-bind="foreach: Observations">
+                <tr data-bind="css: { selected: ObservationId == $parent.ChosenObservationId(), updated: IsUpdated }, click: $parent.selectObservation">
                     <td data-bind="text: Position"></td>
                     <td><input data-bind="value: Tag"/></td>
                     <td><input data-bind="value: Description"/></td>

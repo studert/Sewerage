@@ -42,7 +42,8 @@ nav, section {
 .highlight, .selected {
     background-color: #a6dbed;
 }
-.updated { background-color: rgb(255,255,180) }
+.updated { background-color: rgb(255, 255, 180); }
+.added{ background-color: rgb(180,255,255); }
 
 .clear-fix:after {
     content: ".";
@@ -111,7 +112,9 @@ h5, h6 {
 
 table{ text-align: left;}
 th {background-color: #e2e2e2;}
+tr{ cursor: pointer;}
 .sectionTable,.observationTable{ width: 100%;}
+ul.projectList li { cursor: pointer;}
 
 /* site title
 ----------------------------------------------------------*/

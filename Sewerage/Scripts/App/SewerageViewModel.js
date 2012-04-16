@@ -1,140 +1,177 @@
 ﻿/// <reference path="../_references.js" />
-/// <reference path="../silverlight.player.js"/>
-
-function SewerageViewModel() {
-    // Data
-    var self = this;
-    self.projectDataSource = upshot.dataSources.Projects.refresh();
-    
-    self.sectionsDataSourceParameters = {};
-    self.sectionsDataSource = new upshot.RemoteDataSource({
-        providerParameters: { url: "/api/Sewerage", operationName: "GetProjectSections", operationParameters: self.sectionsDataSourceParameters },
-        entityType: "Section:#Sewerage.Models",
-        bufferChanges: true,
-        dataContext: undefined,
-        mapping: { }
-    });
-
-    self.inspectionsDataSourceParameters = {};
-    self.inspectionsDataSource = new upshot.RemoteDataSource({
-        providerParameters: { url: "/api/Sewerage", operationName: "GetSectionInspections", operationParameters: self.inspectionsDataSourceParameters },
-        entityType: "Inspection:#Sewerage.Models",
-        bufferChanges: true,
-        dataContext: undefined,
-        mapping: {}
-    });
-
-    self.observationsDataSourceParameters = {};
-    self.observationsDataSource = new upshot.RemoteDataSource({
-        providerParameters: { url: "/api/Sewerage", operationName: "GetInspectionObservations", operationParameters: self.observationsDataSourceParameters },
-        entityType: "Observation:#Sewerage.Models",
-        bufferChanges: true,
-        dataContext: undefined,
-        mapping: {}
-    });
-
-    // Helpers
-    self.url = window.location.protocol + "//" + window.location.host + "/";
-    self.ribbon = ko.observable("project");
-
-    // Entities
-    self.projects = self.projectDataSource.getEntities();
-    self.chosenProjectId = ko.observable();
-    self.chosenProjectData = ko.observable();
-    self.chosenSectionId = ko.observable();
-    self.chosenSectionData = ko.observable();
-    self.chosenInspectionId = ko.observable();
-    self.chosenInspectionData = ko.observable();
-    self.chosenObservationId = ko.observable();
-
-    // Behaviours
-    self.chosenProjectId.subscribe(function () {
-        self.chosenSectionId(null);
-        self.chosenSectionData(null);
-    });
-
-    self.chosenSectionId.subscribe(function () {
-        self.chosenInspectionId(null);
-        self.chosenInspectionData(null);
-    });
-
-    self.chosenInspectionId.subscribe(function () {
-        self.chosenObservationId(null);
-    });
-
-    // Navigation
-    self.currentSection = ko.observable();
-    self.nav = new NavHistory({
-        params: { view: 'default', sectionId: null },
-        onNavigate: function (navEntry) {
-
-            var requestedSectionId = navEntry.params.sectionId;
-            self.sectionsDataSource.findById(requestedSectionId, self.currentSection);
-        }
-    });
-
-    self.nav.initialize({ linkToUrl: true });
 
 
-    // Operations
-    self.goToProject = function (project) {
-        self.chosenProjectId(project.ProjectId);
+(function (window, undefined) {
+    // define the namespace
+    var Sewerage = window.Sewerage = window.Sewerage || {};
 
-        self.nav.navigate({ view: 'default', sectionId: null });
-        self.ribbon("project");
 
-        self.sectionsDataSourceParameters.projectId = self.chosenProjectId();
-        self.sectionsDataSource.refresh();
-        self.chosenProjectData(self.sectionsDataSource.getEntities());
-        
-        setMedia("");
-        stop();
+    // project classes
+    var projectEntityType = "Project:#Sewerage.Models";
+    var sectionEntityType = "Section:#Sewerage.Models";
+    var inspectionEntityType = "Inspection:#Sewerage.Models";
+    var observationEntityType = "Observation:#Sewerage.Models";
+
+
+    // define the client models
+    Sewerage.Project = function (data) {
+        var self = this;
+
+        // add properties from the JSON data result
+        upshot.map(data, projectEntityType, self);
+
+        // add properties managed by upshot
+        upshot.addEntityProperties(self);
     };
 
-    self.goToSection = function (section) {
-        self.chosenSectionId(section.SectionId);
-        
-        self.nav.navigate({ view: 'default', sectionId: null });
-        self.ribbon("section");
+    Sewerage.Section = function (data) {
+        var self = this;
 
-        self.inspectionsDataSourceParameters.sectionId = self.chosenSectionId();
-        self.inspectionsDataSource.refresh();
-        self.chosenSectionData(self.inspectionsDataSource.getEntities());
-        
-        setMedia("");
-        stop();
+        // add properties from the JSON data result
+        upshot.map(data, sectionEntityType, self);
+
+        // add properties managed by upshot
+        upshot.addEntityProperties(self);
     };
 
-    self.goToInspection = function (inspection) {
-        self.chosenInspectionId(inspection.InspectionId);
+    Sewerage.Inspection = function (data) {
+        var self = this;
 
-        self.nav.navigate({ view: 'default', sectionId: null });
-        self.ribbon("inspection");
+        // add properties from the JSON data result
+        upshot.map(data, inspectionEntityType, self);
 
-        self.observationsDataSourceParameters.inspectionId = self.chosenInspectionId();
-        self.observationsDataSource.refresh();
-        self.chosenInspectionData(self.observationsDataSource.getEntities());
-        
-        self.videoUrl = self.url + "Videos/" + inspection.VideoUrl() + "/Manifest";
-        setMedia(self.videoUrl);
-        play();
+        // add properties managed by upshot
+        upshot.addEntityProperties(self);
     };
 
-    self.goToObservation = function (observation) {
-        self.chosenObservationId(observation.ObservationId);
-        
-        self.nav.navigate({ view: 'default', sectionId: null });
-        self.ribbon("observation");
-        
-        seekToPosition(observation.SecondsIntoVideo());
+    Sewerage.Observation = function (data) {
+        var self = this;
+
+        // add properties from the JSON data result
+        upshot.map(data, observationEntityType, self);
+
+        // add properties managed by upshot
+        upshot.addEntityProperties(self);
     };
 
-    self.showSection = function (section) { self.nav.navigate({ view: 'section', sectionId: section.SectionId() }) };
-    self.newSection = function () { alert("not implemented yet"); };
-    self.saveSections = function () { self.sectionsDataSource.commitChanges(); };
-    self.revertSections = function () { self.sectionsDataSource.revertChanges(); };
 
-    self.newObservation = function () { alert("not implemented yet"); };
-    self.saveObservations = function () { self.observationsDataSource.commitChanges(); };
-    self.revertObservations = function() { self.observationsDataSource.revertChanges(); };
-}
+    // define the view model
+    Sewerage.SewerageViewModel = function (options) {
+        var self = this;
+
+        // public array to bind to HTML
+        self.Projects = ko.observableArray();
+        self.Sections = ko.observableArray();
+        self.Inspections = ko.observableArray();
+        self.Observations = ko.observableArray();
+
+        // public ids of chosen objects
+        self.ChosenProjectId = ko.observable();
+        self.ChosenSectionId = ko.observable();
+        self.ChosenInspectionId = ko.observable();
+        self.ChosenObservationId = ko.observable();
+
+        // helpers
+        self.Url = window.location.protocol + "//" + window.location.host + "/";
+        self.Ribbon = ko.observable("project");
+
+        // data sources
+        var projectsDataSourceOptions = {
+            providerParameters: { url: options.serviceUrl, operationName: "GetProjects" },
+            bufferChanges: true,
+            entityType: projectEntityType,
+            mapping: Sewerage.Project,
+            result: self.Projects
+        };
+        var projectsDataSource = new upshot.RemoteDataSource(projectsDataSourceOptions).refresh();
+
+        var dataContext = projectsDataSource.getDataContext(); // get a common context
+
+        var sectionsDataSourceParameters = {};
+        var sectionsDataSourceOptions = {
+            providerParameters: { url: options.serviceUrl, operationName: "GetProjectSections", operationParameters: sectionsDataSourceParameters },
+            bufferChanges: true,
+            dataContext: dataContext,
+            entityType: sectionEntityType,
+            mapping: Sewerage.Section,
+            result: self.Sections
+        };
+        var sectionsDataSource = new upshot.RemoteDataSource(sectionsDataSourceOptions);
+
+        var inspectionsDataSourceParameters = {};
+        var inspectionsDataSourceOptions = {
+            providerParameters: { url: options.serviceUrl, operationName: "GetSectionInspections", operationParameters: inspectionsDataSourceParameters },
+            bufferChanges: true,
+            dataContext: dataContext,
+            entityType: inspectionEntityType,
+            mapping: Sewerage.Inspection,
+            result: self.Inspections
+        };
+        var inspectionsDataSource = new upshot.RemoteDataSource(inspectionsDataSourceOptions);
+
+        var observationsDataSourceParameters = {};
+        var observationsDataSourceOptions = {
+            providerParameters: { url: options.serviceUrl, operationName: "GetInspectionObservations", operationParameters: observationsDataSourceParameters },
+            bufferChanges: true,
+            dataContext: dataContext,
+            entityType: observationEntityType,
+            mapping: Sewerage.Observation,
+            result: self.Observations
+        };
+        var observationsDataSource = new upshot.RemoteDataSource(observationsDataSourceOptions);
+
+        // behaviours
+        self.ChosenProjectId.subscribe(function () {
+            self.ChosenSectionId(null);
+        });
+
+        self.ChosenSectionId.subscribe(function () {
+            self.ChosenInspectionId(null);
+        });
+
+        self.ChosenInspectionId.subscribe(function () {
+            self.ChosenObservationId(null);
+        });
+
+        // operations
+        self.selectProject = function (project) {
+            self.ChosenProjectId(project.ProjectId);
+            sectionsDataSourceParameters.projectId = self.ChosenProjectId();
+            sectionsDataSource.refresh();
+            self.Ribbon("project");
+            setMedia("");
+            stop();
+        };
+
+        self.selectSection = function (section) {
+            self.ChosenSectionId(section.SectionId);
+            inspectionsDataSourceParameters.sectionId = self.ChosenSectionId();
+            inspectionsDataSource.refresh();
+            self.Ribbon("section");
+            setMedia("");
+            stop();
+        };
+
+        self.selectInspection = function (inspection) {
+            self.ChosenInspectionId(inspection.InspectionId);
+            observationsDataSourceParameters.inspectionId = self.ChosenInspectionId();
+            observationsDataSource.refresh();
+            self.Ribbon("inspection");
+            var videoUrl = self.Url + "Videos/" + inspection.VideoUrl() + "/Manifest";
+            setMedia(videoUrl);
+            play();
+        };
+
+        self.selectObservation = function (observation) {
+            self.ChosenObservationId(observation.ObservationId);
+            self.Ribbon("observation");
+            seekToPosition(observation.SecondsIntoVideo());
+        };
+
+        // experimental
+        self.newSection = function () {
+            var nSection = new Sewerage.Section({ Number: 99, City: "New", Street: "New", Length: "22", ProjectId: self.ChosenProjectId() });
+            self.Sections.push(nSection);
+        };
+    };
+})(window);

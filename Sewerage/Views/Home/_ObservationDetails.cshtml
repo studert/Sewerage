@@ -22,7 +22,7 @@
         <input name="SecondsIntoVideo" data-bind="value: SecondsIntoVideo"/>
     </p>
     <p>
-        <button type="submit">Save</button>
+        <button type="submit" data-bind="enable: IsUpdated() || IsAdded()">Save</button>
         <a href="#" data-bind="visible: CanDelete, click: $parent.deleteObservation">Delete</a>
         <a href="#" data-bind="click: $parent.showDefaultView">Back to sections</a>
         <a href="#" data-bind="visible: IsUpdated, click: $parent.revertObservations">Undo changes</a>

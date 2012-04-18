@@ -1,21 +1,30 @@
-﻿<div>
-    <h3>Section Id:@* <strong data-bind="text: SectionId"></strong>*@</h3>
-    
-    <label>Number</label>
-    <input data-bind="value: Number"/>
-    <br/>
+﻿<h3>Edit Section</h3>
 
-    <label>Length</label>
-    <input data-bind="value: Length"/>
-    <br/>
-
-    <label>City</label>
-    <input data-bind="value: City"/>
-    <br/>
-
-    <label>Street</label>
-    <input data-bind="value: Street"/>
-    <br/>
-
-    <button data-bind="click: History.back">&lt; Back</button>
-</div>
+<form data-bind="with: EditingSection, submit: saveSections">
+    <p data-bind="visible: SectionId">
+        Section Id:
+        <b data-bind="text: SectionId"></b>
+    </p>
+    <p>
+        Number:
+        <input name="Number" data-bind="value: Number"/>
+    </p>
+    <p>
+        Length:
+        <input name="Length" data-bind="value: Length"/>
+    </p>
+    <p>
+        City:
+        <input name="City" data-bind="value: City"/>
+    </p>
+    <p>
+        Street:
+        <input name="Street" data-bind="value: Street"/>
+    </p>
+    <p>
+        <button type="submit" data-bind="enable: IsUpdated() || IsAdded()">Save</button>
+        <a href="#" data-bind="visible: CanDelete, click: $parent.deleteSection">Delete</a>
+        <a href="#" data-bind="click: $parent.showDefaultView">Back to sections</a>
+        <a href="#" data-bind="visible: IsUpdated, click: $parent.revertSections">Undo changes</a>
+    </p>
+</form>

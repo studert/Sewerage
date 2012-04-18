@@ -5,14 +5,18 @@
                 <th>Position</th>
                 <th>Tag</th>
                 <th>Description</th>
-                <th>Video</th>         
+                <th>Video</th>    
+                <th></th>     
+                <th></th>     
             </thead>
             <tbody data-bind="foreach: Observations">
                 <tr data-bind="css: { selected: ObservationId == $parent.ChosenObservationId(), updated: IsUpdated }, click: $parent.selectObservation">
                     <td data-bind="text: Position"></td>
-                    <td><input data-bind="value: Tag"/></td>
-                    <td><input data-bind="value: Description"/></td>
-                    <td><input data-bind="value: SecondsIntoVideo"/></td>
+                    <td data-bind="text: Tag"></td>
+                    <td data-bind="text: Description"></td>
+                    <td data-bind="text: SecondsIntoVideo"></td>
+                    <td><a href="#" data-bind="click: $parent.editObservation">details</a></td>
+                    <td><a href="#" data-bind="click: $parent.deleteObservation">delete</a></td>
                 </tr>
             </tbody>
         </tr>

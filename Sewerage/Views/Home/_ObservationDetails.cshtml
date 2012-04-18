@@ -1,0 +1,30 @@
+﻿<h3>Edit Observation</h3>
+
+<form data-bind="with: EditingObservation, submit: saveObservations">
+    <p data-bind="visible: ObservationId">
+        Section Id:
+        <b data-bind="text: ObservationId"></b>
+    </p>
+    <p>
+        Position:
+        <input name="Position" data-bind="value: Position"/>
+    </p>
+    <p>
+        Tag:
+        <input name="Tag" data-bind="value: Tag"/>
+    </p>
+    <p>
+        Description:
+        <input name="Description" data-bind="value: Description"/>
+    </p>
+    <p>
+        SecondsIntoVideo:
+        <input name="SecondsIntoVideo" data-bind="value: SecondsIntoVideo"/>
+    </p>
+    <p>
+        <button type="submit">Save</button>
+        <a href="#" data-bind="visible: CanDelete, click: $parent.deleteObservation">Delete</a>
+        <a href="#" data-bind="click: $parent.showDefaultView">Back to sections</a>
+        <a href="#" data-bind="visible: IsUpdated, click: $parent.revertObservations">Undo changes</a>
+    </p>
+</form>

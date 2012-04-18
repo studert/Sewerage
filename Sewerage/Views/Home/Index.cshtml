@@ -23,17 +23,14 @@
 
 <div class="top row">
     <div class="top row left col scroll-y">
-        <div>
+        <div data-bind="visible: !EditingSection()">
             <h3>Sections</h3>
             @Html.Partial("_SectionsList")
-            
-            <h3>Inspections</h3>
-            @Html.Partial("_InspectionsList")
         </div>
-
-@*        <div data-bind="with: EditingSection">
+        
+        <div data-bind="visible: EditingSection">
             @Html.Partial("_SectionDetails")
-        </div>*@
+        </div>
     </div>
     <div class="top row right col">
         @Html.Partial("_Player")
@@ -41,9 +38,15 @@
 </div>
 
 <div class="bottom row scroll-x scroll-y">
-    <div>
+    <div data-bind="visible: !EditingObservation()">
+        
+        @Html.Partial("_InspectionsList")
+
         <h3>Observations</h3>
         @Html.Partial("_ObservationsList")
+    </div>
+    <div data-bind="visible: EditingObservation">
+        @Html.Partial("_ObservationDetails")
     </div>
 </div>
 

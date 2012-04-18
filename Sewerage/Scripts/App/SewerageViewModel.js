@@ -71,8 +71,11 @@
         self.ChosenInspectionId = ko.observable();
         self.ChosenObservationId = ko.observable();
 
+        self.SelectedInspection = ko.observable();
+
         // editing items
         self.EditingSection = ko.observable();
+        self.EditingObservation = ko.observable();
 
         // helpers
         self.Url = window.location.protocol + "//" + window.location.host + "/";
@@ -136,11 +139,50 @@
             self.ChosenObservationId(null);
         });
 
+        self.SelectedInspection.subscribe(function () {
+            if (self.SelectedInspection) {
+                self.selectInspection(self.SelectedInspection());
+            }
+        });
+
         // client side navigation
         self.nav = new NavHistory({
-            params: { edit: null },
+            params: { editSection: null, editObservation: null },
             onNavigate: function (navEntry, navInfo) {
-                // todo
+
+                if (navEntry.params.editSection) {
+
+                    if (navEntry.params.editSection == "new") {
+                        // Create and begin editing a new section instance
+                        var section = new Sewerage.Section({ ProjectId: self.ChosenProjectId() });
+                        self.EditingSection(section);
+                        self.Sections.push(section);
+                    } else {
+                        // Load and begin editing an existing section instance
+                        var sectionId = navEntry.params.editSection;
+                        sectionsDataSource.findById(sectionId, self.EditingSection);
+                    }
+                } else if (navEntry.params.editObservation) {
+
+                    if (navEntry.params.editObservation == "new") {
+                        // Create and begin editing a new observation instance
+                        var observation = new Sewerage.Observation({ InspectionId: self.ChosenInspectionId() });
+                        self.EditingObservation(observation);
+                        self.Observations.push(observation);
+                    } else {
+                        // Load and begin editing an existing observation instance
+                        var observationId = navEntry.params.editObservation;
+                        observationsDataSource.findById(observationId, self.EditingObservation);
+                    }
+
+                } else {
+                    // reset editors
+                    self.EditingSection(null);
+                    self.EditingObservation(null);
+                    
+                    //sectionsDataSource.revertChanges();
+                    //observationsDataSource.revertChanges();
+                }
             }
 
         }).initialize({ linkToUrl: true });
@@ -163,8 +205,6 @@
             setMedia("");
             stop();
         };
-        // experimental
-        self.editSection = function (section) { self.nav.navigate({ edit: section.SectionId() }); };
 
         self.selectInspection = function (inspection) {
             self.ChosenInspectionId(inspection.InspectionId);
@@ -182,10 +222,37 @@
             seekToPosition(observation.SecondsIntoVideo());
         };
 
-        // experimental
-        self.newSection = function () {
-            var nSection = new Sewerage.Section({ Number: 99, City: "New", Street: "New", Length: "22", ProjectId: self.ChosenProjectId() });
-            self.Sections.push(nSection);
+        // sections
+        self.editSection = function (section) { self.nav.navigate({ editSection: section.SectionId() }); };
+        self.createSection = function () { self.nav.navigate({ editSection: "new" }); };
+        self.deleteSection = function (section) {
+            sectionsDataSource.deleteEntity(section);
+            sectionsDataSource.commitChanges(function () {
+                self.showDefaultView();
+            });
         };
+        self.saveSections = function () {
+            sectionsDataSource.commitChanges();
+            self.showDefaultView();
+        };
+        self.revertSections = function () { sectionsDataSource.revertChanges(); };
+
+        // observations
+        self.editObservation = function (observation) { self.nav.navigate({ editObservation: observation.ObservationId() }); };
+        self.createObservation = function () { self.nav.navigate({ editObservation: "new" }); };
+        self.deleteObservation = function (observation) {
+            observationsDataSource.deleteEntity(observation);
+            observationsDataSource.commitChanges(function () {
+                self.showDefaultView();
+            });
+        };
+        self.saveObservations = function () {
+            observationsDataSource.commitChanges();
+            self.showDefaultView();
+        };
+        self.revertObservations = function () { observationsDataSource.revertChanges(); };
+
+        // general
+        self.showDefaultView = function () { self.nav.navigate({ editSection: null, editObservation: null }); };
     };
 })(window);

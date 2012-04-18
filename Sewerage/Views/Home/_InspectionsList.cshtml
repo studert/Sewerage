@@ -1,5 +1,5 @@
 ﻿<div data-bind="if: $root.ChosenSectionId() != null">
-    <table class="observationTable">
+@*    <table class="observationTable">
         <tr>
             <thead>
                 <th>Start date</th>
@@ -14,5 +14,7 @@
                 </tr>
             </tbody>
         </tr>
-    </table>
+    </table>*@
+    Inspection: 
+    <select data-bind="options: Inspections, optionsText: 'VideoUrl', value: SelectedInspection"></select>
 </div>

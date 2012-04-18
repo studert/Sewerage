@@ -210,7 +210,7 @@
             self.ChosenInspectionId(inspection.InspectionId);
             observationsDataSourceParameters.inspectionId = self.ChosenInspectionId();
             observationsDataSource.refresh();
-            self.Ribbon("inspection");
+            //self.Ribbon("inspection");
             var videoUrl = self.Url + "Videos/" + inspection.VideoUrl() + "/Manifest";
             setMedia(videoUrl);
             play();

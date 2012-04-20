@@ -3,15 +3,18 @@
     ViewBag.Title = "Sewerage";
 }
 
-@section navigation
+@section sidebar
 {
-    @Html.Partial("_ProjectsList")
+    <aside class="well">
+        @Html.Partial("_ProjectsList")
+    </aside><!--/.well -->
 }
 
 
 <div class="row-fluid">
     <div class="span7">
         <div data-bind="visible: !EditingSection()">
+            <h2>Sections</h2>
             @Html.Partial("_SectionsList")
         </div>
         <div data-bind="visible: EditingSection">

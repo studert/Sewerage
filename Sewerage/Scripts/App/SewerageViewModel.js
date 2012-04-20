@@ -179,6 +179,12 @@
 
         }).initialize({ linkToUrl: true });
 
+        // callbacks
+        var selectFirstInspection = function() {
+            var firstInspection = self.Inspections()[0];
+            self.selectInspection(firstInspection);
+        };
+
         // operations
         self.selectProject = function (project) {
             self.ChosenProjectId(project.ProjectId);
@@ -192,10 +198,7 @@
         self.selectSection = function (section) {
             self.ChosenSectionId(section.SectionId);
             inspectionsDataSourceParameters.sectionId = self.ChosenSectionId();
-            inspectionsDataSource.refresh();
-
-            //self.selectInspection(self.Inspections()[0]);
-
+            inspectionsDataSource.refresh({ }, selectFirstInspection);
             self.Ribbon("section");
             setMedia("");
             stop();

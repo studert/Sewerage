@@ -2,7 +2,7 @@
 <ul class="nav nav-list" data-bind="foreach: Projects">
     <li class="active" data-bind="css: { active: ProjectId == $parent.ChosenProjectId() }, click: $parent.selectProject">
         <a href="#">
-            <i class="icon-road"></i><strong data-bind="text: Name"></strong><br/>
+            <strong data-bind="text: Name"></strong><br/>
             <em data-bind="text: Description"></em>
         </a>
     </li>

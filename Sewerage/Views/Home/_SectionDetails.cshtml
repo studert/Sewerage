@@ -29,9 +29,9 @@
         </div>
     </fieldset>
     <div class="well">
-        <button class="btn btn-primary" type="submit" data-bind="enable: IsUpdated() || IsAdded()">Save</button>
-        <a class="btn btn-danger" href="#" data-bind="visible: CanDelete, click: $parent.deleteSection">Delete</a>
-        <a class="btn" href="#" data-bind="click: $parent.showDefaultView">Back to sections</a>
-        <a class="btn" href="#" data-bind="visible: IsUpdated, click: $parent.revertSections">Undo changes</a>
+        <button class="btn btn-primary" type="submit" data-bind="enable: IsUpdated() || IsAdded()"><i class="icon-ok icon-white"></i> Save changes</button>
+        <a class="btn btn-danger" href="#" data-bind="visible: CanDelete, click: $parent.deleteSection"><i class="icon-trash icon-white"></i> Delete</a>
+        <a class="btn" href="#" data-bind="click: $parent.showDefaultView"><i class="icon-arrow-left"></i> Back to sections</a>
+        <a class="btn" href="#" data-bind="visible: IsUpdated, click: $parent.revertSections"><i class="icon-remove"></i> Undo changes</a>
     </div>
 </form>

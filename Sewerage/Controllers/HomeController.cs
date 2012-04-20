@@ -10,5 +10,17 @@ namespace Sewerage.Controllers
                            
             return View();
         }
+
+        public ActionResult About()
+        {
+            ViewBag.Message = "Bachelor Thesis for University of Applied Sciences Nordwestern Switzerland.";
+
+            return View();
+        }
+
+        public ActionResult Contact()
+        {
+            return View();
+        }
     }
 }

@@ -10,6 +10,22 @@
     </aside><!--/.well -->
 }
 
+@section menu
+{
+    <ul class="nav nav-pills">
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                Actions
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="#" data-bind="visible: ChosenProjectId, click: createSection"><i class="icon-plus"></i> New Section</a></li>
+                <li><a href="#" data-bind="visible: ChosenInspectionId, click: createObservation"><i class="icon-plus"></i> New Observation</a></li>
+            </ul>
+        </li>
+    </ul>
+}
+
 
 <div class="row-fluid">
     <div class="span7">

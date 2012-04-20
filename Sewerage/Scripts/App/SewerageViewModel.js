@@ -79,6 +79,26 @@
         self.Url = window.location.protocol + "//" + window.location.host + "/";
         self.Ribbon = ko.observable("project");
 
+        // callbacks
+        var selectFirstProject = function() {
+            var firstProject = self.Projects()[0];
+            self.selectProject(firstProject);
+        };
+        var selectFirstSection = function() {
+            var firstSection = self.Sections()[0];
+            self.selectSection(firstSection);
+        };
+
+        var selectFirstInspection = function() {
+            var firstInspection = self.Inspections()[0];
+            self.selectInspection(firstInspection);
+        };
+
+        var selectFirstObservation = function() {
+            var firstObservation = self.Observations()[0];
+            self.selectObservation(firstObservation);
+        };
+
         // data sources
         var projectsDataSourceOptions = {
             providerParameters: { url: options.serviceUrl, operationName: "GetProjects" },
@@ -87,7 +107,7 @@
             mapping: Sewerage.Project,
             result: self.Projects
         };
-        var projectsDataSource = new upshot.RemoteDataSource(projectsDataSourceOptions).refresh();
+        var projectsDataSource = new upshot.RemoteDataSource(projectsDataSourceOptions).refresh({ }, selectFirstProject);
 
         var dataContext = projectsDataSource.getDataContext(); // get a common context
 
@@ -172,24 +192,18 @@
                     self.EditingSection(null);
                     self.EditingObservation(null);
                     
-                    //sectionsDataSource.revertChanges();
-                    //observationsDataSource.revertChanges();
+                    sectionsDataSource.revertChanges();
+                    observationsDataSource.revertChanges();
                 }
             }
 
         }).initialize({ linkToUrl: true });
 
-        // callbacks
-        var selectFirstInspection = function() {
-            var firstInspection = self.Inspections()[0];
-            self.selectInspection(firstInspection);
-        };
-
         // operations
         self.selectProject = function (project) {
             self.ChosenProjectId(project.ProjectId);
             sectionsDataSourceParameters.projectId = self.ChosenProjectId();
-            sectionsDataSource.refresh();
+            sectionsDataSource.refresh({ }, selectFirstSection);
             self.Ribbon("project");
             setMedia("");
             stop();
@@ -207,7 +221,7 @@
         self.selectInspection = function (inspection) {
             self.ChosenInspectionId(inspection.InspectionId);
             observationsDataSourceParameters.inspectionId = self.ChosenInspectionId();
-            observationsDataSource.refresh();
+            observationsDataSource.refresh({ }, selectFirstObservation);
             //self.Ribbon("inspection");
             var videoUrl = self.Url + "Videos/" + inspection.VideoUrl() + "/Manifest";
             setMedia(videoUrl);

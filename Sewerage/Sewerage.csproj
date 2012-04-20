@@ -162,7 +162,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ClientBin\Player.xap" />
-    <Content Include="Content\Spa.css" />
+    <Content Include="Content\bootstrap-responsive.css" />
+    <Content Include="Content\bootstrap-responsive.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\glyphicons-halflings-white.png" />
+    <Content Include="Content\images\glyphicons-halflings.png" />
+    <Content Include="Content\site.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Images\Icons\Accept48.png" />
@@ -230,6 +236,8 @@
     <Content Include="Scripts\amplify.min.js" />
     <Content Include="Scripts\App\SewerageViewModel.js" />
     <Content Include="Scripts\arrayUtils.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.7.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
@@ -242,6 +250,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\knockout.debug.js" />
     <Content Include="Scripts\knockout.js" />
+    <Content Include="Scripts\less.min.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
     <Content Include="Scripts\native.history.js" />
     <Content Include="Scripts\nav.js" />
@@ -262,7 +271,6 @@
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Content\Site.css" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Scripts\AjaxLogin.js" />
     <Content Include="Images\accent.png" />
@@ -325,6 +333,45 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\_ObservationDetails.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\less\accordion.less" />
+    <None Include="Content\less\alerts.less" />
+    <None Include="Content\less\badges.less" />
+    <None Include="Content\less\bootstrap.less" />
+    <None Include="Content\less\breadcrumbs.less" />
+    <None Include="Content\less\button-groups.less" />
+    <None Include="Content\less\buttons.less" />
+    <None Include="Content\less\carousel.less" />
+    <None Include="Content\less\close.less" />
+    <None Include="Content\less\code.less" />
+    <None Include="Content\less\component-animations.less" />
+    <None Include="Content\less\dropdowns.less" />
+    <None Include="Content\less\forms.less" />
+    <None Include="Content\less\grid.less" />
+    <None Include="Content\less\hero-unit.less" />
+    <None Include="Content\less\labels.less" />
+    <None Include="Content\less\layouts.less" />
+    <None Include="Content\less\mixins.less" />
+    <None Include="Content\less\modals.less" />
+    <None Include="Content\less\navbar.less" />
+    <None Include="Content\less\navs.less" />
+    <None Include="Content\less\pager.less" />
+    <None Include="Content\less\pagination.less" />
+    <None Include="Content\less\popovers.less" />
+    <None Include="Content\less\progress-bars.less" />
+    <None Include="Content\less\reset.less" />
+    <None Include="Content\less\responsive.less" />
+    <None Include="Content\less\scaffolding.less" />
+    <None Include="Content\less\sprites.less" />
+    <None Include="Content\less\tables.less" />
+    <None Include="Content\less\thumbnails.less" />
+    <None Include="Content\less\tooltip.less" />
+    <None Include="Content\less\type.less" />
+    <None Include="Content\less\utilities.less" />
+    <None Include="Content\less\variables.less" />
+    <None Include="Content\less\wells.less" />
+    <Content Include="Views\Shared\_SpaLinks.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

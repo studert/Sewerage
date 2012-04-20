@@ -1,5 +1,5 @@
-﻿<div data-bind="if: $root.ChosenSectionId() != null">
-@*    <table class="observationTable">
+﻿﻿<div data-bind="if: $root.ChosenSectionId() != null">
+     @*    <table class="observationTable">
         <tr>
             <thead>
                 <th>Start date</th>
@@ -15,6 +15,9 @@
             </tbody>
         </tr>
     </table>*@
-    Inspection: 
-    <select data-bind="options: Inspections, optionsText: 'VideoUrl', value: SelectedInspection"></select>
+     <ul class="nav nav-tabs" data-bind="foreach: Inspections">
+         <li data-bind="css: {active: InspectionId == $parent.ChosenInspectionId() }, click: $parent.selectInspection">
+             <a href="#">Inspection <span data-bind="text: InspectionId"></span></a>
+         </li>
+     </ul>
 </div>

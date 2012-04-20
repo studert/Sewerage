@@ -3,48 +3,50 @@
     <head>
         <meta charset="utf-8" />
         <title>@ViewBag.Title - University of Applied Sciences Nordwestern Switzerland</title>
-        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-        <link href="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Content/css")" rel="stylesheet" type="text/css" />
-        <link href="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Content/themes/base/css")" rel="stylesheet" type="text/css" />
+        @Html.Partial("_SpaLinks")
         @Html.Partial("_SpaScripts")
-        <meta name="viewport" content="width=device-width" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
         
-        <div class="left col">
-            <div class="header row">
-                <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("Sewerage.", "Index", "Home")</p>
-                </div>
-            </div>     
-            <div class="body row">
-                @RenderSection("navigation", false)
-            </div>   
-            <div class="footer row">
-                <div class="float-left">
-                    <p>
-                        &copy; @DateTime.Now.Year - Tobias Studer
-                    </p>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="#">Sewerage</a>
+                    <div class="nav-collapse">
+                        <ul class="nav">
+                            <li class="active"><a h ref="#">Home</a></li>
+                            <li><a href="#about">About</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                        </ul>
+                        <p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>
+                    </div><!--/.nav-collapse -->
                 </div>
             </div>
         </div>
-
-        <div class="right col">
-            <div class="header row">
-                <div class="float-left">
-                    @RenderSection("ribbon", false)
-                </div>
-            </div>     
-            <div class="body row">
+        
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+          <div class="well sidebar-nav">
+            @RenderSection("navigation", false)
+          </div><!--/.well -->
+        </div><!--/span-->
+          <div class="span9">
                 @RenderBody()
-            </div>   
-            <div class="footer row">
-                <div class="float-left">
-                    <p>
-                        University of Applied Sciences Nordwestern Switzerland
-                    </p>
-                </div>
-            </div>
-        </div>
+          </div><!--/span-->
+        </div><!--/row-->
+      
+          <hr>
+
+          <footer>
+            <p>&copy; University of Applied Sciences Nordwestern Switzerland @DateTime.Now.Year</p>
+          </footer>
+      </div>
     </body>
 </html>

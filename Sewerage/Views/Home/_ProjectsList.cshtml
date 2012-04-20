@@ -1,8 +1,10 @@
-﻿<div>
-    <ul class="projectList" data-bind="foreach: Projects">
-        <li data-bind="css: { selected: ProjectId == $parent.ChosenProjectId() }, click: $parent.selectProject">
-            <strong data-bind="text: Name"></strong><br/>
+﻿<h2>Projects</h2>
+<ul class="nav nav-list" data-bind="foreach: Projects">
+    <li class="active" data-bind="css: { active: ProjectId == $parent.ChosenProjectId() }, click: $parent.selectProject">
+        <a href="#">
+            <i class="icon-road"></i><strong data-bind="text: Name"></strong><br/>
             <em data-bind="text: Description"></em>
-        </li>
-    </ul>
-</div>
+        </a>
+    </li>
+    <li class="divider"></li>
+</ul>

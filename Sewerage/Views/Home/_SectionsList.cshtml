@@ -1,22 +1,23 @@
 ﻿<div data-bind="if: $root.ChosenProjectId() != null">
-    <table class="sectionTable">
+    <h2>Sections</h2>
+    <table class="table">
         <tr>
             <thead>
                 <th>Number</th>
                 <th>Length</th>
                 <th>City</th>
                 <th>Street</th>    
-                <th></th>     
-                <th></th>     
+                <th class="edit-row"></th>     
+                <th class="delete-row"></th>     
             </thead>
             <tbody data-bind="foreach: Sections">
-                <tr data-bind="css: { selected: SectionId == $parent.ChosenSectionId(), updated: IsUpdated, added: IsAdded }, click: $parent.selectSection">
+                <tr data-bind="css: { active: SectionId == $parent.ChosenSectionId(), updated: IsUpdated, added: IsAdded }, click: $parent.selectSection">
                     <td data-bind="text: Number"></td>
-                    <td data-bind="text: Length" ></td>
-                    <td data-bind="text: City" ></td>
-                    <td data-bind="text: Street" ></td>
-                    <td><a href="#" data-bind="click: $parent.editSection">details</a></td>
-                    <td><a href="#" data-bind="click: $parent.deleteSection">delete</a></td>
+                    <td data-bind="text: Length"></td>
+                    <td data-bind="text: City"></td>
+                    <td data-bind="text: Street"></td>
+                    <td><a class="btn btn-mini" href="#" data-bind="click: $parent.editSection"><i class="icon-edit"></i> Edit</a></td>
+                    <td><a class="btn btn-mini btn-danger" href="#" data-bind="click: $parent.deleteSection"><i class="icon-trash icon-white"></i> Delete</a></td>
                 </tr>
             </tbody>
         </tr>

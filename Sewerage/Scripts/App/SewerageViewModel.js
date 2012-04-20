@@ -1,4 +1,4 @@
-﻿/// <reference path="../_references.js" />
+﻿﻿/// <reference path="../_references.js" />
 
 
 (function (window, undefined) {
@@ -71,8 +71,6 @@
         self.ChosenInspectionId = ko.observable();
         self.ChosenObservationId = ko.observable();
 
-        self.SelectedInspection = ko.observable();
-
         // editing items
         self.EditingSection = ko.observable();
         self.EditingObservation = ko.observable();
@@ -139,12 +137,6 @@
             self.ChosenObservationId(null);
         });
 
-        self.SelectedInspection.subscribe(function () {
-            if (self.SelectedInspection) {
-                self.selectInspection(self.SelectedInspection());
-            }
-        });
-
         // client side navigation
         self.nav = new NavHistory({
             params: { editSection: null, editObservation: null },
@@ -201,6 +193,9 @@
             self.ChosenSectionId(section.SectionId);
             inspectionsDataSourceParameters.sectionId = self.ChosenSectionId();
             inspectionsDataSource.refresh();
+
+            //self.selectInspection(self.Inspections()[0]);
+
             self.Ribbon("section");
             setMedia("");
             stop();

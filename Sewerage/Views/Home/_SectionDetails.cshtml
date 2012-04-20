@@ -1,30 +1,37 @@
-﻿<h3>Edit Section</h3>
+﻿﻿<h2>Edit Section</h2>
 
-<form data-bind="with: EditingSection, submit: saveSections">
-    <p data-bind="visible: SectionId">
-        Section Id:
-        <b data-bind="text: SectionId"></b>
-    </p>
-    <p>
-        Number:
-        <input name="Number" data-bind="value: Number"/>
-    </p>
-    <p>
-        Length:
-        <input name="Length" data-bind="value: Length"/>
-    </p>
-    <p>
-        City:
-        <input name="City" data-bind="value: City"/>
-    </p>
-    <p>
-        Street:
-        <input name="Street" data-bind="value: Street"/>
-    </p>
-    <p>
-        <button type="submit" data-bind="enable: IsUpdated() || IsAdded()">Save</button>
-        <a href="#" data-bind="visible: CanDelete, click: $parent.deleteSection">Delete</a>
-        <a href="#" data-bind="click: $parent.showDefaultView">Back to sections</a>
-        <a href="#" data-bind="visible: IsUpdated, click: $parent.revertSections">Undo changes</a>
-    </p>
+<form class="form-horizontal" data-bind="with: EditingSection, submit: saveSections">
+    <fieldset>
+        <legend>Section Id <span data-bind="text: SectionId"></span></legend>
+        <div class="control-group">
+            <label class="control-label" for="Number">Number</label>
+            <div class="controls">
+                <input type="text" class="input-xlarge" id="Number" data-bind="value: Number"/>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="Length">Length</label>
+            <div class="controls">
+                <input type="text" class="input-xlarge" id="Length" data-bind="value: Length"/>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="City">City</label>
+            <div class="controls">
+                <input type="text" class="input-xlarge" id="City" data-bind="value: City"/>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="Street">Street</label>
+            <div class="controls">
+                <input type="text" class="input-xlarge" id="Street" data-bind="value: Street"/>
+            </div>
+        </div>
+    </fieldset>
+    <div class="well">
+        <button class="btn btn-primary" type="submit" data-bind="enable: IsUpdated() || IsAdded()">Save</button>
+        <a class="btn btn-danger" href="#" data-bind="visible: CanDelete, click: $parent.deleteSection">Delete</a>
+        <a class="btn" href="#" data-bind="click: $parent.showDefaultView">Back to sections</a>
+        <a class="btn" href="#" data-bind="visible: IsUpdated, click: $parent.revertSections">Undo changes</a>
+    </div>
 </form>

@@ -37,6 +37,10 @@ namespace Sewerage.Controllers
         public void UpdateSection(Section section) { UpdateEntity(section); }
         public void DeleteSection(Section section) { DeleteEntity(section); }
 
+        public void InsertInspection(Inspection inspection) { InsertEntity(inspection); }
+        public void UpdateInspection(Inspection inspection) { UpdateEntity(inspection); }
+        public void DeleteInspection(Inspection inspection) { DeleteEntity(inspection); }
+
         public void InsertObservation(Observation observation) { InsertEntity(observation); }
         public void UpdateObservation(Observation observation) { UpdateEntity(observation); }
         public void DeleteObservation(Observation observation) { DeleteEntity(observation); }

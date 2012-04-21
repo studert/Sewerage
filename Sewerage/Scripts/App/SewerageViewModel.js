@@ -73,6 +73,7 @@
 
         // editing items
         self.EditingSection = ko.observable();
+        self.EditingInspection = ko.observable();
         self.EditingObservation = ko.observable();
 
         // helpers
@@ -161,7 +162,7 @@
 
         // client side navigation
         self.nav = new NavHistory({
-            params: { editSection: null, editObservation: null },
+            params: { editSection: null, editInspection: null, editObservation: null },
             onNavigate: function (navEntry, navInfo) {
 
                 if (navEntry.params.editSection) {
@@ -176,6 +177,18 @@
                         var sectionId = navEntry.params.editSection;
                         sectionsDataSource.findById(sectionId, self.EditingSection);
                     }
+                } else if (navEntry.params.editInspection) {
+
+                    if (navEntry.params.editInspection == "new") {
+                        // Create and begin editing a new inspection instance
+                        var inspection = new Sewerage.Inspection({ SectionId: self.ChosenSectionId() });
+                        self.EditingInspection(inspection);
+                        self.Inspections.push(inspection);
+                    } else {
+                        // Load and begin editing an existing inspection instance
+                        var inspectionId = navEntry.params.editInspection;
+                        inspectionsDataSource.findById(inspectionId, self.EditingInspection);
+                    }
                 } else if (navEntry.params.editObservation) {
 
                     if (navEntry.params.editObservation == "new") {
@@ -188,13 +201,15 @@
                         var observationId = navEntry.params.editObservation;
                         observationsDataSource.findById(observationId, self.EditingObservation);
                     }
-
                 } else {
                     // reset editors
                     self.EditingSection(null);
+                    self.EditingInspection(null);
                     self.EditingObservation(null);
                     
+                    // revert data sources
                     sectionsDataSource.revertChanges();
+                    inspectionsDataSource.revertChanges();
                     observationsDataSource.revertChanges();
                 }
             }
@@ -248,6 +263,21 @@
             self.showDefaultView();
         };
         self.revertSections = function () { sectionsDataSource.revertChanges(); };
+        
+        // inspections
+        self.editInspection = function (inspection) { self.nav.navigate({ editInspection: inspection.InspectionId() }); };
+        self.createInspection = function () { self.nav.navigate({ editInspection: "new" }); };
+        self.deleteInspection = function (inspection) {
+            inspectionsDataSource.deleteEntity(inspection);
+            inspectionsDataSource.commitChanges(function () {
+                self.showDefaultView();
+            });
+        };
+        self.saveInspections = function () {
+            inspectionsDataSource.commitChanges();
+            self.showDefaultView();
+        };
+        self.revertInspections = function () { inspectionsDataSource.revertChanges(); };
 
         // observations
         self.editObservation = function (observation) { self.nav.navigate({ editObservation: observation.ObservationId() }); };
@@ -265,6 +295,6 @@
         self.revertObservations = function () { observationsDataSource.revertChanges(); };
 
         // general
-        self.showDefaultView = function () { self.nav.navigate({ editSection: null, editObservation: null }); };
+        self.showDefaultView = function () { self.nav.navigate({ editSection: null, editInspection: null, editObservation: null }); };
     };
 })(window);

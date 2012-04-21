@@ -1,23 +1,14 @@
 ﻿﻿<div data-bind="if: $root.ChosenSectionId() != null">
-     @*    <table class="observationTable">
-        <tr>
-            <thead>
-                <th>Start date</th>
-                <th>End date</th>
-                <th>Video Url</th>    
-            </thead>
-            <tbody data-bind="foreach: Inspections">
-                <tr data-bind="css: { selected: InspectionId == $parent.ChosenInspectionId() }, click: $parent.selectInspection">
-                    <td data-bind="text: StartDate"></td>
-                    <td data-bind="text: EndDate"></td>
-                    <td data-bind="text: VideoUrl"></td>
-                </tr>
-            </tbody>
-        </tr>
-    </table>*@
      <ul class="nav nav-tabs" data-bind="foreach: Inspections">
-         <li data-bind="css: {active: InspectionId == $parent.ChosenInspectionId() }, click: $parent.selectInspection">
-             <a href="#">Inspection <span data-bind="text: InspectionId"></span></a>
+         <li class="dropdown" data-bind="css: {active: InspectionId == $parent.ChosenInspectionId() }">
+             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                 Inspection <span data-bind="text: InspectionId"></span>
+                 <b class="caret"></b>
+             </a>
+             <ul class="dropdown-menu">
+                 <li><a href="#" data-bind="click: $parent.selectInspection"><i class="icon-check"></i> Select</a></li>
+                 <li><a href="#" data-bind="click: $parent.editInspection"><i class="icon-edit"></i> Edit</a></li>
+             </ul>
          </li>
      </ul>
 </div>

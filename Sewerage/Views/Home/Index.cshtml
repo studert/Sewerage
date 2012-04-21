@@ -3,55 +3,77 @@
     ViewBag.Title = "Sewerage";
 }
 
-@section sidebar
-{
-    <aside class="well">
-        @Html.Partial("_ProjectsList")
-    </aside><!--/.well -->
-}
-
 @section menu
 {
     <ul class="nav nav-pills">
-        <li class="dropdown">
+        <li class="dropdown" data-bind="visible: ChosenProjectId">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                Actions
+                Sections
                 <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-                <li><a href="#" data-bind="visible: ChosenProjectId, click: createSection"><i class="icon-plus"></i> New Section</a></li>
-                <li><a href="#" data-bind="visible: ChosenInspectionId, click: createObservation"><i class="icon-plus"></i> New Observation</a></li>
+                <li><a href="#" data-bind="click: createSection"><i class="icon-plus"></i> New Section</a></li>
+            </ul>
+        </li>
+        <li class="dropdown" data-bind="visible: ChosenSectionId">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                Inspections
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="#" data-bind="click: createInspection"><i class="icon-plus"></i> New Inspection</a></li>
+            </ul>
+        </li>
+        <li class="dropdown" data-bind="visible: ChosenInspectionId" >
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                Observations
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="#" data-bind="click: createObservation"><i class="icon-plus"></i> New Observation</a></li>
             </ul>
         </li>
     </ul>
 }
 
+<div class="row-fluid">
+    <div class="span3">
+        <aside class="well">
+            @Html.Partial("_ProjectsList")
+        </aside><!--/.well -->
+    </div><!--/span-->
+    <div class="span9">
+        <div class="row-fluid">
+            <div class="span7">
+                <div data-bind="visible: !EditingSection()">
+                    <h2>Sections</h2>
+                    @Html.Partial("_SectionsList")
+                </div>
+                <div data-bind="visible: EditingSection">
+                    @Html.Partial("_SectionDetails")
+                </div>
+            </div>
+            <div class="span5 pull-right">
+                @Html.Partial("_Player")
+            </div>
+        </div><!--/row-->
+        <div class="row-fluid">
+                <div class="span12">
+                <div data-bind="visible: (!EditingInspection() && !EditingObservation())">
+                    @Html.Partial("_InspectionsList")
+                    @Html.Partial("_ObservationsList")
+                </div>
+                <div data-bind="visible: EditingInspection">
+                    @Html.Partial("_InspectionDetails")
+                </div>
+                <div data-bind="visible: EditingObservation">
+                    @Html.Partial("_ObservationDetails")
+                </div>
+            </div>
+        </div><!--/row-->
+    </div><!--/span-->
+</div><!--/row-->
 
-<div class="row-fluid">
-    <div class="span7">
-        <div data-bind="visible: !EditingSection()">
-            <h2>Sections</h2>
-            @Html.Partial("_SectionsList")
-        </div>
-        <div data-bind="visible: EditingSection">
-            @Html.Partial("_SectionDetails")
-        </div>
-    </div>
-    <div class="span5 pull-right">
-        @Html.Partial("_Player")
-    </div>
-</div><!--/row-->
-<div class="row-fluid">
-    <div class="span12">
-        <div data-bind="visible: !EditingObservation()">
-            @Html.Partial("_InspectionsList")
-            @Html.Partial("_ObservationsList")
-        </div>
-        <div data-bind="visible: EditingObservation">
-            @Html.Partial("_ObservationDetails")
-        </div>
-    </div>
-</div><!--/row-->
 <script src="~/Scripts/App/SewerageViewModel.js" type="text/javascript"></script>
 <script type="text/javascript">
     $(function () {

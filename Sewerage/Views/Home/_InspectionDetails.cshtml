@@ -1,0 +1,31 @@
+﻿﻿<h2>Edit Inspection</h2>
+
+<form class="form-horizontal" data-bind="with: EditingInspection, submit: saveInspections">
+        <fieldset>
+        <legend>Observation Id <span data-bind="text: InspectionId"></span></legend>
+        <div class="control-group">
+            <label class="control-label" for="StartDate">Start Date</label>
+            <div class="controls">
+                <input type="text" class="input-xlarge" id="StartDate" data-bind="value: StartDate"/>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="EndDate">End Date</label>
+            <div class="controls">
+                <input type="text" class="input-xlarge" id="EndDate" data-bind="value: EndDate"/>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="VideoUrl">Video Url</label>
+            <div class="controls">
+                <input type="text" class="input-xlarge" id="VideoUrl" data-bind="value: VideoUrl"/>
+            </div>
+        </div>
+    </fieldset>
+    <div class="well">
+        <button class="btn btn-primary" type="submit" data-bind="enable: IsUpdated() || IsAdded()"><i class="icon-ok icon-white"></i> Save changes</button>
+        <a class="btn btn-danger" href="#" data-bind="visible: CanDelete, click: $parent.deleteInspection"><i class="icon-trash icon-white"></i> Delete</a>
+        <a class="btn" href="#" data-bind="click: $parent.showDefaultView"><i class="icon-arrow-left"></i> Back to inspections</a>
+        <a class="btn" href="#" data-bind="visible: IsUpdated, click: $parent.revertInspections"><i class="icon-remove"></i> Undo changes</a>
+    </div>
+</form>

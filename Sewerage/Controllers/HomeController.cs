@@ -17,10 +17,5 @@ namespace Sewerage.Controllers
 
             return View();
         }
-
-        public ActionResult Contact()
-        {
-            return View();
-        }
     }
 }

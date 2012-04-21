@@ -64,6 +64,7 @@ namespace Player
         public void Stop()
         {
             Player.Stop();
+            Player.Playlist.Clear();
         }
 
         [ScriptableMember]

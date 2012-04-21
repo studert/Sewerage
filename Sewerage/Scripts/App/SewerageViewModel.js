@@ -58,7 +58,7 @@
     // define the view model
     Sewerage.SewerageViewModel = function (options) {
         var self = this;
-
+        
         // public array to bind to HTML
         self.Projects = ko.observableArray();
         self.Sections = ko.observableArray();
@@ -107,7 +107,7 @@
             mapping: Sewerage.Project,
             result: self.Projects
         };
-        var projectsDataSource = new upshot.RemoteDataSource(projectsDataSourceOptions).refresh({ }, selectFirstProject);
+        var projectsDataSource = new upshot.RemoteDataSource(projectsDataSourceOptions).refresh();
 
         var dataContext = projectsDataSource.getDataContext(); // get a common context
 
@@ -143,6 +143,8 @@
             result: self.Observations
         };
         var observationsDataSource = new upshot.RemoteDataSource(observationsDataSourceOptions);
+
+        var player = new SilverlightPlayer();
 
         // behaviours
         self.ChosenProjectId.subscribe(function () {
@@ -205,8 +207,7 @@
             sectionsDataSourceParameters.projectId = self.ChosenProjectId();
             sectionsDataSource.refresh({ }, selectFirstSection);
             self.Ribbon("project");
-            setMedia("");
-            stop();
+            player.stop();
         };
 
         self.selectSection = function (section) {
@@ -214,8 +215,7 @@
             inspectionsDataSourceParameters.sectionId = self.ChosenSectionId();
             inspectionsDataSource.refresh({ }, selectFirstInspection);
             self.Ribbon("section");
-            setMedia("");
-            stop();
+            player.stop();
         };
 
         self.selectInspection = function (inspection) {
@@ -224,14 +224,14 @@
             observationsDataSource.refresh({ }, selectFirstObservation);
             //self.Ribbon("inspection");
             var videoUrl = self.Url + "Videos/" + inspection.VideoUrl() + "/Manifest";
-            setMedia(videoUrl);
-            play();
+            player.setMedia(videoUrl);
+            player.play();
         };
 
         self.selectObservation = function (observation) {
             self.ChosenObservationId(observation.ObservationId);
             self.Ribbon("observation");
-            seekToPosition(observation.SecondsIntoVideo());
+            player.seekToPosition(observation.SecondsIntoVideo());
         };
 
         // sections

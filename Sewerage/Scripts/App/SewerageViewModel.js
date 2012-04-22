@@ -159,6 +159,10 @@
         self.ChosenInspectionId.subscribe(function () {
             self.ChosenObservationId(null);
         });
+        
+        // notifications
+        self.successMessage = ko.observable().extend({ notify: "always" });
+        self.errorMessage = ko.observable().extend({ notify: "always" });
 
         // client side navigation
         self.nav = new NavHistory({
@@ -255,12 +259,15 @@
         self.deleteSection = function (section) {
             sectionsDataSource.deleteEntity(section);
             sectionsDataSource.commitChanges(function () {
+                self.successMessage("Deleted section");
                 self.showDefaultView();
             });
         };
         self.saveSections = function () {
-            sectionsDataSource.commitChanges();
-            self.showDefaultView();
+            sectionsDataSource.commitChanges(function() {
+                self.successMessage("Saved section changes");
+                self.showDefaultView();
+            });
         };
         self.revertSections = function () { sectionsDataSource.revertChanges(); };
         
@@ -270,12 +277,15 @@
         self.deleteInspection = function (inspection) {
             inspectionsDataSource.deleteEntity(inspection);
             inspectionsDataSource.commitChanges(function () {
+                self.successMessage("Deleted inspection");
                 self.showDefaultView();
             });
         };
         self.saveInspections = function () {
-            inspectionsDataSource.commitChanges();
-            self.showDefaultView();
+            inspectionsDataSource.commitChanges(function() {
+                self.successMessage("Saved inspection changes");
+                self.showDefaultView();
+            });
         };
         self.revertInspections = function () { inspectionsDataSource.revertChanges(); };
 
@@ -285,16 +295,35 @@
         self.deleteObservation = function (observation) {
             observationsDataSource.deleteEntity(observation);
             observationsDataSource.commitChanges(function () {
+                self.successMessage("Deleted observation");
                 self.showDefaultView();
             });
         };
         self.saveObservations = function () {
-            observationsDataSource.commitChanges();
-            self.showDefaultView();
+            observationsDataSource.commitChanges(function() {
+                self.successMessage("Saved observation changes");
+                self.showDefaultView();
+            });
         };
         self.revertObservations = function () { observationsDataSource.revertChanges(); };
 
         // general
         self.showDefaultView = function () { self.nav.navigate({ editSection: null, editInspection: null, editObservation: null }); };
+        
+        // error handling
+        var handleServerError = function(httpStatus, message) {
+            if (status === 200) {
+                // application domain error (e.g., validation error)
+                self.errorMessage(message);
+            } else {
+                // system error (e.g., unhandled exception)
+                self.errorMessage("Server error: HTTP status code: " + httpStatus + ", message: " + message);
+            }
+        };
+
+        projectsDataSource.bind({ refreshError: handleServerError, commitError: handleServerError });
+        sectionsDataSource.bind({ refreshError: handleServerError, commitError: handleServerError });
+        inspectionsDataSource.bind({ refreshError: handleServerError, commitError: handleServerError });
+        observationsDataSource.bind({ refreshError: handleServerError, commitError: handleServerError });
     };
 })(window);

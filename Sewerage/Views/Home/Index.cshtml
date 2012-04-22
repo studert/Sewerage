@@ -45,6 +45,10 @@
     <div class="span9">
         <div class="row-fluid">
             <div class="span7">
+
+                <div class="alert alert-success" data-bind="flash: {text: successMessage, duration: 5000 }"></div>
+                <div class="alert alert-error" data-bind="flash: {text: errorMessage, duration: 20000 }"></div>
+
                 <div data-bind="visible: !EditingSection()">
                     <h2>Sections</h2>
                     @Html.Partial("_SectionsList")

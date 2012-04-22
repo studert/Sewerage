@@ -57,5 +57,20 @@
             $(element).validate().resetForm();
         }
     };
+
+    ko.bindingHandlers.flash = {
+        update: function (element, valueAccessor) {
+            var options = valueAccessor(), text = ko.utils.unwrapObservable(options.text);
+
+            // Unfortunately, .stop() doesn't clear .delay()s in jQuery 1.6, so we'll have to 
+            // manage the animation queue manually (http://bugs.jquery.com/ticket/6150)
+            clearTimeout($(element).data("flashQueue"));
+            if (text) {
+                $(element).slideDown(250).text(text);
+                $(element).data("flashQueue", setTimeout(function () { $(element).slideUp(250) }, options.duration || 5000));
+            } else
+                $(element).hide();
+        }
+    };
 }
 )(ko, upshot);

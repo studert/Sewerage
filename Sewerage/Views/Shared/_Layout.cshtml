@@ -4,8 +4,10 @@
         <meta charset="utf-8" />
         <title>@ViewBag.Title - University of Applied Sciences Nordwestern Switzerland</title>
         @Html.Partial("_SpaLinks")
-        @Html.Partial("_SpaScripts")
+        @Html.Partial("_SpaScriptsTop")
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Sewerage"/>
+        <meta name="author" content="Tobias Studer"/>
     </head>
     <body>
         <div class="navbar navbar-fixed-top">
@@ -42,5 +44,6 @@
                 <p>&copy; University of Applied Sciences Nordwestern Switzerland @DateTime.Now.Year</p>
             </footer>
         </div>
+        @Html.Partial("_SpaScriptsBottom")
     </body>
 </html>

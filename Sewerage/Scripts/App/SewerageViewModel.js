@@ -163,6 +163,25 @@
         // notifications
         self.successMessage = ko.observable().extend({ notify: "always" });
         self.errorMessage = ko.observable().extend({ notify: "always" });
+        
+        // validation
+        self.sectionValidationConfig = $.extend({
+            resetFormOnChange: self.EditingSection,
+            errorClass: "help-inline",
+            submitHandler: function() { self.saveSections(); }
+        }, sectionsDataSource.getEntityValidationRules());
+
+        self.inspectionValidationConfig = $.extend({
+            resetFormOnChange: self.EditingInspection,
+            errorClass: "help-inline",
+            submitHandler: function() { self.saveInspections(); }
+        }, inspectionsDataSource.getEntityValidationRules());
+
+        self.observationValidationConfig = $.extend({
+            resetFormOnChange: self.EditingObservation,
+            errorClass: "help-inline",
+            submitHandler: function() { self.saveObservations(); }
+        }, observationsDataSource.getEntityValidationRules());
 
         // client side navigation
         self.nav = new NavHistory({

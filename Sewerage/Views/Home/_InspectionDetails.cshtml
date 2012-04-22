@@ -1,24 +1,24 @@
 ﻿﻿<h2>Edit Inspection</h2>
 
-<form class="form-horizontal" data-bind="with: EditingInspection, submit: saveInspections">
+<form class="form-horizontal" data-bind="with: EditingInspection, validate: $root.inspectionValidationConfig">
         <fieldset>
         <legend>Observation Id <span data-bind="text: InspectionId"></span></legend>
         <div class="control-group">
             <label class="control-label" for="StartDate">Start Date</label>
             <div class="controls">
-                <input type="text" class="input-xlarge" id="StartDate" data-bind="value: StartDate"/>
+                <input type="text" class="input-xlarge" name="StartDate" data-bind="value: StartDate, autovalidate: true"/>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="EndDate">End Date</label>
             <div class="controls">
-                <input type="text" class="input-xlarge" id="EndDate" data-bind="value: EndDate"/>
+                <input type="text" class="input-xlarge" name="EndDate" data-bind="value: EndDate, autovalidate: true"/>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="VideoUrl">Video Url</label>
             <div class="controls">
-                <input type="text" class="input-xlarge" id="VideoUrl" data-bind="value: VideoUrl"/>
+                <input type="text" class="input-xlarge" name="VideoUrl" data-bind="value: VideoUrl, autovalidate: true"/>
             </div>
         </div>
     </fieldset>

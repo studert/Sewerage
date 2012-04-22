@@ -1,30 +1,30 @@
 ﻿﻿<h2>Edit Observation</h2>
 
-<form class="form-horizontal" data-bind="with: EditingObservation, submit: saveObservations">
+<form class="form-horizontal" data-bind="with: EditingObservation, validate: $root.observationValidationConfig">
         <fieldset>
         <legend>Observation Id <span data-bind="text: ObservationId"></span></legend>
         <div class="control-group">
             <label class="control-label" for="Position">Position</label>
             <div class="controls">
-                <input type="text" class="input-xlarge" id="Position" data-bind="value: Position"/>
+                <input type="text" class="input-xlarge" name="Position" data-bind="value: Position, autovalidate: true"/>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="Tag">Tag</label>
             <div class="controls">
-                <input type="text" class="input-xlarge" id="Tag" data-bind="value: Tag"/>
+                <input type="text" class="input-xlarge" name="Tag" data-bind="value: Tag, autovalidate: true"/>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="Description">Description</label>
             <div class="controls">
-                <input type="text" class="input-xlarge" id="Description" data-bind="value: Description"/>
+                <input type="text" class="input-xlarge" name="Description" data-bind="value: Description, autovalidate: true"/>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="SecondsIntoVideo">Video Offset</label>
             <div class="controls">
-                <input type="text" class="input-xlarge" id="SecondsIntoVideo" data-bind="value: SecondsIntoVideo"/>
+                <input type="text" class="input-xlarge" name="SecondsIntoVideo" data-bind="value: SecondsIntoVideo, autovalidate: true"/>
             </div>
         </div>
     </fieldset>

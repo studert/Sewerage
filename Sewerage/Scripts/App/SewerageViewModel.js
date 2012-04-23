@@ -175,20 +175,21 @@
                 $(element).parent("div").parent("div").removeClass(errorClass).addClass(validClass);
             }
         };
+        
 
-        self.sectionValidationConfig = $.extend(
+        self.sectionValidationConfig = $.extend({},
             validationConfig, {
                 resetFormOnChange: self.EditingSection,
                 submitHandler: function() { self.saveSections(); }
             }, sectionsDataSource.getEntityValidationRules());
 
-        self.inspectionValidationConfig = $.extend(
+        self.inspectionValidationConfig = $.extend({},
             validationConfig, {
                 resetFormOnChange: self.EditingInspection,
                 submitHandler: function() { self.saveInspections(); }
             }, inspectionsDataSource.getEntityValidationRules());
 
-        self.observationValidationConfig = $.extend(
+        self.observationValidationConfig = $.extend({},
             validationConfig, {
                 resetFormOnChange: self.EditingObservation,
                 submitHandler: function() { self.saveObservations(); }

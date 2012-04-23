@@ -5,7 +5,7 @@ using Elmah;
 
 namespace Sewerage.Areas.Admin.Controllers 
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize]
     public class ElmahController : Controller
     {
         public ActionResult Index()

@@ -21,7 +21,7 @@
                     @Html.ActionLink("Sewerage", "Index", "Home", null, new { @class="brand" })
                     <div class="nav-collapse">
                         <ul class="nav">
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                            <li><a href="@Url.Action("Index", "Home")"><i class="icon-home icon-white"></i> Home</a></li>
                             <li class="divider-vertical"></li>
                         </ul>
                         @RenderSection("menu", false)

@@ -3,6 +3,10 @@
   padding-bottom: 40px;
 }
 
+.project-nav-list {
+    padding: 8px 0;
+}
+
 .edit-row {
     width: 65px;
 }

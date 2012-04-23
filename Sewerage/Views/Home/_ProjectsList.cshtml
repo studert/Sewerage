@@ -1,10 +1,8 @@
-﻿<h2>Projects</h2>
-<ul class="nav nav-list" data-bind="foreach: Projects">
+﻿<ul class="nav nav-pills nav-stacked" data-bind="foreach: Projects">
     <li class="active" data-bind="css: { active: ProjectId == $parent.ChosenProjectId() }, click: $parent.selectProject">
         <a href="#">
             <strong data-bind="text: Name"></strong><br/>
             <em data-bind="text: Description"></em>
         </a>
     </li>
-    <li class="divider"></li>
 </ul>

@@ -27,6 +27,8 @@
     Sewerage.Section = function (data) {
         var self = this;
 
+        self.test = ko.observable("test");
+
         // add properties from the JSON data result
         upshot.map(data, sectionEntityType, self);
 
@@ -142,18 +144,11 @@
 
         var player = new SilverlightPlayer();
 
-        // behaviours
-        self.ChosenProjectId.subscribe(function () {
-            self.ChosenSectionId(null);
-        });
-
-        self.ChosenSectionId.subscribe(function () {
-            self.ChosenInspectionId(null);
-        });
-
-        self.ChosenInspectionId.subscribe(function () {
-            self.ChosenObservationId(null);
-        });
+        var clearAllEdits = function() {
+            self.EditingSection(null);
+            self.EditingInspection(null);
+            self.EditingObservation(null);
+        };
         
         // notifications
         self.successMessage = ko.observable().extend({ notify: "always" });
@@ -175,7 +170,6 @@
                 $(element).parent("div").parent("div").removeClass(errorClass).addClass(validClass);
             }
         };
-        
 
         self.sectionValidationConfig = $.extend({},
             validationConfig, {
@@ -198,7 +192,14 @@
         // client side navigation
         self.nav = new NavHistory({
             params: { editSection: null, editInspection: null, editObservation: null },
-            onNavigate: function (navEntry, navInfo) {
+            onNavigate: function(navEntry, navInfo) {
+                // reset editors
+                clearAllEdits();
+
+                // revert data sources
+                sectionsDataSource.revertChanges();
+                inspectionsDataSource.revertChanges();
+                observationsDataSource.revertChanges();
 
                 if (navEntry.params.editSection) {
 
@@ -236,19 +237,8 @@
                         var observationId = navEntry.params.editObservation;
                         observationsDataSource.findById(observationId, self.EditingObservation);
                     }
-                } else {
-                    // reset editors
-                    self.EditingSection(null);
-                    self.EditingInspection(null);
-                    self.EditingObservation(null);
-                    
-                    // revert data sources
-                    sectionsDataSource.revertChanges();
-                    inspectionsDataSource.revertChanges();
-                    observationsDataSource.revertChanges();
                 }
             }
-
         }).initialize({ linkToUrl: true });
 
         // operations

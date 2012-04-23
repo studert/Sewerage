@@ -37,12 +37,13 @@
 }
 
 <div class="row-fluid">
-    <div class="span3">
-        <aside class="well">
+    <div class="span2">
+        <h2>Projects</h2>
+        <div class="well">
             @Html.Partial("_ProjectsList")
-        </aside><!--/.well -->
+        </div><!--/.well -->
     </div><!--/span-->
-    <div class="span9">
+    <div class="span10">
         <div class="row-fluid">
             <div class="span7">
 
@@ -53,7 +54,7 @@
                     <h2>Sections</h2>
                     @Html.Partial("_SectionsList")
                 </div>
-                <div data-bind="visible: EditingSection">
+                <div data-bind="visible: EditingSection()">
                     @Html.Partial("_SectionDetails")
                 </div>
             </div>

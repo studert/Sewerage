@@ -7,7 +7,6 @@ namespace Sewerage.Models
     {
         public int ObservationId { get; set; }
 
-        [Required]
         public string Description { get; set; }
 
         [Required]

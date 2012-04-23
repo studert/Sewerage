@@ -78,13 +78,8 @@
 
         // helpers
         self.Url = window.location.protocol + "//" + window.location.host + "/";
-        self.Ribbon = ko.observable("project");
 
         // callbacks
-        var selectFirstProject = function() {
-            var firstProject = self.Projects()[0];
-            self.selectProject(firstProject);
-        };
         var selectFirstSection = function() {
             var firstSection = self.Sections()[0];
             self.selectSection(firstSection);
@@ -163,25 +158,41 @@
         // notifications
         self.successMessage = ko.observable().extend({ notify: "always" });
         self.errorMessage = ko.observable().extend({ notify: "always" });
-        
+
         // validation
-        self.sectionValidationConfig = $.extend({
-            resetFormOnChange: self.EditingSection,
-            errorClass: "help-inline",
-            submitHandler: function() { self.saveSections(); }
-        }, sectionsDataSource.getEntityValidationRules());
+        var validationConfig = {
+            errorClass: "error",
+            validClass: "success",
+            errorElement: "span",
+            errorPlacement: function(error, element) {
+                error.addClass("help-inline");
+                error.insertAfter(element);
+            },
+            highlight: function(element, errorClass, validClass) {
+                $(element).parent("div").parent("div").removeClass(validClass).addClass(errorClass);
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).parent("div").parent("div").removeClass(errorClass).addClass(validClass);
+            }
+        };
 
-        self.inspectionValidationConfig = $.extend({
-            resetFormOnChange: self.EditingInspection,
-            errorClass: "help-inline",
-            submitHandler: function() { self.saveInspections(); }
-        }, inspectionsDataSource.getEntityValidationRules());
+        self.sectionValidationConfig = $.extend(
+            validationConfig, {
+                resetFormOnChange: self.EditingSection,
+                submitHandler: function() { self.saveSections(); }
+            }, sectionsDataSource.getEntityValidationRules());
 
-        self.observationValidationConfig = $.extend({
-            resetFormOnChange: self.EditingObservation,
-            errorClass: "help-inline",
-            submitHandler: function() { self.saveObservations(); }
-        }, observationsDataSource.getEntityValidationRules());
+        self.inspectionValidationConfig = $.extend(
+            validationConfig, {
+                resetFormOnChange: self.EditingInspection,
+                submitHandler: function() { self.saveInspections(); }
+            }, inspectionsDataSource.getEntityValidationRules());
+
+        self.observationValidationConfig = $.extend(
+            validationConfig, {
+                resetFormOnChange: self.EditingObservation,
+                submitHandler: function() { self.saveObservations(); }
+            }, observationsDataSource.getEntityValidationRules());
 
         // client side navigation
         self.nav = new NavHistory({
@@ -244,7 +255,6 @@
             self.ChosenProjectId(project.ProjectId);
             sectionsDataSourceParameters.projectId = self.ChosenProjectId();
             sectionsDataSource.refresh({ }, selectFirstSection);
-            self.Ribbon("project");
             player.stop();
         };
 
@@ -252,7 +262,6 @@
             self.ChosenSectionId(section.SectionId);
             inspectionsDataSourceParameters.sectionId = self.ChosenSectionId();
             inspectionsDataSource.refresh({ }, selectFirstInspection);
-            self.Ribbon("section");
             player.stop();
         };
 
@@ -260,7 +269,6 @@
             self.ChosenInspectionId(inspection.InspectionId);
             observationsDataSourceParameters.inspectionId = self.ChosenInspectionId();
             observationsDataSource.refresh({ }, selectFirstObservation);
-            //self.Ribbon("inspection");
             var videoUrl = self.Url + "Videos/" + inspection.VideoUrl() + "/Manifest";
             player.setMedia(videoUrl);
             player.play();
@@ -268,7 +276,6 @@
 
         self.selectObservation = function (observation) {
             self.ChosenObservationId(observation.ObservationId);
-            self.Ribbon("observation");
             player.seekToPosition(observation.SecondsIntoVideo());
         };
 

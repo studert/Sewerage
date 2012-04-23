@@ -10,9 +10,12 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">@User.Identity.Name
             <b class="caret"></b></a>
             <ul class="dropdown-menu">
-                <li><a href="@Url.Action("ChangePassword", "Account")"><i class="icon-user"></i> Change Password</a></li>
+                <li class="nav-header"><i class="icon-user"></i> User</li>
+                <li><a href="@Url.Action("ChangePassword", "Account")"><i class="icon-pencil"></i> Change Password</a></li>
                 <li><a href="@Url.Action("LogOff", "Account")"><i class="icon-off"></i> Logoff</a></li>
-                <li><a href="@Url.Action("Index", "Elmah")"><i class="icon-lock"></i> Admin</a></li>
+                <li class="divider"></li>
+                <li class="nav-header"><i class="icon-lock"></i> Admin</li>
+                <li><a href="@Url.Action("Index", "Elmah")"><i class="icon-list"></i> Elmah</a></li>
             </ul>
         </li>
     </ul>

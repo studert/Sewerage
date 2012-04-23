@@ -25,13 +25,11 @@
                             <li class="divider-vertical"></li>
                         </ul>
                         @RenderSection("menu", false)
-                        <div class="pull-right">
-                            <ul class="nav">
-                                <li class="divider-vertical"></li>
-                                <li>@Html.ActionLink("About", "About", "Home")</li>
-                            </ul>
-                            @Html.Partial("_LoginPartial")
-                        </div>
+                        @Html.Partial("_LoginPartial")
+                        <ul class="nav pull-right">
+                            <li class="divider-vertical"></li>
+                            <li>@Html.ActionLink("About", "About", "Home")</li>
+                        </ul>
                     </div><!--/.nav-collapse -->
                 </div>
             </div>

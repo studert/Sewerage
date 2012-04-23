@@ -11,6 +11,15 @@
     width: 65px;
 }
 
+#silverlightForm {
+    z-index: -100;
+}
+
+#silverlightControlHost {
+    z-index: -100;
+}
+
 #silverlightControl {
     height: 349px;
+    z-index: -100;
 }

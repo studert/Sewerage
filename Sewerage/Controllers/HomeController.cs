@@ -2,6 +2,7 @@
 
 namespace Sewerage.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -11,6 +12,7 @@ namespace Sewerage.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult About()
         {
             ViewBag.Message = "Bachelor Thesis for University of Applied Sciences Nordwestern Switzerland.";

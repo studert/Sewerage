@@ -45,6 +45,9 @@
       <HintPath>..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Helpers">
+      <HintPath>..\packages\microsoft-web-helpers.1.15\lib\Microsoft.Web.Helpers.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -149,11 +152,13 @@
   <ItemGroup>
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\ElmahController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SewerageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\AppDbContext.cs" />
     <Compile Include="Models\Inspection.cs" />
     <Compile Include="Models\Observation.cs" />
@@ -256,10 +261,7 @@
     <Content Include="Views\Home\_SectionDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\_SectionsMenu.cshtml" />
     <Content Include="Views\Home\_InspectionsMenu.cshtml" />
-    <Content Include="Views\Home\_ObservationsMenu.cshtml" />
-    <Content Include="Views\Home\_ProjectsMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\_ObservationDetails.cshtml" />

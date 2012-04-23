@@ -1,10 +1,22 @@
-﻿@if (Request.IsAuthenticated) {
-    <div>
-        Hello, @Html.ActionLink(User.Identity.Name, "ChangePassword", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Change password" })!
-        @Html.ActionLink("Log off", "LogOff", "Account")
-    </div>
+﻿@using Microsoft.Web.Helpers
+
+@if (Request.IsAuthenticated) {
+    <ul class="nav pull-right">
+        <li class="divider-vertical"></li>
+        <li>
+            <a href="#">@Gravatar.GetHtml(Membership.GetUser().Email, 20)</a>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@User.Identity.Name
+            <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li><a href="@Url.Action("ChangePassword", "Account")"><i class="icon-user"></i> Change Password</a></li>
+                <li><a href="@Url.Action("LogOff", "Account")"><i class="icon-off"></i> Logoff</a></li>
+            </ul>
+        </li>
+    </ul>
 } else {
-    <ul class="nav">
+    <ul class="nav pull-right">
         <li class="divider-vertical"></li>
         <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", data_dialog_title = "Registration" })</li>
         <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", data_dialog_title = "Identification" })</li>

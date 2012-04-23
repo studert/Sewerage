@@ -162,7 +162,7 @@
         // validation
         var validationConfig = {
             errorClass: "error",
-            validClass: "success",
+            validClass: "",
             errorElement: "span",
             errorPlacement: function(error, element) {
                 error.addClass("help-inline");

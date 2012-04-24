@@ -2,6 +2,7 @@
     <table class="table">
         <tr>
             <thead>
+                <th></th>
                 <th>Number</th>
                 <th>Length</th>
                 <th>City</th>
@@ -10,7 +11,8 @@
                 <th class="delete-row"></th>     
             </thead>
             <tbody data-bind="foreach: Sections">
-                <tr data-bind="css: { active: SectionId == $parent.ChosenSectionId(), updated: IsUpdated, added: IsAdded }, click: $parent.selectSection">
+                <tr data-bind="click: $parent.selectSection">
+                    <td><i class="icon-eye-open" data-bind="visible: SectionId == $parent.ChosenSectionId()"></i></td>
                     <td data-bind="text: Number"></td>
                     <td data-bind="text: Length"></td>
                     <td data-bind="text: City"></td>

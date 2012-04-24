@@ -3,6 +3,7 @@
     <table class="table">
         <tr>
             <thead>
+                <th></th>
                 <th>Position</th>
                 <th>Tag</th>
                 <th>Description</th>
@@ -11,7 +12,8 @@
                 <th class="delete-row"></th> 
             </thead>
             <tbody data-bind="foreach: Observations">
-                <tr data-bind="css: { active: ObservationId == $parent.ChosenObservationId(), updated: IsUpdated }, click: $parent.selectObservation">
+                <tr data-bind="click: $parent.selectObservation">
+                    <td><i class="icon-eye-open" data-bind="visible: ObservationId == $parent.ChosenObservationId()"></i></td>
                     <td data-bind="text: Position"></td>
                     <td data-bind="text: Tag"></td>
                     <td data-bind="text: Description"></td>

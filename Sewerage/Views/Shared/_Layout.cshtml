@@ -1,14 +1,15 @@
 @using Microsoft.Web.Helpers
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8" />
         <title>@ViewBag.Title | Sewerage</title>
-        @Html.Partial("_SpaLinks")
-        @Html.Partial("_SpaScriptsTop")
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Sewerage"/>
         <meta name="author" content="Tobias Studer"/>
+        @Html.Partial("_SpaLinks")
+        @Html.Partial("_SpaScriptsTop")
         @Analytics.GetGoogleHtml("UA-31127002-1")
     </head>
     <body>

@@ -27,8 +27,6 @@
     Sewerage.Section = function (data) {
         var self = this;
 
-        self.test = ko.observable("test");
-
         // add properties from the JSON data result
         upshot.map(data, sectionEntityType, self);
 

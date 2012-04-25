@@ -2,7 +2,7 @@ bin
 obj
 *.user
 *.suo
-App_Data
+*.sdf
 /packages
 _ReSharper.Sewerage
 *.xap

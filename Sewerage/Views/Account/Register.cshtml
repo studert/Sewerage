@@ -1,3 +1,6 @@
+@using Build.Mvc
+@using Build.Mvc.Html
+@using Sewerage.HtmlHelpers
 @model Sewerage.Models.RegisterModel
 
 @{
@@ -13,42 +16,20 @@
     Passwords are required to be a minimum of @Membership.MinRequiredPasswordLength characters in length.
 </div>
 
-@using (Html.BeginForm((string)ViewBag.FormAction, "Account", FormMethod.Post, new { @class = "form-horizontal" }))
+
+@using (Html.BuildForm().AddClass("form-horizontal").Begin())
 {
-    @Html.ValidationSummary(true, "Account creation was unsuccessful. Please correct the errors and try again.", new { @class = "alert alert-error" })
+    @Html.BuildValidationSummary(true, "Account creation was unsuccessful. Please correct the errors and try again.").AddClass("alert").AddClass("alert-error")
 
     <fieldset>
         <legend>Registration Form</legend>
-        <div class="control-group">
-            @Html.LabelFor(m => m.UserName, new {@class = "control-label"})
-            <div class="controls">
-                @Html.TextBoxFor(m => m.UserName)
-                @Html.ValidationMessageFor(m => m.UserName)
-            </div>
-        </div>
-        <div class="control-group">
-            @Html.LabelFor(m => m.Email, new {@class = "control-label"})
-            <div class="controls">
-                @Html.TextBoxFor(m => m.Email)
-                @Html.ValidationMessageFor(m => m.Email)
-            </div>
-        </div>
-        <div class="control-group">
-            @Html.LabelFor(m => m.Password, new { @class = "control-label" })
-            <div class="controls">
-                @Html.PasswordFor(m => m.Password)
-                @Html.ValidationMessageFor(m => m.Password)
-            </div>
-        </div>
-        <div class="control-group">
-            @Html.LabelFor(m => m.ConfirmPassword, new {@class = "control-label"})
-            <div class="controls">
-                @Html.PasswordFor(m => m.ConfirmPassword)
-                @Html.ValidationMessageFor(m => m.ConfirmPassword)
-            </div>
-        </div>
+        @Html.BuildControlGroupFor(x => Model.UserName)
+        @Html.BuildControlGroupFor(x => Model.Email)
+        @Html.BuildControlGroupFor(x => Model.Password)
+        @Html.BuildControlGroupFor(x => Model.ConfirmPassword)
+        
         <div class="form-actions">
-            <button class="btn btn-primary" type="submit"><i class="icon-ok icon-white"></i> Register</button>
+            @Html.BuildSubmitButtonWithIcon("Register", "icon-ok icon-white").AddClass("btn").AddClass("btn-primary")
         </div>
     </fieldset>
 }

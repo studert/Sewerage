@@ -1,0 +1,22 @@
+﻿@using Build.Mvc
+@using Build.Mvc.Html
+@using Sewerage.HtmlHelpers
+
+@model Sewerage.Models.Observation
+
+<h2>Observation Editor</h2>
+
+@using (Html.BuildForm().AddClass("form-horizontal").Bind("with", "EditingObservation").Bind("submit", "saveObservations").Begin())
+{
+    @Html.BuildValidationSummary(true, "Validation Summary").AddClass("alert").AddClass("alert-error")
+
+    <fieldset>
+        <legend>Observation Id <span data-bind="text: ObservationId"></span></legend>
+        @Html.BuildControlGroupFor(x => Model.Position)
+        @Html.BuildControlGroupFor(x => Model.Tag)
+        @Html.BuildControlGroupFor(x => Model.Description)
+        @Html.BuildControlGroupFor(x => Model.SecondsIntoVideo)
+
+        @Html.BuildFormActions("$parent.deleteObservation")
+    </fieldset>
+}

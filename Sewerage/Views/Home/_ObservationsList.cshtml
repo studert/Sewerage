@@ -1,23 +1,27 @@
-﻿<div data-bind="if: $root.ChosenInspectionId() != null">
+﻿@using Build.Mvc
+@using Sewerage.HtmlHelpers
+@model Sewerage.Models.Observation
+
+<div data-bind="if: $root.ChosenInspectionId() != null">
     <h2>Observations</h2>
     <table class="table">
         <tr>
             <thead>
-                <th class="view-row"></th>
-                <th>Position</th>
-                <th>Tag</th>
-                <th>Description</th>
-                <th>Video Offset</th>     
-                <th class="edit-row"></th>     
-                <th class="delete-row"></th> 
+                @Html.BuildTh().AddClass("view-row")
+                @Html.BuildThFor(x => Model.Position)
+                @Html.BuildThFor(x => Model.Tag)
+                @Html.BuildThFor(x => Model.Description)
+                @Html.BuildThFor(x => Model.SecondsIntoVideo)
+                @Html.BuildTh().AddClass("edit-row")
+                @Html.BuildTh().AddClass("delete-row")
             </thead>
             <tbody data-bind="foreach: Observations">
                 <tr data-bind="click: $parent.selectObservation">
                     <td><i class="icon-eye-open" data-bind="visible: ObservationId == $parent.ChosenObservationId()"></i></td>
-                    <td data-bind="text: Position"></td>
-                    <td data-bind="text: Tag"></td>
-                    <td data-bind="text: Description"></td>
-                    <td data-bind="text: SecondsIntoVideo"></td>
+                    @Html.BuildTd().Bind("text", "Position")
+                    @Html.BuildTd().Bind("text", "Tag")
+                    @Html.BuildTd().Bind("text", "Description")
+                    @Html.BuildTd().Bind("text", "SecondsIntoVideo")
                     <td><a class="btn btn-mini" href="#" data-bind="click: $parent.editObservation"><i class="icon-edit"></i> Edit</a></td>
                     <td><a class="btn btn-mini btn-danger" href="#" data-bind="click: $parent.deleteObservation"><i class="icon-trash icon-white"></i> Delete</a></td>
                 </tr>

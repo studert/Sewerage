@@ -8,12 +8,15 @@ namespace Sewerage.Models
         public int InspectionId { get; set; }
 
         [Required]
+        [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
 
         [Required]
+        [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }
 
         [Required]
+        [Display(Name = "Video Url")]
         public string VideoUrl { get; set; }
 
         public virtual int SectionId { get; set; }

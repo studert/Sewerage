@@ -7,7 +7,7 @@ namespace Sewerage.Models
         public int SectionId { get; set; }
 
         [Required]
-        [RegularExpression(@"\b\d+\b")]
+        [RegularExpression(@"\b\d+\b", ErrorMessage = "The Number field must be numeric.")]
         public int Number { get; set; }
 
         [Required] 
@@ -19,7 +19,8 @@ namespace Sewerage.Models
         public string Street { get; set; }
 
         [Required]
-        [RegularExpression(@"((\b[0-9]+)?\.)?[0-9]+\b")]
+        [Display(Name = "Section Length")]
+        [RegularExpression(@"((\b[0-9]+)?\.)?[0-9]+\b", ErrorMessage = "The {0} field must be a decimal.")]
         public double Length { get; set; }
 
         public virtual int ProjectId { get; set; }

@@ -1,0 +1,21 @@
+﻿@using Build.Mvc
+@using Build.Mvc.Html
+@using Sewerage.HtmlHelpers
+
+@model Sewerage.Models.Inspection
+
+<h2>Inspection Editor</h2>
+
+@using (Html.BuildForm().AddClass("form-horizontal").Bind("with", "EditingInspection").Bind("submit", "saveInspections").Begin())
+{
+    @Html.BuildValidationSummary(true, "Validation Summary").AddClass("alert").AddClass("alert-error")
+
+    <fieldset>
+        <legend>Inspection Id <span data-bind="text: InspectionId"></span></legend>
+        @Html.BuildControlGroupFor(x => Model.StartDate)
+        @Html.BuildControlGroupFor(x => Model.EndDate)
+        @Html.BuildControlGroupFor(x => Model.VideoUrl)
+
+        @Html.BuildFormActions("$parent.deleteInspection")
+    </fieldset>
+}

@@ -147,57 +147,27 @@
             self.EditingInspection(null);
             self.EditingObservation(null);
         };
+
+        var revertAllDataSources = function() {
+            self.revertSections();
+            self.revertInspections();
+            self.revertObservations();
+        };
         
         // notifications
         self.successMessage = ko.observable().extend({ notify: "always" });
         self.errorMessage = ko.observable().extend({ notify: "always" });
 
-        // validation
-        var validationConfig = {
-            errorClass: "error",
-            validClass: "",
-            errorElement: "span",
-            errorPlacement: function(error, element) {
-                error.addClass("help-inline");
-                error.insertAfter(element);
-            },
-            highlight: function(element, errorClass, validClass) {
-                $(element).parent("div").parent("div").removeClass(validClass).addClass(errorClass);
-            },
-            unhighlight: function(element, errorClass, validClass) {
-                $(element).parent("div").parent("div").removeClass(errorClass).addClass(validClass);
-            }
-        };
-
-        self.sectionValidationConfig = $.extend({},
-            validationConfig, {
-                resetFormOnChange: self.EditingSection,
-                submitHandler: function() { self.saveSections(); }
-            }, sectionsDataSource.getEntityValidationRules());
-
-        self.inspectionValidationConfig = $.extend({},
-            validationConfig, {
-                resetFormOnChange: self.EditingInspection,
-                submitHandler: function() { self.saveInspections(); }
-            }, inspectionsDataSource.getEntityValidationRules());
-
-        self.observationValidationConfig = $.extend({},
-            validationConfig, {
-                resetFormOnChange: self.EditingObservation,
-                submitHandler: function() { self.saveObservations(); }
-            }, observationsDataSource.getEntityValidationRules());
-
         // client side navigation
         self.nav = new NavHistory({
             params: { editSection: null, editInspection: null, editObservation: null },
             onNavigate: function(navEntry, navInfo) {
+                
                 // reset editors
                 clearAllEdits();
 
                 // revert data sources
-                sectionsDataSource.revertChanges();
-                inspectionsDataSource.revertChanges();
-                observationsDataSource.revertChanges();
+                revertAllDataSources();
 
                 if (navEntry.params.editSection) {
 
@@ -278,7 +248,9 @@
                 self.showDefaultView();
             });
         };
-        self.saveSections = function () {
+        self.saveSections = function (form) {
+            if(!$(form).valid()) { return false; }
+            
             sectionsDataSource.commitChanges(function() {
                 self.successMessage("Saved section changes");
                 self.showDefaultView();
@@ -296,7 +268,9 @@
                 self.showDefaultView();
             });
         };
-        self.saveInspections = function () {
+        self.saveInspections = function (form) {
+            if(!$(form).valid()) { return false; }
+            
             inspectionsDataSource.commitChanges(function() {
                 self.successMessage("Saved inspection changes");
                 self.showDefaultView();
@@ -314,7 +288,9 @@
                 self.showDefaultView();
             });
         };
-        self.saveObservations = function () {
+        self.saveObservations = function (form) {
+            if(!$(form).valid()) { return false; }
+            
             observationsDataSource.commitChanges(function() {
                 self.successMessage("Saved observation changes");
                 self.showDefaultView();

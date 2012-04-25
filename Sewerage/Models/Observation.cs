@@ -7,9 +7,11 @@ namespace Sewerage.Models
     {
         public int ObservationId { get; set; }
 
+        [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
         [Required]
+        [Display(Name = "Video Offset")]
         public double SecondsIntoVideo { get; set; }
 
         [Required]

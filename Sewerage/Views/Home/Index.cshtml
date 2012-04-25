@@ -55,7 +55,7 @@
                     @Html.Partial("_SectionsList")
                 </div>
                 <div data-bind="visible: EditingSection">
-                    @Html.Partial("_SectionDetails")
+                    @Html.Partial("_SectionEditor")
                 </div>
             </div>
             <div class="span5 pull-right">
@@ -69,10 +69,10 @@
                     @Html.Partial("_ObservationsList")
                 </div>
                 <div data-bind="visible: EditingInspection">
-                    @Html.Partial("_InspectionDetails")
+                    @Html.Partial("_InspectionEditor")
                 </div>
                 <div data-bind="visible: EditingObservation">
-                    @Html.Partial("_ObservationDetails")
+                    @Html.Partial("_ObservationEditor")
                 </div>
             </div>
         </div><!--/row-->

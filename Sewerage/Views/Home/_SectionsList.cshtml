@@ -1,22 +1,26 @@
-﻿<div data-bind="if: $root.ChosenProjectId() != null">
+﻿@using Build.Mvc
+@using Sewerage.HtmlHelpers
+@model Sewerage.Models.Section
+
+<div data-bind="if: $root.ChosenProjectId() != null">
     <table class="table">
         <tr>
             <thead>
-                <th class="view-row"></th>
-                <th>Number</th>
-                <th>Length</th>
-                <th>City</th>
-                <th>Street</th>    
-                <th class="edit-row"></th>     
-                <th class="delete-row"></th>     
+                @Html.BuildTh().AddClass("view-row")
+                @Html.BuildThFor(x => Model.Number)
+                @Html.BuildThFor(x => Model.Length)
+                @Html.BuildThFor(x => Model.City)
+                @Html.BuildThFor(x => Model.Number)
+                @Html.BuildTh().AddClass("edit-row")
+                @Html.BuildTh().AddClass("delete-row")
             </thead>
             <tbody data-bind="foreach: Sections">
                 <tr data-bind="click: $parent.selectSection">
                     <td><i class="icon-eye-open" data-bind="visible: SectionId == $parent.ChosenSectionId()"></i></td>
-                    <td data-bind="text: Number"></td>
-                    <td data-bind="text: Length"></td>
-                    <td data-bind="text: City"></td>
-                    <td data-bind="text: Street"></td>
+                    @Html.BuildTd().Bind("text", "Number")
+                    @Html.BuildTd().Bind("text", "Length")
+                    @Html.BuildTd().Bind("text", "City")
+                    @Html.BuildTd().Bind("text", "Street")
                     <td><a class="btn btn-mini" href="#" data-bind="click: $parent.editSection"><i class="icon-edit"></i> Edit</a></td>
                     <td><a class="btn btn-mini btn-danger" href="#" data-bind="click: $parent.deleteSection"><i class="icon-trash icon-white"></i> Delete</a></td>
                 </tr>

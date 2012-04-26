@@ -61,7 +61,7 @@ namespace Sewerage.Resources.Models {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stadt.
+        ///   Looks up a localized string similar to City.
         /// </summary>
         public static string City {
             get {
@@ -70,7 +70,7 @@ namespace Sewerage.Resources.Models {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Länge.
+        ///   Looks up a localized string similar to Length.
         /// </summary>
         public static string Length {
             get {
@@ -79,7 +79,7 @@ namespace Sewerage.Resources.Models {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nummer.
+        ///   Looks up a localized string similar to Number.
         /// </summary>
         public static string Number {
             get {
@@ -88,7 +88,7 @@ namespace Sewerage.Resources.Models {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Abschnitt.
+        ///   Looks up a localized string similar to Section.
         /// </summary>
         public static string Section {
             get {
@@ -97,7 +97,7 @@ namespace Sewerage.Resources.Models {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Strasse.
+        ///   Looks up a localized string similar to Street.
         /// </summary>
         public static string Street {
             get {

@@ -118,57 +118,57 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>About</value>
+    <value>Über</value>
   </data>
   <data name="Admin" xml:space="preserve">
     <value>Admin</value>
   </data>
   <data name="By" xml:space="preserve">
-    <value>by</value>
+    <value>durch die</value>
   </data>
   <data name="ChangePassword" xml:space="preserve">
-    <value>Change Password</value>
+    <value>Password ändern</value>
   </data>
   <data name="CreateInspection" xml:space="preserve">
-    <value>New Inspection</value>
+    <value>Neue Inspektion</value>
   </data>
   <data name="CreateObservation" xml:space="preserve">
-    <value>New Observation</value>
+    <value>Neue Beobachtung</value>
   </data>
   <data name="CreateSection" xml:space="preserve">
-    <value>New Section</value>
+    <value>Neuer Abschnitt</value>
   </data>
   <data name="Elmah" xml:space="preserve">
     <value>Elmah</value>
   </data>
   <data name="Home" xml:space="preserve">
-    <value>Home</value>
+    <value>Startseite</value>
   </data>
   <data name="Inspections" xml:space="preserve">
-    <value>Inspections</value>
+    <value>Inspektionen</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>Log In</value>
+    <value>Anmelden</value>
   </data>
   <data name="Logoff" xml:space="preserve">
-    <value>Log Off</value>
+    <value>Abmelden</value>
   </data>
   <data name="Observations" xml:space="preserve">
-    <value>Observations</value>
+    <value>Beobachtungen</value>
   </data>
   <data name="Projects" xml:space="preserve">
-    <value>Projects</value>
+    <value>Projekte</value>
   </data>
   <data name="Register" xml:space="preserve">
-    <value>Register</value>
+    <value>Registrieren</value>
   </data>
   <data name="Sections" xml:space="preserve">
-    <value>Sections</value>
+    <value>Abschnitte</value>
   </data>
   <data name="University" xml:space="preserve">
-    <value>University of Applied Sciences Northern Switzerland</value>
+    <value>Fachhochschule Nordwestschweiz</value>
   </data>
   <data name="User" xml:space="preserve">
-    <value>User</value>
+    <value>Benutzer</value>
   </data>
 </root>

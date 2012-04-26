@@ -61,7 +61,7 @@ namespace Sewerage.Resources.Models {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Beschreibung.
+        ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string Description {
             get {
@@ -70,7 +70,7 @@ namespace Sewerage.Resources.Models {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Beobachtung.
+        ///   Looks up a localized string similar to Observation.
         /// </summary>
         public static string Observation {
             get {
@@ -88,7 +88,7 @@ namespace Sewerage.Resources.Models {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Video Position.
+        ///   Looks up a localized string similar to Video Offset.
         /// </summary>
         public static string SecondsIntoVideo {
             get {
@@ -97,7 +97,7 @@ namespace Sewerage.Resources.Models {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kurzbezeichnung.
+        ///   Looks up a localized string similar to Tag.
         /// </summary>
         public static string Tag {
             get {

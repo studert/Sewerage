@@ -61,7 +61,7 @@ namespace Sewerage.Resources.Models {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to End Datum.
+        ///   Looks up a localized string similar to End Date.
         /// </summary>
         public static string EndDate {
             get {
@@ -70,7 +70,7 @@ namespace Sewerage.Resources.Models {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inspektion.
+        ///   Looks up a localized string similar to Inspection.
         /// </summary>
         public static string Inspection {
             get {
@@ -79,7 +79,7 @@ namespace Sewerage.Resources.Models {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start Datum.
+        ///   Looks up a localized string similar to Start Date.
         /// </summary>
         public static string StartDate {
             get {

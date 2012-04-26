@@ -118,21 +118,21 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Contact" xml:space="preserve">
-    <value>Kontakt</value>
+    <value>Contact</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>E-Mail</value>
   </data>
   <data name="Mobile" xml:space="preserve">
-    <value>Mobil</value>
+    <value>Mobile</value>
   </data>
   <data name="Private" xml:space="preserve">
-    <value>Privat</value>
+    <value>Private</value>
   </data>
   <data name="Subtitle" xml:space="preserve">
-    <value>Bachelor Thesis für die Fachhochschule Nordwestschweiz.</value>
+    <value>Bachelor Thesis for the University of Applied Sciences Northwestern Switzerland</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Über</value>
+    <value>About</value>
   </data>
 </root>

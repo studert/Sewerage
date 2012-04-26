@@ -118,36 +118,36 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Inspection" xml:space="preserve">
-    <value>Inspektion</value>
+    <value>Inspection</value>
   </data>
   <data name="InspectionEditor" xml:space="preserve">
-    <value>Inspektionseditor</value>
+    <value>Inspection Editor</value>
   </data>
   <data name="Inspections" xml:space="preserve">
-    <value>Inspektionen</value>
+    <value>Inspections</value>
   </data>
   <data name="Observation" xml:space="preserve">
-    <value>Beobachtung</value>
+    <value>Observation</value>
   </data>
   <data name="ObservationEditor" xml:space="preserve">
-    <value>Beobachtungseditor</value>
+    <value>Observation Editor</value>
   </data>
   <data name="Observations" xml:space="preserve">
-    <value>Beobachtungen</value>
+    <value>Observations</value>
   </data>
   <data name="Project" xml:space="preserve">
-    <value>Projekt</value>
+    <value>Project</value>
   </data>
   <data name="Projects" xml:space="preserve">
-    <value>Projekte</value>
+    <value>Projects</value>
   </data>
   <data name="Section" xml:space="preserve">
-    <value>Abschnitt</value>
+    <value>Section</value>
   </data>
   <data name="SectionEditor" xml:space="preserve">
-    <value>Abschnittseditor</value>
+    <value>Section Editor</value>
   </data>
   <data name="Sections" xml:space="preserve">
-    <value>Abschnitte</value>
+    <value>Sections</value>
   </data>
 </root>

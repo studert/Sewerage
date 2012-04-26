@@ -118,28 +118,28 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ChangePasswordLegend" xml:space="preserve">
-    <value>Passwort ändern</value>
+    <value>Change Password</value>
   </data>
   <data name="ChangePasswordSubtitle" xml:space="preserve">
-    <value>Benutzen Sie das untenstehende Formular zum Ändern des Passworts.</value>
+    <value>Use the form below to change the password.</value>
   </data>
   <data name="ChangePasswordTitle" xml:space="preserve">
-    <value>Passwort ändern</value>
+    <value>Change Password</value>
   </data>
   <data name="ChangePasswordValidationSummary" xml:space="preserve">
     <value>Passwortänderung nicht erfolgreich. Bitte korrigieren Sie die Fehler und versuchen Sie es erneut.</value>
   </data>
   <data name="IfNoAccount" xml:space="preserve">
-    <value>falls Sie kein Benutzerkonto haben.</value>
+    <value>if you don't have an account.</value>
   </data>
   <data name="LoginLegend" xml:space="preserve">
-    <value>Anmeldeformular</value>
+    <value>Log In Form</value>
   </data>
   <data name="LoginSubtitle" xml:space="preserve">
     <value>Geben Sie unten den Benutzernamen und das Passwort ein.</value>
   </data>
   <data name="LoginTitle" xml:space="preserve">
-    <value>Anmelden</value>
+    <value>Log In</value>
   </data>
   <data name="LoginValidationSummary" xml:space="preserve">
     <value>Anmeldung nicht erfolgreich. Bitte korrigieren Sie die Fehler und versuchen Sie es erneut.</value>
@@ -148,13 +148,13 @@
     <value />
   </data>
   <data name="RegisterLegend" xml:space="preserve">
-    <value>Registrierungsformular</value>
+    <value>Register Form</value>
   </data>
   <data name="RegisterSubtitle" xml:space="preserve">
     <value>Benutzen Sie das untenstehende Formular zur Erstellung eines Benutzerkontos.</value>
   </data>
   <data name="RegisterTitle" xml:space="preserve">
-    <value>Registrieren</value>
+    <value>Register</value>
   </data>
   <data name="RegisterValidationSummary" xml:space="preserve">
     <value>Registrierung nicht erfolgreich. Bitte korrigieren Sie die Fehler und versuchen Sie es erneut.</value>

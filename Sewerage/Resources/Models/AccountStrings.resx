@@ -118,24 +118,24 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ConfirmPassword" xml:space="preserve">
-    <value>Password wiederholen</value>
+    <value>Confirm Password</value>
   </data>
   <data name="Email" xml:space="preserve">
-    <value>E-Mail Adresse</value>
+    <value>E-Mail Address</value>
   </data>
   <data name="NewPassword" xml:space="preserve">
-    <value>Neues Passwort</value>
+    <value>New Password</value>
   </data>
   <data name="OldPassword" xml:space="preserve">
-    <value>Aktuelles Passwort</value>
+    <value>Current Password</value>
   </data>
   <data name="Password" xml:space="preserve">
-    <value>Passwort</value>
+    <value>Password</value>
   </data>
   <data name="RememberMe" xml:space="preserve">
-    <value>Merken?</value>
+    <value>Remember Me?</value>
   </data>
   <data name="UserName" xml:space="preserve">
-    <value>Benutzername</value>
+    <value>User Name</value>
   </data>
 </root>

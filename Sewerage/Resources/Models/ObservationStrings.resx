@@ -118,18 +118,18 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Description" xml:space="preserve">
-    <value>Beschreibung</value>
+    <value>Description</value>
   </data>
   <data name="Observation" xml:space="preserve">
-    <value>Beobachtung</value>
+    <value>Observation</value>
   </data>
   <data name="Position" xml:space="preserve">
     <value>Position</value>
   </data>
   <data name="SecondsIntoVideo" xml:space="preserve">
-    <value>Video Position</value>
+    <value>Video Offset</value>
   </data>
   <data name="Tag" xml:space="preserve">
-    <value>Kurzbezeichnung</value>
+    <value>Tag</value>
   </data>
 </root>

@@ -61,7 +61,7 @@ namespace Sewerage.Resources.Models {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Beschreibung.
+        ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string Description {
             get {
@@ -79,7 +79,7 @@ namespace Sewerage.Resources.Models {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Projekt.
+        ///   Looks up a localized string similar to Project.
         /// </summary>
         public static string Project {
             get {

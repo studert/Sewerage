@@ -117,58 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>Über</value>
+  <data name="ChangePasswordLegend" xml:space="preserve">
+    <value>Passwort ändern</value>
   </data>
-  <data name="Admin" xml:space="preserve">
-    <value>Admin</value>
+  <data name="ChangePasswordSubtitle" xml:space="preserve">
+    <value>Benutzen Sie das untenstehende Formular zum Ändern des Passworts.</value>
   </data>
-  <data name="By" xml:space="preserve">
-    <value>durch die</value>
+  <data name="ChangePasswordTitle" xml:space="preserve">
+    <value>Passwort ändern</value>
   </data>
-  <data name="ChangePassword" xml:space="preserve">
-    <value>Password ändern</value>
+  <data name="ChangePasswordValidationSummary" xml:space="preserve">
+    <value>Passwortänderung nicht erfolgreich. Bitte korrigieren Sie die Fehler und versuchen Sie es erneut.</value>
   </data>
-  <data name="CreateInspection" xml:space="preserve">
-    <value>Neue Inspektion</value>
+  <data name="IfNoAccount" xml:space="preserve">
+    <value>falls Sie kein Benutzerkonto haben.</value>
   </data>
-  <data name="CreateObservation" xml:space="preserve">
-    <value>Neue Beobachtung</value>
+  <data name="LoginLegend" xml:space="preserve">
+    <value>Anmeldeformular</value>
   </data>
-  <data name="CreateSection" xml:space="preserve">
-    <value>Neuer Abschnitt</value>
+  <data name="LoginSubtitle" xml:space="preserve">
+    <value>Geben Sie unten den Benutzernamen und das Passwort ein.</value>
   </data>
-  <data name="Elmah" xml:space="preserve">
-    <value>Elmah</value>
-  </data>
-  <data name="Home" xml:space="preserve">
-    <value>Startseite</value>
-  </data>
-  <data name="Inspections" xml:space="preserve">
-    <value>Inspektionen</value>
-  </data>
-  <data name="Login" xml:space="preserve">
+  <data name="LoginTitle" xml:space="preserve">
     <value>Anmelden</value>
   </data>
-  <data name="Logoff" xml:space="preserve">
-    <value>Abmelden</value>
+  <data name="LoginValidationSummary" xml:space="preserve">
+    <value>Anmeldung nicht erfolgreich. Bitte korrigieren Sie die Fehler und versuchen Sie es erneut.</value>
   </data>
-  <data name="Observations" xml:space="preserve">
-    <value>Beobachtungen</value>
+  <data name="RegisterInfo" xml:space="preserve">
+    <value />
   </data>
-  <data name="Projects" xml:space="preserve">
-    <value>Projekte</value>
+  <data name="RegisterLegend" xml:space="preserve">
+    <value>Registrierungsformular</value>
   </data>
-  <data name="Register" xml:space="preserve">
+  <data name="RegisterSubtitle" xml:space="preserve">
+    <value>Benutzen Sie das untenstehende Formular zur Erstellung eines Benutzerkontos.</value>
+  </data>
+  <data name="RegisterTitle" xml:space="preserve">
     <value>Registrieren</value>
   </data>
-  <data name="Sections" xml:space="preserve">
-    <value>Abschnitte</value>
-  </data>
-  <data name="University" xml:space="preserve">
-    <value>Fachhochschule Nordwestschweiz</value>
-  </data>
-  <data name="User" xml:space="preserve">
-    <value>Benutzer</value>
+  <data name="RegisterValidationSummary" xml:space="preserve">
+    <value>Registrierung nicht erfolgreich. Bitte korrigieren Sie die Fehler und versuchen Sie es erneut.</value>
   </data>
 </root>

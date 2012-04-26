@@ -1,33 +1,35 @@
 @using Build.Mvc
 @using Build.Mvc.Html
 @using Sewerage.HtmlHelpers
+@using Sewerage.Resources.Views
+@using Sewerage.Resources.Views.Account
 @model Sewerage.Models.LoginModel
 
 @{
-    ViewBag.Title = "Log in";
+    ViewBag.Title = AccountStrings.LoginTitle;
 }
 
 <hgroup>
     <h1>@ViewBag.Title.</h1>
-    <h2>Enter your user name and password below.</h2>
+    <h2>@AccountStrings.LoginSubtitle</h2>
 </hgroup>
 
 @using (Html.BuildForm().AddClass("form-horizontal").Begin())
 {
-    @Html.BuildValidationSummary(true, "Log in was unsuccessful. Please correct the errors and try again.").AddClass("alert").AddClass("alert-error")
+    @Html.BuildValidationSummary(true, @AccountStrings.LoginValidationSummary).AddClass("alert").AddClass("alert-error")
 
     <fieldset>
-        <legend>Log in Form</legend>
+        <legend>@AccountStrings.LoginLegend</legend>
         @Html.BuildControlGroupFor(x => Model.UserName)
         @Html.BuildControlGroupFor(x => Model.Password)
         @Html.BuildControlGroupFor(x => Model.RememberMe)
         
         <div class="form-actions">
-            @Html.BuildSubmitButtonWithIcon("Log In", "icon-ok icon-white").AddClass("btn").AddClass("btn-primary")
+            @Html.BuildSubmitButtonWithIcon(GlobalStrings.LoginButton, "icon-ok icon-white").AddClass("btn").AddClass("btn-primary")
         </div>
     </fieldset>
 
     <p>
-        @Html.ActionLink("Register", "Register") if you don't have an account.
+        @Html.ActionLink(GlobalStrings.RegisterButton, "Register") @AccountStrings.IfNoAccount
     </p>
 }

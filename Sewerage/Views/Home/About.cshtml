@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "About";
+﻿@using Sewerage.Resources.Views.Home
+@{
+    ViewBag.Title = AboutStrings.Title;
 }
 
 <div class="row-fluid">
@@ -46,15 +47,15 @@
     </div>
     <div class="span3">
         <aside class="well">
-            <h3>Contact</h3>
+            <h3>@AboutStrings.Contact</h3>
             <address>
                 <strong>Tobias Studer</strong><br />
                 Hagmattstrasse 8<br />
                 4600 Olten<br />
                 <br/>
-                <abbr title="Mobile">M:</abbr> +41 79 203 37 89<br />
-                <abbr title="Private">P:</abbr> +41 62 534 31 64<br />
-                <abbr title="E-Mail">E:</abbr> <a href="mailto:tobias.studer@students.fhnw.ch">tobias.studer@students.fhnw.ch</a>
+                <abbr title=@AboutStrings.Mobile>M:</abbr> +41 79 203 37 89<br />
+                <abbr title=@AboutStrings.Private>P:</abbr> +41 62 534 31 64<br />
+                <abbr title=@AboutStrings.Email>E:</abbr> <a href="mailto:tobias.studer@students.fhnw.ch">tobias.studer@students.fhnw.ch</a>
             </address>
         </aside>
     </div>

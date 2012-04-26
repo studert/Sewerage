@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using Sewerage.Resources.Views.Home;
 
 namespace Sewerage.Controllers
 {
@@ -15,7 +16,7 @@ namespace Sewerage.Controllers
         [AllowAnonymous]
         public ActionResult About()
         {
-            ViewBag.Message = "Bachelor Thesis for University of Applied Sciences Nordwestern Switzerland.";
+            ViewBag.Message = AboutStrings.Subtitle;
 
             return View();
         }

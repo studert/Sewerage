@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using System.Web.Mvc;
 using Build.Mvc;
 using Build.Mvc.Html;
+using Sewerage.Resources.Views;
 
 namespace Sewerage.HtmlHelpers
 {
@@ -114,10 +115,10 @@ namespace Sewerage.HtmlHelpers
             return htmlHelper.BuildDiv().With(x =>
             {
                 x.AddClass("form-actions");
-                x.InternalBuilder.InnerHtml += htmlHelper.BuildSubmitButtonWithIcon("Save changes", "icon-ok icon-white").Bind("enable", "IsUpdated() || IsAdded()").AddClass("btn").AddClass("btn-primary").ToHtmlString();
-                x.InternalBuilder.InnerHtml += AppendLeadingSpace(htmlHelper.BuildLinkWithIcon("Delete", "#", "icon-trash icon-white").AddClass("btn").AddClass("btn-danger").Bind("visible", "CanDelete").Bind("click", deleteAction).ToHtmlString());
-                x.InternalBuilder.InnerHtml += AppendLeadingSpace(htmlHelper.BuildLinkWithIcon("Back", "#", "icon-arrow-left").AddClass("btn").Bind("click", "$parent.showDefaultView").ToHtmlString());
-                x.InternalBuilder.InnerHtml += AppendLeadingSpace(htmlHelper.BuildLinkWithIcon("Undo changes", "#", "icon-remove").AddClass("btn").Bind("visible", "IsUpdated").Bind("click", "$parent.revertSections").ToHtmlString());
+                x.InternalBuilder.InnerHtml += htmlHelper.BuildSubmitButtonWithIcon(GlobalStrings.SaveChangesButton, "icon-ok icon-white").Bind("enable", "IsUpdated() || IsAdded()").AddClass("btn").AddClass("btn-primary").ToHtmlString();
+                x.InternalBuilder.InnerHtml += AppendLeadingSpace(htmlHelper.BuildLinkWithIcon(GlobalStrings.DeleteButton, "#", "icon-trash icon-white").AddClass("btn").AddClass("btn-danger").Bind("visible", "CanDelete").Bind("click", deleteAction).ToHtmlString());
+                x.InternalBuilder.InnerHtml += AppendLeadingSpace(htmlHelper.BuildLinkWithIcon(GlobalStrings.BackButton, "#", "icon-arrow-left").AddClass("btn").Bind("click", "$parent.showDefaultView").ToHtmlString());
+                x.InternalBuilder.InnerHtml += AppendLeadingSpace(htmlHelper.BuildLinkWithIcon(GlobalStrings.RevertButton, "#", "icon-remove").AddClass("btn").Bind("visible", "IsUpdated").Bind("click", "$parent.revertSections").ToHtmlString());
 
             });
         }

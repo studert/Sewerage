@@ -1,15 +1,17 @@
 @using Build.Mvc
 @using Build.Mvc.Html
 @using Sewerage.HtmlHelpers
+@using Sewerage.Resources.Views
+@using Sewerage.Resources.Views.Account
 @model Sewerage.Models.RegisterModel
 
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = AccountStrings.RegisterTitle;
 }
 
 <hgroup>
     <h1>@ViewBag.Title.</h1>
-    <h2>Use the form below to create a new account.</h2>
+    <h2>@AccountStrings.RegisterSubtitle</h2>
 </hgroup>
 
 <div class="alert alert-info">
@@ -19,17 +21,17 @@
 
 @using (Html.BuildForm().AddClass("form-horizontal").Begin())
 {
-    @Html.BuildValidationSummary(true, "Account creation was unsuccessful. Please correct the errors and try again.").AddClass("alert").AddClass("alert-error")
+    @Html.BuildValidationSummary(true, AccountStrings.RegisterValidationSummary).AddClass("alert").AddClass("alert-error")
 
     <fieldset>
-        <legend>Registration Form</legend>
+        <legend>@AccountStrings.RegisterLegend</legend>
         @Html.BuildControlGroupFor(x => Model.UserName)
         @Html.BuildControlGroupFor(x => Model.Email)
         @Html.BuildControlGroupFor(x => Model.Password)
         @Html.BuildControlGroupFor(x => Model.ConfirmPassword)
         
         <div class="form-actions">
-            @Html.BuildSubmitButtonWithIcon("Register", "icon-ok icon-white").AddClass("btn").AddClass("btn-primary")
+            @Html.BuildSubmitButtonWithIcon(GlobalStrings.RegisterButton, "icon-ok icon-white").AddClass("btn").AddClass("btn-primary")
         </div>
     </fieldset>
 }

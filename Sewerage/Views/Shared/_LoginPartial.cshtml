@@ -23,7 +23,7 @@
 } else {
     <ul class="nav pull-right">
         <li class="divider-vertical"></li>
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", data_dialog_title = "Registration" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", data_dialog_title = "Identification" })</li>
+        <li><a href="@Url.Action("Register", "Account")">@SharedStrings.Register</a></li>
+        <li><a href="@Url.Action("Login", "Account")">@SharedStrings.Login</a></li>
     </ul>
 }

@@ -162,6 +162,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="HtmlHelpers\BuildMvcExtensions.cs" />
+    <Compile Include="Resources\Models\AccountStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountStrings.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\Models\ObservationStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -189,10 +194,25 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InspectionStrings.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resources\Views\Home\HomeStrings.Designer.cs">
+    <Compile Include="Resources\Views\Account\AccountStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>HomeStrings.resx</DependentUpon>
+      <DependentUpon>AccountStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Views\GlobalStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Views\Home\AboutStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AboutStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Views\Home\IndexStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IndexStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\Views\Shared\SharedStrings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -265,6 +285,10 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Models\AccountStrings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AccountStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Models\ObservationStrings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ObservationStrings.Designer.cs</LastGenOutput>
@@ -281,9 +305,21 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>InspectionStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Views\Home\HomeStrings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>HomeStrings.Designer.cs</LastGenOutput>
+    <EmbeddedResource Include="Resources\Views\Account\AccountStrings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AccountStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\GlobalStrings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>GlobalStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\Home\AboutStrings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AboutStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\Home\IndexStrings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>IndexStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Views\Shared\SharedStrings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -366,9 +402,7 @@
   <ItemGroup>
     <Content Include="Views\Home\_ObservationEditor.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\Views\Account\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

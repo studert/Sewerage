@@ -1,10 +1,13 @@
 ﻿@using Build.Mvc
 @using Sewerage.HtmlHelpers
-@using Sewerage.Resources.Views.Shared
+@using Sewerage.Resources.Views
+@using Sewerage.Resources.Views.Home
 @model Sewerage.Models.Observation
 
 <div data-bind="if: $root.ChosenInspectionId() != null">
-    <h2>@SharedStrings.Observations</h2>
+    
+    <h2>@IndexStrings.Observations</h2>
+
     <table class="table">
         <tr>
             <thead>
@@ -23,8 +26,8 @@
                     @Html.BuildTd().Bind("text", "Tag")
                     @Html.BuildTd().Bind("text", "Description")
                     @Html.BuildTd().Bind("text", "SecondsIntoVideo")
-                    <td><a class="btn btn-mini" href="#" data-bind="click: $parent.editObservation"><i class="icon-edit"></i> Edit</a></td>
-                    <td><a class="btn btn-mini btn-danger" href="#" data-bind="click: $parent.deleteObservation"><i class="icon-trash icon-white"></i> Delete</a></td>
+                    <td><a class="btn btn-mini" href="#" data-bind="click: $parent.editObservation"><i class="icon-edit"></i> @GlobalStrings.EditButton</a></td>
+                    <td><a class="btn btn-mini btn-danger" href="#" data-bind="click: $parent.deleteObservation"><i class="icon-trash icon-white"></i> @GlobalStrings.DeleteButton</a></td>
                 </tr>
             </tbody>
         </tr>

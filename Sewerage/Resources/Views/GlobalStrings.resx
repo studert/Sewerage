@@ -117,58 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>Über</value>
+  <data name="BackButton" xml:space="preserve">
+    <value>Zurück</value>
   </data>
-  <data name="Admin" xml:space="preserve">
-    <value>Admin</value>
+  <data name="CancelButton" xml:space="preserve">
+    <value>Abbrechen</value>
   </data>
-  <data name="By" xml:space="preserve">
-    <value>durch die</value>
+  <data name="ChangePasswordButton" xml:space="preserve">
+    <value>Passwort ändern</value>
   </data>
-  <data name="ChangePassword" xml:space="preserve">
-    <value>Password ändern</value>
+  <data name="DeleteButton" xml:space="preserve">
+    <value>Löschen</value>
   </data>
-  <data name="CreateInspection" xml:space="preserve">
-    <value>Neue Inspektion</value>
+  <data name="EditButton" xml:space="preserve">
+    <value>Bearbeiten</value>
   </data>
-  <data name="CreateObservation" xml:space="preserve">
-    <value>Neue Beobachtung</value>
-  </data>
-  <data name="CreateSection" xml:space="preserve">
-    <value>Neuer Abschnitt</value>
-  </data>
-  <data name="Elmah" xml:space="preserve">
-    <value>Elmah</value>
-  </data>
-  <data name="Home" xml:space="preserve">
-    <value>Startseite</value>
-  </data>
-  <data name="Inspections" xml:space="preserve">
-    <value>Inspektionen</value>
-  </data>
-  <data name="Login" xml:space="preserve">
+  <data name="LoginButton" xml:space="preserve">
     <value>Anmelden</value>
   </data>
-  <data name="Logoff" xml:space="preserve">
-    <value>Abmelden</value>
-  </data>
-  <data name="Observations" xml:space="preserve">
-    <value>Beobachtungen</value>
-  </data>
-  <data name="Projects" xml:space="preserve">
-    <value>Projekte</value>
-  </data>
-  <data name="Register" xml:space="preserve">
+  <data name="RegisterButton" xml:space="preserve">
     <value>Registrieren</value>
   </data>
-  <data name="Sections" xml:space="preserve">
-    <value>Abschnitte</value>
+  <data name="RevertButton" xml:space="preserve">
+    <value>Rückgängig</value>
   </data>
-  <data name="University" xml:space="preserve">
-    <value>Fachhochschule Nordwestschweiz</value>
+  <data name="SaveButton" xml:space="preserve">
+    <value>Speichern</value>
   </data>
-  <data name="User" xml:space="preserve">
-    <value>Benutzer</value>
+  <data name="SaveChangesButton" xml:space="preserve">
+    <value>Änderungen speichern</value>
+  </data>
+  <data name="SelectButton" xml:space="preserve">
+    <value>Auswählen</value>
   </data>
 </root>

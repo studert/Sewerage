@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Sewerage.Resources.Views.Shared {
+namespace Sewerage.Resources.Views.Home {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Sewerage.Resources.Views.Shared {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class SharedStrings {
+    public class IndexStrings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal SharedStrings() {
+        internal IndexStrings() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Sewerage.Resources.Views.Shared {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sewerage.Resources.Views.Shared.SharedStrings", typeof(SharedStrings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sewerage.Resources.Views.Home.IndexStrings", typeof(IndexStrings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,83 +61,20 @@ namespace Sewerage.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Über.
+        ///   Looks up a localized string similar to Inspektion.
         /// </summary>
-        public static string About {
+        public static string Inspection {
             get {
-                return ResourceManager.GetString("About", resourceCulture);
+                return ResourceManager.GetString("Inspection", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Admin.
+        ///   Looks up a localized string similar to Inspektionseditor.
         /// </summary>
-        public static string Admin {
+        public static string InspectionEditor {
             get {
-                return ResourceManager.GetString("Admin", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to durch die.
-        /// </summary>
-        public static string By {
-            get {
-                return ResourceManager.GetString("By", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password ändern.
-        /// </summary>
-        public static string ChangePassword {
-            get {
-                return ResourceManager.GetString("ChangePassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Neue Inspektion.
-        /// </summary>
-        public static string CreateInspection {
-            get {
-                return ResourceManager.GetString("CreateInspection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Neue Beobachtung.
-        /// </summary>
-        public static string CreateObservation {
-            get {
-                return ResourceManager.GetString("CreateObservation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Neuer Abschnitt.
-        /// </summary>
-        public static string CreateSection {
-            get {
-                return ResourceManager.GetString("CreateSection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Elmah.
-        /// </summary>
-        public static string Elmah {
-            get {
-                return ResourceManager.GetString("Elmah", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Startseite.
-        /// </summary>
-        public static string Home {
-            get {
-                return ResourceManager.GetString("Home", resourceCulture);
+                return ResourceManager.GetString("InspectionEditor", resourceCulture);
             }
         }
         
@@ -151,20 +88,20 @@ namespace Sewerage.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Anmelden.
+        ///   Looks up a localized string similar to Beobachtung.
         /// </summary>
-        public static string Login {
+        public static string Observation {
             get {
-                return ResourceManager.GetString("Login", resourceCulture);
+                return ResourceManager.GetString("Observation", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Abmelden.
+        ///   Looks up a localized string similar to Beobachtungseditor.
         /// </summary>
-        public static string Logoff {
+        public static string ObservationEditor {
             get {
-                return ResourceManager.GetString("Logoff", resourceCulture);
+                return ResourceManager.GetString("ObservationEditor", resourceCulture);
             }
         }
         
@@ -178,6 +115,15 @@ namespace Sewerage.Resources.Views.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Projekt.
+        /// </summary>
+        public static string Project {
+            get {
+                return ResourceManager.GetString("Project", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Projekte.
         /// </summary>
         public static string Projects {
@@ -187,11 +133,20 @@ namespace Sewerage.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registrieren.
+        ///   Looks up a localized string similar to Abschnitt.
         /// </summary>
-        public static string Register {
+        public static string Section {
             get {
-                return ResourceManager.GetString("Register", resourceCulture);
+                return ResourceManager.GetString("Section", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Abschnittseditor.
+        /// </summary>
+        public static string SectionEditor {
+            get {
+                return ResourceManager.GetString("SectionEditor", resourceCulture);
             }
         }
         
@@ -201,24 +156,6 @@ namespace Sewerage.Resources.Views.Shared {
         public static string Sections {
             get {
                 return ResourceManager.GetString("Sections", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fachhochschule Nordwestschweiz.
-        /// </summary>
-        public static string University {
-            get {
-                return ResourceManager.GetString("University", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Benutzer.
-        /// </summary>
-        public static string User {
-            get {
-                return ResourceManager.GetString("User", resourceCulture);
             }
         }
     }

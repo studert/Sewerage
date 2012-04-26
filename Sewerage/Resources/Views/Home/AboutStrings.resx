@@ -117,58 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
+  <data name="Contact" xml:space="preserve">
+    <value>Kontakt</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>E-Mail</value>
+  </data>
+  <data name="Mobile" xml:space="preserve">
+    <value>Mobil</value>
+  </data>
+  <data name="Private" xml:space="preserve">
+    <value>Privat</value>
+  </data>
+  <data name="Subtitle" xml:space="preserve">
+    <value>Bachelor Thesis für die Fachhochschule Nordwestschweiz.</value>
+  </data>
+  <data name="Title" xml:space="preserve">
     <value>Über</value>
-  </data>
-  <data name="Admin" xml:space="preserve">
-    <value>Admin</value>
-  </data>
-  <data name="By" xml:space="preserve">
-    <value>durch die</value>
-  </data>
-  <data name="ChangePassword" xml:space="preserve">
-    <value>Password ändern</value>
-  </data>
-  <data name="CreateInspection" xml:space="preserve">
-    <value>Neue Inspektion</value>
-  </data>
-  <data name="CreateObservation" xml:space="preserve">
-    <value>Neue Beobachtung</value>
-  </data>
-  <data name="CreateSection" xml:space="preserve">
-    <value>Neuer Abschnitt</value>
-  </data>
-  <data name="Elmah" xml:space="preserve">
-    <value>Elmah</value>
-  </data>
-  <data name="Home" xml:space="preserve">
-    <value>Startseite</value>
-  </data>
-  <data name="Inspections" xml:space="preserve">
-    <value>Inspektionen</value>
-  </data>
-  <data name="Login" xml:space="preserve">
-    <value>Anmelden</value>
-  </data>
-  <data name="Logoff" xml:space="preserve">
-    <value>Abmelden</value>
-  </data>
-  <data name="Observations" xml:space="preserve">
-    <value>Beobachtungen</value>
-  </data>
-  <data name="Projects" xml:space="preserve">
-    <value>Projekte</value>
-  </data>
-  <data name="Register" xml:space="preserve">
-    <value>Registrieren</value>
-  </data>
-  <data name="Sections" xml:space="preserve">
-    <value>Abschnitte</value>
-  </data>
-  <data name="University" xml:space="preserve">
-    <value>Fachhochschule Nordwestschweiz</value>
-  </data>
-  <data name="User" xml:space="preserve">
-    <value>Benutzer</value>
   </data>
 </root>

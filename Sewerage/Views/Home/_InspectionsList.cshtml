@@ -1,13 +1,15 @@
-﻿﻿<div data-bind="if: $root.ChosenSectionId() != null">
+﻿@using Sewerage.Resources.Views
+@using Sewerage.Resources.Views.Home
+﻿<div data-bind="if: $root.ChosenSectionId() != null">
      <ul class="nav nav-tabs" data-bind="foreach: Inspections">
          <li class="dropdown" data-bind="css: {active: InspectionId == $parent.ChosenInspectionId() }">
              <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                 Inspection <span data-bind="text: InspectionId"></span>
+                 @IndexStrings.Inspection <span data-bind="text: InspectionId"></span>
                  <b class="caret"></b>
              </a>
              <ul class="dropdown-menu">
-                 <li><a href="#" data-bind="click: $parent.selectInspection"><i class="icon-check"></i> Select</a></li>
-                 <li><a href="#" data-bind="click: $parent.editInspection"><i class="icon-edit"></i> Edit</a></li>
+                 <li><a href="#" data-bind="click: $parent.selectInspection"><i class="icon-check"></i> @GlobalStrings.SelectButton</a></li>
+                 <li><a href="#" data-bind="click: $parent.editInspection"><i class="icon-edit"></i> @GlobalStrings.EditButton</a></li>
              </ul>
          </li>
      </ul>

@@ -1,22 +1,24 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Sewerage.Resources.Models;
 
 namespace Sewerage.Models
 {
     public class Inspection
     {
+        [Display(Name = "Inspection", ResourceType = typeof(InspectionStrings))]
         public int InspectionId { get; set; }
 
         [Required]
-        [Display(Name = "Start Date")]
+        [Display(Name = "StartDate", ResourceType = typeof(InspectionStrings))]
         public DateTime StartDate { get; set; }
 
         [Required]
-        [Display(Name = "End Date")]
+        [Display(Name = "EndDate", ResourceType = typeof(InspectionStrings))]
         public DateTime EndDate { get; set; }
 
         [Required]
-        [Display(Name = "Video Url")]
+        [Display(Name = "VideoUrl", ResourceType = typeof(InspectionStrings))]
         public string VideoUrl { get; set; }
 
         public virtual int SectionId { get; set; }

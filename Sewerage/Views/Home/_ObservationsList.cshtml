@@ -1,9 +1,10 @@
 ﻿@using Build.Mvc
 @using Sewerage.HtmlHelpers
+@using Sewerage.Resources.Views.Shared
 @model Sewerage.Models.Observation
 
 <div data-bind="if: $root.ChosenInspectionId() != null">
-    <h2>Observations</h2>
+    <h2>@SharedStrings.Observations</h2>
     <table class="table">
         <tr>
             <thead>

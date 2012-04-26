@@ -1,6 +1,7 @@
 @using Sewerage.Controllers
+@using Sewerage.Resources.Views.Shared
 @{
-    ViewBag.Title = "Home";
+    ViewBag.Title = @SharedStrings.Home;
 }
 
 @section menu
@@ -8,29 +9,29 @@
     <ul class="nav nav-pills">
         <li class="dropdown" data-bind="visible: ChosenProjectId">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                Sections
+                @SharedStrings.Sections
                 <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-                <li><a href="#" data-bind="click: createSection"><i class="icon-plus"></i> New Section</a></li>
+                <li><a href="#" data-bind="click: createSection"><i class="icon-plus"></i> @SharedStrings.CreateSection</a></li>
             </ul>
         </li>
         <li class="dropdown" data-bind="visible: ChosenSectionId">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                Inspections
+                @SharedStrings.Inspections
                 <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-                <li><a href="#" data-bind="click: createInspection"><i class="icon-plus"></i> New Inspection</a></li>
+                <li><a href="#" data-bind="click: createInspection"><i class="icon-plus"></i> @SharedStrings.CreateInspection</a></li>
             </ul>
         </li>
         <li class="dropdown" data-bind="visible: ChosenInspectionId" >
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                Observations
+                @SharedStrings.Observations
                 <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-                <li><a href="#" data-bind="click: createObservation"><i class="icon-plus"></i> New Observation</a></li>
+                <li><a href="#" data-bind="click: createObservation"><i class="icon-plus"></i> @SharedStrings.CreateObservation</a></li>
             </ul>
         </li>
     </ul>
@@ -38,7 +39,7 @@
 
 <div class="row-fluid">
     <div class="span2">
-        <h2>Projects</h2>
+        <h2>@SharedStrings.Projects</h2>
         <div class="well">
             @Html.Partial("_ProjectsList")
         </div><!--/.well -->
@@ -51,7 +52,7 @@
                 <div class="alert alert-error" data-bind="flash: {text: errorMessage, duration: 20000 }"></div>
 
                 <div data-bind="visible: !EditingSection()">
-                    <h2>Sections</h2>
+                    <h2>@SharedStrings.Sections</h2>
                     @Html.Partial("_SectionsList")
                 </div>
                 <div data-bind="visible: EditingSection">

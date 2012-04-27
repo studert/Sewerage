@@ -172,6 +172,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Resources\Models\ValidationStrings.Designer.cs">
+      <DependentUpon>ValidationStrings.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Resources\Models\InspectionStrings.de.Designer.cs">
       <DependentUpon>InspectionStrings.de.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -218,6 +223,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>InspectionStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Models\ValidationStrings.de.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ValidationStrings.de.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\Views\Account\AccountStrings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -343,6 +353,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AccountStrings.de.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Models\ValidationStrings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ValidationStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Models\InspectionStrings.de.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>InspectionStrings.de.Designer.cs</LastGenOutput>
@@ -374,6 +388,10 @@
     <EmbeddedResource Include="Resources\Models\InspectionStrings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>InspectionStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Models\ValidationStrings.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ValidationStrings.de.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Views\Account\AccountStrings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

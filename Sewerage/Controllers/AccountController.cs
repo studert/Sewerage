@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Security;
 using Sewerage.Models;
+using Sewerage.Resources.Models;
 
 namespace Sewerage.Controllers
 {
@@ -34,7 +35,7 @@ namespace Sewerage.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                    ModelState.AddModelError("", ValidationStrings.WrongPassword);
                 }
             }
 
@@ -112,7 +113,7 @@ namespace Sewerage.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
+                    ModelState.AddModelError("", ValidationStrings.WrongOrInvalidPassword);
                 }
             }
 
@@ -134,38 +135,34 @@ namespace Sewerage.Controllers
             switch (createStatus)
             {
                 case MembershipCreateStatus.DuplicateUserName:
-                    return "User name already exists. Please enter a different user name.";
+                    return ValidationStrings.DuplicateUserName;
 
                 case MembershipCreateStatus.DuplicateEmail:
-                    return
-                        "A user name for that e-mail address already exists. Please enter a different e-mail address.";
+                    return ValidationStrings.DuplicateEmail;
 
                 case MembershipCreateStatus.InvalidPassword:
-                    return "The password provided is invalid. Please enter a valid password value.";
+                    return ValidationStrings.InvalidPassword;
 
                 case MembershipCreateStatus.InvalidEmail:
-                    return "The e-mail address provided is invalid. Please check the value and try again.";
+                    return ValidationStrings.InvalidEmail;
 
                 case MembershipCreateStatus.InvalidAnswer:
-                    return "The password retrieval answer provided is invalid. Please check the value and try again.";
+                    return ValidationStrings.InvalidAnswer;
 
                 case MembershipCreateStatus.InvalidQuestion:
-                    return "The password retrieval question provided is invalid. Please check the value and try again.";
+                    return ValidationStrings.InvalidQuestion;
 
                 case MembershipCreateStatus.InvalidUserName:
-                    return "The user name provided is invalid. Please check the value and try again.";
+                    return ValidationStrings.InvalidUserName;
 
                 case MembershipCreateStatus.ProviderError:
-                    return
-                        "The authentication provider returned an error. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+                    return ValidationStrings.ProviderError;
 
                 case MembershipCreateStatus.UserRejected:
-                    return
-                        "The user creation request has been canceled. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+                    return ValidationStrings.UserRejected;
 
                 default:
-                    return
-                        "An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+                    return ValidationStrings.UnknownError;
             }
         }
 

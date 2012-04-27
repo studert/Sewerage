@@ -144,8 +144,8 @@
   <data name="LoginValidationSummary" xml:space="preserve">
     <value>Anmeldung nicht erfolgreich. Bitte korrigieren Sie die Fehler und versuchen Sie es erneut.</value>
   </data>
-  <data name="RegisterInfo" xml:space="preserve">
-    <value />
+  <data name="PasswordComplexity" xml:space="preserve">
+    <value>Passwörter müssen mindestens {0} Zeichen lang sein.</value>
   </data>
   <data name="RegisterLegend" xml:space="preserve">
     <value>Registrierungsformular</value>

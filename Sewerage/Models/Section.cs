@@ -8,23 +8,23 @@ namespace Sewerage.Models
         [Display(Name = "Section", ResourceType = typeof(SectionStrings))]
         public int SectionId { get; set; }
 
-        [Required]
-        [RegularExpression(@"\b\d+\b")]
+        [Required(ErrorMessageResourceType = typeof(ValidationStrings), ErrorMessageResourceName = "RequiredField")]
+        [RegularExpression(@"\b\d+\b", ErrorMessageResourceType = typeof(ValidationStrings), ErrorMessageResourceName = "RegexNumberField")]
         [Display(Name = "Number", ResourceType = typeof(SectionStrings))]
         public int Number { get; set; }
 
-        [Required]
-        [StringLength(50)]
+        [Required(ErrorMessageResourceType = typeof(ValidationStrings), ErrorMessageResourceName = "RequiredField")]
+        [StringLength(50, ErrorMessageResourceType = typeof(ValidationStrings), ErrorMessageResourceName = "StringMaxLengthField")]
         [Display(Name = "City", ResourceType = typeof(SectionStrings))]
         public string City { get; set; }
 
-        [Required]
-        [StringLength(50)]
+        [Required(ErrorMessageResourceType = typeof(ValidationStrings), ErrorMessageResourceName = "RequiredField")]
+        [StringLength(50, ErrorMessageResourceType = typeof(ValidationStrings), ErrorMessageResourceName = "StringMaxLengthField")]
         [Display(Name = "Street", ResourceType = typeof(SectionStrings))]
         public string Street { get; set; }
 
-        [Required]
-        [RegularExpression(@"((\b[0-9]+)?\.)?[0-9]+\b", ErrorMessage = "The {0} field must be a decimal.")]
+        [Required(ErrorMessageResourceType = typeof(ValidationStrings), ErrorMessageResourceName = "RequiredField")]
+        [RegularExpression(@"((\b[0-9]+)?\.)?[0-9]+\b", ErrorMessageResourceType = typeof(ValidationStrings), ErrorMessageResourceName = "RegexDecimalField")]
         [Display(Name = "Length", ResourceType = typeof(SectionStrings))]
         public double Length { get; set; }
 

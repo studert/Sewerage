@@ -15,7 +15,7 @@
 </hgroup>
 
 <div class="alert alert-info">
-    Passwords are required to be a minimum of @Membership.MinRequiredPasswordLength characters in length.
+    @string.Format(AccountStrings.PasswordComplexity, Membership.MinRequiredPasswordLength)
 </div>
 
 

@@ -88,7 +88,7 @@ namespace Sewerage.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Passwortänderung nicht erfolgreich. Bitte korrigieren Sie die Fehler und versuchen Sie es erneut..
+        ///   Looks up a localized string similar to Password change not successfull. Please fix the errors and try again..
         /// </summary>
         public static string ChangePasswordValidationSummary {
             get {
@@ -115,7 +115,7 @@ namespace Sewerage.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Geben Sie unten den Benutzernamen und das Passwort ein..
+        ///   Looks up a localized string similar to Use the form below to enter user name and password..
         /// </summary>
         public static string LoginSubtitle {
             get {
@@ -133,7 +133,7 @@ namespace Sewerage.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Anmeldung nicht erfolgreich. Bitte korrigieren Sie die Fehler und versuchen Sie es erneut..
+        ///   Looks up a localized string similar to Log in not successfull Please fix the errors and try again..
         /// </summary>
         public static string LoginValidationSummary {
             get {
@@ -142,11 +142,11 @@ namespace Sewerage.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Passwords are required to be a minimum of {0} characters in length..
         /// </summary>
-        public static string RegisterInfo {
+        public static string PasswordComplexity {
             get {
-                return ResourceManager.GetString("RegisterInfo", resourceCulture);
+                return ResourceManager.GetString("PasswordComplexity", resourceCulture);
             }
         }
         
@@ -160,7 +160,7 @@ namespace Sewerage.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Benutzen Sie das untenstehende Formular zur Erstellung eines Benutzerkontos..
+        ///   Looks up a localized string similar to Use the form below to create an account..
         /// </summary>
         public static string RegisterSubtitle {
             get {
@@ -178,7 +178,7 @@ namespace Sewerage.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registrierung nicht erfolgreich. Bitte korrigieren Sie die Fehler und versuchen Sie es erneut..
+        ///   Looks up a localized string similar to Registration not successfull. Please fix the errors and try again..
         /// </summary>
         public static string RegisterValidationSummary {
             get {

@@ -6,30 +6,30 @@ namespace Sewerage.Models
 {
     public class ChangePasswordModel
     {
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(ValidationStrings), ErrorMessageResourceName = "RequiredField")]
         [DataType(DataType.Password)]
         [Display(Name = "OldPassword", ResourceType = typeof(AccountStrings))]
         public string OldPassword { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [Required(ErrorMessageResourceType = typeof(ValidationStrings), ErrorMessageResourceName = "RequiredField")]
+        [StringLength(100, ErrorMessageResourceType = typeof(ValidationStrings), ErrorMessageResourceName = "StringMinLengthField", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "NewPassword", ResourceType = typeof(AccountStrings))]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        [Compare("NewPassword", ErrorMessageResourceType = typeof(ValidationStrings), ErrorMessageResourceName = "CompareField")]
         [Display(Name = "ConfirmPassword", ResourceType = typeof(AccountStrings))]
         public string ConfirmPassword { get; set; }
     }
 
     public class LoginModel
     {
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(ValidationStrings), ErrorMessageResourceName = "RequiredField")]
         [Display(Name = "UserName", ResourceType = typeof(AccountStrings))]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(ValidationStrings), ErrorMessageResourceName = "RequiredField")]
         [DataType(DataType.Password)]
         [Display(Name = "Password", ResourceType = typeof(AccountStrings))]
         public string Password { get; set; }
@@ -40,23 +40,23 @@ namespace Sewerage.Models
 
     public class RegisterModel
     {
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(ValidationStrings), ErrorMessageResourceName = "RequiredField")]
         [Display(Name = "UserName", ResourceType = typeof(AccountStrings))]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(ValidationStrings), ErrorMessageResourceName = "RequiredField")]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email", ResourceType = typeof(AccountStrings))]
         public string Email { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [Required(ErrorMessageResourceType = typeof(ValidationStrings), ErrorMessageResourceName = "RequiredField")]
+        [StringLength(100, ErrorMessageResourceType = typeof(ValidationStrings), ErrorMessageResourceName = "StringMinLengthField", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password", ResourceType = typeof(AccountStrings))]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("Password", ErrorMessageResourceType = typeof(ValidationStrings), ErrorMessageResourceName = "CompareField")]
         [Display(Name = "ConfirmPassword", ResourceType = typeof(AccountStrings))]
         public string ConfirmPassword { get; set; }
     }

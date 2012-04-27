@@ -117,46 +117,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ChangePasswordLegend" xml:space="preserve">
-    <value>Change Password</value>
+  <data name="CompareField" xml:space="preserve">
+    <value>Die beiden Passwörter stimmen nicht überein.</value>
   </data>
-  <data name="ChangePasswordSubtitle" xml:space="preserve">
-    <value>Use the form below to change the password.</value>
+  <data name="DuplicateEmail" xml:space="preserve">
+    <value>Der Benutzername für diese E-Mail Adresse existiert bereits. Bitte wählen Sie eine andere E-Mail Adresse.</value>
   </data>
-  <data name="ChangePasswordTitle" xml:space="preserve">
-    <value>Change Password</value>
+  <data name="DuplicateUserName" xml:space="preserve">
+    <value>Der Benutzername existiert bereits. Bitte wählen Sie einen anderen Benutzernamen.</value>
   </data>
-  <data name="ChangePasswordValidationSummary" xml:space="preserve">
-    <value>Password change not successfull. Please fix the errors and try again.</value>
+  <data name="InvalidAnswer" xml:space="preserve">
+    <value>Die Passwortantwort ist ungültig. Bitte überprüfen Sie den Wert und versuchen Sie es erneut.</value>
   </data>
-  <data name="IfNoAccount" xml:space="preserve">
-    <value>if you don't have an account.</value>
+  <data name="InvalidEmail" xml:space="preserve">
+    <value>Die E-Mail Adresse ist ungültig. Bitte überprüfen Sie den Wert und versuchen Sie es erneut.</value>
   </data>
-  <data name="LoginLegend" xml:space="preserve">
-    <value>Log In Form</value>
+  <data name="InvalidPassword" xml:space="preserve">
+    <value>Das Passwort ist ungültig. Bitte wählen Sie ein gültiges Passwort.</value>
   </data>
-  <data name="LoginSubtitle" xml:space="preserve">
-    <value>Use the form below to enter user name and password.</value>
+  <data name="InvalidQuestion" xml:space="preserve">
+    <value>Die Passwortfrage ist ungültig. Bitte überprüfen Sie den Wert und versuchen Sie es erneut.</value>
   </data>
-  <data name="LoginTitle" xml:space="preserve">
-    <value>Log In</value>
+  <data name="InvalidUserName" xml:space="preserve">
+    <value>Der Benutzername ist ungültig. Bitte überprüfen Sie den Wert und versuchen Sie es erneut.</value>
   </data>
-  <data name="LoginValidationSummary" xml:space="preserve">
-    <value>Log in not successfull Please fix the errors and try again.</value>
+  <data name="ProviderError" xml:space="preserve">
+    <value>The authentication provider returned an error. Please verify your entry and try again. If the problem persists, please contact your system administrator.</value>
   </data>
-  <data name="PasswordComplexity" xml:space="preserve">
-    <value>Passwords are required to be a minimum of {0} characters in length.</value>
+  <data name="RegexDecimalField" xml:space="preserve">
+    <value>Das Feld {0} ist keine Dezimalzahl.</value>
   </data>
-  <data name="RegisterLegend" xml:space="preserve">
-    <value>Register Form</value>
+  <data name="RegexNumberField" xml:space="preserve">
+    <value>Das Feld {0} ist keine Nummer.</value>
   </data>
-  <data name="RegisterSubtitle" xml:space="preserve">
-    <value>Use the form below to create an account.</value>
+  <data name="RequiredField" xml:space="preserve">
+    <value>Das Feld {0} ist obligatorisch.</value>
   </data>
-  <data name="RegisterTitle" xml:space="preserve">
-    <value>Register</value>
+  <data name="StringMaxLengthField" xml:space="preserve">
+    <value>Das Feld {0} darf nicht länger als {1} Zeichen sein.</value>
   </data>
-  <data name="RegisterValidationSummary" xml:space="preserve">
-    <value>Registration not successfull. Please fix the errors and try again.</value>
+  <data name="StringMinLengthField" xml:space="preserve">
+    <value>Das Feld {0} muss mindestens {2} Zeichen lang sein.</value>
+  </data>
+  <data name="UnknownError" xml:space="preserve">
+    <value>An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.</value>
+  </data>
+  <data name="UserRejected" xml:space="preserve">
+    <value>The user creation request has been canceled. Please verify your entry and try again. If the problem persists, please contact your system administrator.</value>
+  </data>
+  <data name="WrongOrInvalidPassword" xml:space="preserve">
+    <value>Das aktuelle Passwort ist inkorrekt oder das neue Passwort ist ungültig.</value>
+  </data>
+  <data name="WrongPassword" xml:space="preserve">
+    <value>Der Benutzername oder das Password ist inkorrekt.</value>
   </data>
 </root>

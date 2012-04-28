@@ -15,8 +15,7 @@
                 @Html.BuildThFor(x => Model.Length)
                 @Html.BuildThFor(x => Model.City)
                 @Html.BuildThFor(x => Model.Street)
-                @Html.BuildTh().AddClass("edit-row")
-                @Html.BuildTh().AddClass("delete-row")
+                @Html.BuildTh()
             </thead>
             <tbody data-bind="foreach: Sections">
                 <tr data-bind="click: $parent.selectSection">
@@ -25,8 +24,12 @@
                     @Html.BuildTd().Bind("text", "Length")
                     @Html.BuildTd().Bind("text", "City")
                     @Html.BuildTd().Bind("text", "Street")
-                    <td><a class="btn btn-mini" href="#" data-bind="click: $parent.editSection"><i class="icon-edit"></i> @GlobalStrings.EditButton</a></td>
-                    <td><a class="btn btn-mini btn-danger" href="#" data-bind="click: $parent.deleteSection"><i class="icon-trash icon-white"></i> @GlobalStrings.DeleteButton</a></td>
+                    <td>
+                        <span class="pull-right">
+                            <a class="btn btn-mini" href="#" data-bind="click: $parent.editSection"><i class="icon-edit"></i> @GlobalStrings.EditButton</a>
+                            <a class="btn btn-mini btn-danger" href="#" data-bind="click: $parent.deleteSection"><i class="icon-trash icon-white"></i> @GlobalStrings.DeleteButton</a>
+                        </span>
+                    </td>
                 </tr>
             </tbody>
         </tr>

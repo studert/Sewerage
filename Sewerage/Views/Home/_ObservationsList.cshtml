@@ -16,8 +16,7 @@
                 @Html.BuildThFor(x => Model.Tag)
                 @Html.BuildThFor(x => Model.Description)
                 @Html.BuildThFor(x => Model.SecondsIntoVideo)
-                @Html.BuildTh().AddClass("edit-row")
-                @Html.BuildTh().AddClass("delete-row")
+                @Html.BuildTh()
             </thead>
             <tbody data-bind="foreach: Observations">
                 <tr data-bind="click: $parent.selectObservation">
@@ -26,8 +25,12 @@
                     @Html.BuildTd().Bind("text", "Tag")
                     @Html.BuildTd().Bind("text", "Description")
                     @Html.BuildTd().Bind("text", "SecondsIntoVideo")
-                    <td><a class="btn btn-mini" href="#" data-bind="click: $parent.editObservation"><i class="icon-edit"></i> @GlobalStrings.EditButton</a></td>
-                    <td><a class="btn btn-mini btn-danger" href="#" data-bind="click: $parent.deleteObservation"><i class="icon-trash icon-white"></i> @GlobalStrings.DeleteButton</a></td>
+                    <td>
+                        <span class="pull-right">
+                            <a class="btn btn-mini" href="#" data-bind="click: $parent.editObservation"><i class="icon-edit"></i> @GlobalStrings.EditButton</a>
+                            <a class="btn btn-mini btn-danger" href="#" data-bind="click: $parent.deleteObservation"><i class="icon-trash icon-white"></i> @GlobalStrings.DeleteButton</a>
+                        </span>
+                    </td>
                 </tr>
             </tbody>
         </tr>

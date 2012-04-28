@@ -11,14 +11,6 @@
     width: 20px;
 }
 
-.edit-row {
-    width: 65px;
-}
-
-.delete-row {
-    width: 65px;
-}
-
 #silverlightForm {
     z-index: -100;
 }

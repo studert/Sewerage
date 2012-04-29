@@ -167,7 +167,6 @@
         self.selectProject = function (project) {
             // reset all editors
             self.showDefaultView();
-            player.stop();
 
             self.ChosenProjectId(project.ProjectId);
             sectionsDataSourceParameters.projectId = self.ChosenProjectId();
@@ -175,8 +174,6 @@
         };
 
         self.selectSection = function(section) {
-            player.stop();
-            
             self.ChosenSectionId(section.SectionId);
             inspectionsDataSourceParameters.sectionId = self.ChosenSectionId();
             inspectionsDataSource.refresh({ }, selectFirstInspection);

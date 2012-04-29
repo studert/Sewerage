@@ -67,13 +67,13 @@ namespace Sewerage.HtmlHelpers
                     switch (dataTypeName)
                     {
                         case "MultilineText":
-                            y.InternalBuilder.InnerHtml += htmlHelper.BuildTextArea(property).Bind("value", property).AddClass("input-medium").Attr("rows", 3).ToHtmlString();
+                            y.InternalBuilder.InnerHtml += htmlHelper.BuildTextArea(property).Bind("value", property).AddClass("input-xlarge").Attr("rows", 3).ToHtmlString();
                             break;
                         case "Password":
-                            y.InternalBuilder.InnerHtml += htmlHelper.BuildPassword(property).Bind("value", property).AddClass("input-medium").ToHtmlString();
+                            y.InternalBuilder.InnerHtml += htmlHelper.BuildPassword(property).Bind("value", property).AddClass("input-xlarge").ToHtmlString();
                             break;
                         default:
-                            y.InternalBuilder.InnerHtml += htmlHelper.BuildTextBox(property).Bind("value", property).AddClass("input-medium").ToHtmlString();
+                            y.InternalBuilder.InnerHtml += htmlHelper.BuildTextBox(property).Bind("value", property).AddClass("input-xlarge").ToHtmlString();
                             break;
                     }
                     y.InternalBuilder.InnerHtml += htmlHelper.BuildValidationMessage(property).AddClass("help-inline").ToHtmlString();
@@ -90,7 +90,7 @@ namespace Sewerage.HtmlHelpers
                 x.InternalBuilder.InnerHtml += htmlHelper.BuildDiv().With(y =>
                 {
                     y.AddClass("controls");
-                    y.InternalBuilder.InnerHtml += htmlHelper.BuildCheckBox(property).Bind("checked", property).AddClass("input-medium").ToHtmlString();
+                    y.InternalBuilder.InnerHtml += htmlHelper.BuildCheckBox(property).Bind("checked", property).AddClass("input-xlarge").ToHtmlString();
                     y.InternalBuilder.InnerHtml += htmlHelper.BuildValidationMessage(property).AddClass("help-inline").ToHtmlString();
                 });
             });

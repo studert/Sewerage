@@ -4,8 +4,8 @@
 (function (window, undefined) {
     // define the namespace
     var Sewerage = window.Sewerage = window.Sewerage || {};
-
-
+    
+        
     // project classes
     var projectEntityType = "Project:#Sewerage.Models";
     var sectionEntityType = "Section:#Sewerage.Models";
@@ -153,94 +153,58 @@
             self.revertInspections();
             self.revertObservations();
         };
+
+        var resetEditors = function() {
+            revertAllDataSources();
+            clearAllEdits();
+        };
         
         // notifications
         self.successMessage = ko.observable().extend({ notify: "always" });
         self.errorMessage = ko.observable().extend({ notify: "always" });
 
-        // client side navigation
-        self.nav = new NavHistory({
-            params: { editSection: null, editInspection: null, editObservation: null },
-            onNavigate: function(navEntry, navInfo) {
-                
-                // reset editors
-                clearAllEdits();
-
-                // revert data sources
-                revertAllDataSources();
-
-                if (navEntry.params.editSection) {
-
-                    if (navEntry.params.editSection == "new") {
-                        // Create and begin editing a new section instance
-                        var section = new Sewerage.Section({ ProjectId: self.ChosenProjectId() });
-                        self.EditingSection(section);
-                        self.Sections.push(section);
-                    } else {
-                        // Load and begin editing an existing section instance
-                        var sectionId = navEntry.params.editSection;
-                        sectionsDataSource.findById(sectionId, self.EditingSection);
-                    }
-                } else if (navEntry.params.editInspection) {
-
-                    if (navEntry.params.editInspection == "new") {
-                        // Create and begin editing a new inspection instance
-                        var inspection = new Sewerage.Inspection({ SectionId: self.ChosenSectionId() });
-                        self.EditingInspection(inspection);
-                        self.Inspections.push(inspection);
-                    } else {
-                        // Load and begin editing an existing inspection instance
-                        var inspectionId = navEntry.params.editInspection;
-                        inspectionsDataSource.findById(inspectionId, self.EditingInspection);
-                    }
-                } else if (navEntry.params.editObservation) {
-
-                    if (navEntry.params.editObservation == "new") {
-                        // Create and begin editing a new observation instance
-                        var observation = new Sewerage.Observation({ InspectionId: self.ChosenInspectionId() });
-                        self.EditingObservation(observation);
-                        self.Observations.push(observation);
-                    } else {
-                        // Load and begin editing an existing observation instance
-                        var observationId = navEntry.params.editObservation;
-                        observationsDataSource.findById(observationId, self.EditingObservation);
-                    }
-                }
-            }
-        }).initialize({ linkToUrl: true });
-
         // operations
         self.selectProject = function (project) {
+            // reset all editors
+            self.showDefaultView();
+            player.stop();
+
             self.ChosenProjectId(project.ProjectId);
             sectionsDataSourceParameters.projectId = self.ChosenProjectId();
             sectionsDataSource.refresh({ }, selectFirstSection);
-            player.stop();
         };
 
-        self.selectSection = function (section) {
+        self.selectSection = function(section) {
+            player.stop();
+            
             self.ChosenSectionId(section.SectionId);
             inspectionsDataSourceParameters.sectionId = self.ChosenSectionId();
             inspectionsDataSource.refresh({ }, selectFirstInspection);
-            player.stop();
         };
 
         self.selectInspection = function (inspection) {
-            self.ChosenInspectionId(inspection.InspectionId);
-            observationsDataSourceParameters.inspectionId = self.ChosenInspectionId();
-            observationsDataSource.refresh({ }, selectFirstObservation);
             var videoUrl = self.Url + "Videos/" + inspection.VideoUrl() + "/Manifest";
             player.setMedia(videoUrl);
             player.play();
+            
+            self.ChosenInspectionId(inspection.InspectionId);
+            observationsDataSourceParameters.inspectionId = self.ChosenInspectionId();
+            observationsDataSource.refresh({ }, selectFirstObservation);
         };
 
         self.selectObservation = function (observation) {
-            self.ChosenObservationId(observation.ObservationId);
             player.seekToPosition(observation.SecondsIntoVideo());
+            
+            self.ChosenObservationId(observation.ObservationId);
         };
 
         // sections
-        self.editSection = function (section) { self.nav.navigate({ editSection: section.SectionId() }); };
-        self.createSection = function () { self.nav.navigate({ editSection: "new" }); };
+        self.editSection = function (section) { self.EditingSection(section); };
+        self.createSection = function() {
+            var section = new Sewerage.Section({ ProjectId: self.ChosenProjectId() });
+            self.EditingSection(section);
+            self.Sections.push(section);
+        };
         self.deleteSection = function (section) {
             sectionsDataSource.deleteEntity(section);
             sectionsDataSource.commitChanges(function () {
@@ -259,8 +223,12 @@
         self.revertSections = function () { sectionsDataSource.revertChanges(); };
         
         // inspections
-        self.editInspection = function (inspection) { self.nav.navigate({ editInspection: inspection.InspectionId() }); };
-        self.createInspection = function () { self.nav.navigate({ editInspection: "new" }); };
+        self.editInspection = function (inspection) { self.EditingInspection(inspection); };
+        self.createInspection = function() {
+            var inspection = new Sewerage.Inspection({ SectionId: self.ChosenSectionId() });
+            self.EditingInspection(inspection);
+            self.Inspections.push(inspection);
+        };
         self.deleteInspection = function (inspection) {
             inspectionsDataSource.deleteEntity(inspection);
             inspectionsDataSource.commitChanges(function () {
@@ -279,8 +247,12 @@
         self.revertInspections = function () { inspectionsDataSource.revertChanges(); };
 
         // observations
-        self.editObservation = function (observation) { self.nav.navigate({ editObservation: observation.ObservationId() }); };
-        self.createObservation = function () { self.nav.navigate({ editObservation: "new" }); };
+        self.editObservation = function (observation) { self.EditingObservation(observation); };
+        self.createObservation = function() {
+            var observation = new Sewerage.Observation({ InspectionId: self.ChosenInspectionId() });
+            self.EditingObservation(observation);
+            self.Observations.push(observation);
+        };
         self.deleteObservation = function (observation) {
             observationsDataSource.deleteEntity(observation);
             observationsDataSource.commitChanges(function () {
@@ -299,7 +271,7 @@
         self.revertObservations = function () { observationsDataSource.revertChanges(); };
 
         // general
-        self.showDefaultView = function () { self.nav.navigate({ editSection: null, editInspection: null, editObservation: null }); };
+        self.showDefaultView = function () { resetEditors(); };
         
         // error handling
         var handleServerError = function(httpStatus, message) {

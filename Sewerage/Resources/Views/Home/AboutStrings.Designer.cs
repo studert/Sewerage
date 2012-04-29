@@ -106,7 +106,7 @@ namespace Sewerage.Resources.Views.Home {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to About.
+        ///   Looks up a localized string similar to About Sewerage.
         /// </summary>
         public static string Title {
             get {

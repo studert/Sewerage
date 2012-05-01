@@ -203,11 +203,13 @@
             self.Sections.push(section);
         };
         self.deleteSection = function (section) {
-            sectionsDataSource.deleteEntity(section);
-            sectionsDataSource.commitChanges(function () {
-                self.successMessage("Deleted section");
-                self.showDefaultView();
-            });
+            if (confirm("Are you sure you want to delete this?")) {
+                sectionsDataSource.deleteEntity(section);
+                sectionsDataSource.commitChanges(function() {
+                    self.successMessage("Deleted section");
+                    self.showDefaultView();
+                });
+            }
         };
         self.saveSections = function (form) {
             if(!$(form).valid()) { return false; }
@@ -227,11 +229,13 @@
             self.Inspections.push(inspection);
         };
         self.deleteInspection = function (inspection) {
-            inspectionsDataSource.deleteEntity(inspection);
-            inspectionsDataSource.commitChanges(function () {
-                self.successMessage("Deleted inspection");
-                self.showDefaultView();
-            });
+            if (confirm("Are you sure you want to delete this?")) {
+                inspectionsDataSource.deleteEntity(inspection);
+                inspectionsDataSource.commitChanges(function() {
+                    self.successMessage("Deleted inspection");
+                    self.showDefaultView();
+                });
+            }
         };
         self.saveInspections = function (form) {
             if(!$(form).valid()) { return false; }
@@ -251,11 +255,13 @@
             self.Observations.push(observation);
         };
         self.deleteObservation = function (observation) {
-            observationsDataSource.deleteEntity(observation);
-            observationsDataSource.commitChanges(function () {
-                self.successMessage("Deleted observation");
-                self.showDefaultView();
-            });
+            if (confirm("Are you sure you want to delete this?")) {
+                observationsDataSource.deleteEntity(observation);
+                observationsDataSource.commitChanges(function() {
+                    self.successMessage("Deleted observation");
+                    self.showDefaultView();
+                });
+            }
         };
         self.saveObservations = function (form) {
             if(!$(form).valid()) { return false; }

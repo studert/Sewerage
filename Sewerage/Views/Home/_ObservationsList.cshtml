@@ -2,13 +2,14 @@
 @using Sewerage.HtmlHelpers
 @using Sewerage.Resources.Views
 @using Sewerage.Resources.Views.Home
+@using Sewerage.Resources.Views.Shared
 @model Sewerage.Models.Observation
 
 <div data-bind="if: $root.ChosenInspectionId() != null">
     
     <h2>@IndexStrings.Observations</h2>
 
-    <table class="table">
+    <table class="table table-condensed">
         <tr>
             <thead>
                 @Html.BuildTh().AddClass("view-row")
@@ -16,7 +17,11 @@
                 @Html.BuildThFor(x => Model.Tag)
                 @Html.BuildThFor(x => Model.Description)
                 @Html.BuildThFor(x => Model.SecondsIntoVideo)
-                @Html.BuildTh()
+                <th>
+                    <span class="pull-right">
+                        <a href="#" data-bind="click: $root.createObservation" title="@SharedStrings.CreateObservation"><i class="icon-plus"></i></a>
+                    </span>
+                </th>
             </thead>
             <tbody data-bind="foreach: Observations">
                 <tr data-bind="click: $parent.selectObservation">
@@ -27,8 +32,8 @@
                     @Html.BuildTd().Bind("text", "SecondsIntoVideo")
                     <td>
                         <span class="pull-right">
-                            <a class="btn btn-mini" href="#" data-bind="click: $parent.editObservation"><i class="icon-edit"></i> @GlobalStrings.EditButton</a>
-                            <a class="btn btn-mini btn-danger" href="#" data-bind="click: $parent.deleteObservation"><i class="icon-trash icon-white"></i> @GlobalStrings.DeleteButton</a>
+                            <a href="#" data-bind="click: $parent.editObservation" title="@GlobalStrings.EditButton"><i class="icon-pencil"></i></a>
+                            <a href="#" data-bind="click: $parent.deleteObservation" title="@GlobalStrings.DeleteButton"><i class="icon-trash"></i></a>
                         </span>
                     </td>
                 </tr>

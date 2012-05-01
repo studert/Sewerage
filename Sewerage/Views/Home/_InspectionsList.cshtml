@@ -1,16 +1,21 @@
 ﻿@using Sewerage.Resources.Views
 @using Sewerage.Resources.Views.Home
+@using Sewerage.Resources.Views.Shared
 ﻿<div data-bind="if: $root.ChosenSectionId() != null">
-     <ul class="nav nav-tabs" data-bind="foreach: Inspections">
+     <ul class="nav nav-tabs">
+         <!-- ko foreach: Inspections -->
          <li class="dropdown" data-bind="css: {active: InspectionId == $parent.ChosenInspectionId() }">
              <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                  @IndexStrings.Inspection <span data-bind="text: InspectionId"></span>
                  <b class="caret"></b>
              </a>
              <ul class="dropdown-menu">
-                 <li><a href="#" data-bind="click: $parent.selectInspection"><i class="icon-check"></i> @GlobalStrings.SelectButton</a></li>
-                 <li><a href="#" data-bind="click: $parent.editInspection"><i class="icon-edit"></i> @GlobalStrings.EditButton</a></li>
+                 <li><a href="#" data-bind="click: $parent.selectInspection"><i class="icon-ok"></i> @GlobalStrings.SelectButton</a></li>
+                 <li><a href="#" data-bind="click: $parent.editInspection"><i class="icon-pencil"></i> @GlobalStrings.EditButton</a></li>
+                 <li><a href="#" data-bind="click: $parent.deleteInspection"><i class="icon-trash"></i> @GlobalStrings.DeleteButton</a></li>
              </ul>
          </li>
+         <!-- /ko -->         
+         <li><a href="#" data-bind="click: $root.createInspection" title="@SharedStrings.CreateInspection"><i class="icon-plus"></i></a></li>
      </ul>
 </div>

@@ -24,14 +24,9 @@
                     </a>
                     @Html.ActionLink("Sewerage", "Index", "Home", null, new { @class="brand" })
                     <div class="nav-collapse">
-                        <ul class="nav">
-                            <li><a href="@Url.Action("Index", "Home")"><i class="icon-home icon-white"></i> @SharedStrings.Home</a></li>
-                            <li class="divider-vertical"></li>
-                        </ul>
                         @RenderSection("menu", false)
                         @Html.Partial("_LoginPartial")
                         <ul class="nav pull-right">
-                            <li class="divider-vertical"></li>
                             <li><a href="@Url.Action("About", "Home")"> @SharedStrings.About</a></li>
                         </ul>
                     </div><!--/.nav-collapse -->

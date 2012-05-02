@@ -182,7 +182,6 @@
         self.selectInspection = function (inspection) {
             var videoUrl = self.Url + "Videos/" + inspection.VideoUrl() + "/Manifest";
             player.setMedia(videoUrl);
-            player.play();
             
             self.ChosenInspectionId(inspection.InspectionId);
             observationsDataSourceParameters.inspectionId = self.ChosenInspectionId();
@@ -191,6 +190,7 @@
 
         self.selectObservation = function (observation) {
             player.seekToPosition(observation.SecondsIntoVideo());
+            player.play();
             
             self.ChosenObservationId(observation.ObservationId);
         };

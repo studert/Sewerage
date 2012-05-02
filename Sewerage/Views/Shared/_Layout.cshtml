@@ -26,7 +26,6 @@
                     </a>
                     @Html.ActionLink("Sewerage", "Index", "Home", null, new { @class="brand" })
                     <div class="nav-collapse">
-                        @RenderSection("menu", false)
                         @Html.Partial("_LoginPartial")
                         <ul class="nav pull-right">
                             <li><a href="@Url.Action("About", "Home")"> @SharedStrings.About</a></li>

@@ -1,7 +1,8 @@
 ﻿@using Sewerage.Resources.Views
 @using Sewerage.Resources.Views.Home
 @using Sewerage.Resources.Views.Shared
-﻿<div data-bind="if: $root.ChosenSectionId() != null">
+
+﻿<div id="list-inspection" data-bind="if: $root.ChosenSectionId() != null">
      <ul class="nav nav-tabs">
          <!-- ko foreach: Inspections -->
          <li class="dropdown" data-bind="css: {active: InspectionId == $parent.ChosenInspectionId() }">
@@ -16,6 +17,6 @@
              </ul>
          </li>
          <!-- /ko -->         
-         <li><a href="#" data-bind="click: $root.createInspection" title="@SharedStrings.CreateInspection"><i class="icon-plus"></i></a></li>
+         <li><a href="#editor-inspection" data-bind="click: $root.createInspection" title="@SharedStrings.CreateInspection"><i class="icon-plus"></i></a></li>
      </ul>
 </div>

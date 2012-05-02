@@ -7,7 +7,7 @@
 
 <div data-bind="if: $root.ChosenInspectionId() != null">
     
-    <h2>@IndexStrings.Observations</h2>
+    <h2 id="list-observation">@IndexStrings.Observations</h2>
 
     <table class="table table-condensed">
         <tr>
@@ -19,7 +19,7 @@
                 @Html.BuildThFor(x => Model.SecondsIntoVideo)
                 <th>
                     <span class="pull-right">
-                        <a href="#" data-bind="click: $root.createObservation" title="@SharedStrings.CreateObservation"><i class="icon-plus"></i></a>
+                        <a href="#editor-observation" data-bind="click: $root.createObservation" title="@SharedStrings.CreateObservation"><i class="icon-plus"></i></a>
                     </span>
                 </th>
             </thead>

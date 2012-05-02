@@ -66,13 +66,13 @@
     
     <!-- Editors -->
     <div class="span10" data-bind="visible: EditingSection() || EditingInspection() || EditingObservation()">
-        <div data-bind="visible: EditingSection">
+        <div id="editor-section" data-bind="visible: EditingSection">
             @Html.Partial("_SectionEditor")
         </div>
-        <div data-bind="visible: EditingInspection">
+        <div id="editor-inspection" data-bind="visible: EditingInspection">
             @Html.Partial("_InspectionEditor")
         </div>
-        <div data-bind="visible: EditingObservation">
+        <div id="editor-observation" data-bind="visible: EditingObservation">
             @Html.Partial("_ObservationEditor")
         </div>
     </div>

@@ -5,7 +5,7 @@
 @using Sewerage.Resources.Views.Shared
 @model Sewerage.Models.Section
 
-<h2>@IndexStrings.Sections</h2>
+<h2 id="list-section">@IndexStrings.Sections</h2>
 
 <div data-bind="if: $root.ChosenProjectId() != null">
     <table class="table table-condensed">
@@ -18,7 +18,7 @@
                 @Html.BuildThFor(x => Model.Street)
                 <th>
                     <span class="pull-right">
-                        <a href="#" data-bind="click: $root.createSection" title="@SharedStrings.CreateSection"><i class="icon-plus"></i></a>
+                        <a href="#editor-section" data-bind="click: $root.createSection" title="@SharedStrings.CreateSection"><i class="icon-plus"></i></a>
                     </span>
                 </th>
             </thead>

@@ -5,12 +5,12 @@
 }
 
 <div class="row-fluid">
-    <div class="span2">
+    <div class="span3">
         @Html.Partial("_ProjectsList")
     </div><!--/span-->
     
     <!-- Lists -->
-    <div class="span10" data-bind="visible: !EditingSection() && !EditingInspection() && !EditingObservation()">
+    <div class="span9" data-bind="visible: !EditingSection() && !EditingInspection() && !EditingObservation()">
         <div class="row-fluid">
             <div class="span7">
 
@@ -32,7 +32,7 @@
     </div><!--/span-->
     
     <!-- Editors -->
-    <div class="span10" data-bind="visible: EditingSection() || EditingInspection() || EditingObservation()">
+    <div class="span9" data-bind="visible: EditingSection() || EditingInspection() || EditingObservation()">
         <div id="editor-section" data-bind="visible: EditingSection">
             @Html.Partial("_SectionEditor")
         </div>

@@ -1,4 +1,4 @@
-﻿@using Microsoft.Web.Helpers
+﻿@*@using Microsoft.Web.Helpers*@
 @using Sewerage.Resources.Views.Shared
 
 @if (Request.IsAuthenticated) {
@@ -9,7 +9,7 @@
                 var user = Membership.GetUser();
                 if (user != null)
                 {
-                    <a href="#">@Gravatar.GetHtml(user.Email, 20)</a>
+                    @*<a href="#">@Gravatar.GetHtml(user.Email, 20)</a>*@
                 }
             }
         </li>

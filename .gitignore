@@ -4,6 +4,6 @@ obj
 *.suo
 *.sdf
 /packages
-_ReSharper.Sewerage
+_ReSharper.*
 *.xap
 *.Publish.xml

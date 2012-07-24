@@ -139,9 +139,7 @@
             result: self.Observations
         };
         var observationsDataSource = new upshot.RemoteDataSource(observationsDataSourceOptions);
-
-        var player = new SilverlightPlayer();
-
+        
         var clearAllEdits = function() {
             self.EditingSection(null);
             self.EditingInspection(null);
@@ -162,6 +160,50 @@
         // notifications
         self.successMessage = ko.observable().extend({ notify: "always" });
         self.errorMessage = ko.observable().extend({ notify: "always" });
+        
+        // player
+        var createPlayer = function(videoUrl) {
+            // reset html for player
+            var frame = $("#playerFrame");
+            frame.empty();
+            frame.append('<div id="myVideoContainer" class="pf-container"></div>');
+            
+            // sources
+            var urlBase = self.Url + videoUrl;
+            var ism = urlBase + ".ism/manifest";
+            var mp4 = urlBase + ".mp4";
+            var webm = urlBase + ".webm";
+            var ogv = urlBase + ".ogv";
+            
+            // recreate html for player
+            self.player = new PlayerFramework.Player("myVideoContainer",
+            {
+                mediaPluginFallbackOrder: [ "SilverlightMediaPlugin", "VideoElementMediaPlugin" ], 
+                width: "350px",
+                height: "320px",
+                poster: self.Url + "Content/images/poster.png",
+                autoplay: true,
+                sources:
+                [
+                    {
+                        src: ism,
+                        type: "text/xml"
+                    },
+                    {
+                        src: mp4,
+                        type: 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"'
+                    },
+                    {
+                        src: webm,
+                        type: 'video/webm; codecs="vp8, vorbis"'
+                    },
+                    {
+                        src: ogv,
+                        type: 'video/ogg; codecs="theora, vorbis"'
+                    }
+                ]
+            });
+        };
 
         // operations
         self.selectProject = function (project) {
@@ -180,8 +222,8 @@
         };
 
         self.selectInspection = function (inspection) {
-            var videoUrl = self.Url + "Videos/" + inspection.VideoUrl() + "/Manifest";
-            player.setMedia(videoUrl);
+//            var videoUrl = self.Url + "Videos/" + inspection.VideoUrl() + "/Manifest";
+            createPlayer(inspection.VideoUrl());
             
             self.ChosenInspectionId(inspection.InspectionId);
             observationsDataSourceParameters.inspectionId = self.ChosenInspectionId();
@@ -189,8 +231,7 @@
         };
 
         self.selectObservation = function (observation) {
-            player.seekToPosition(observation.SecondsIntoVideo());
-            player.play();
+            self.player.currentTime(observation.SecondsIntoVideo());
             
             self.ChosenObservationId(observation.ObservationId);
         };

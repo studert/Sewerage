@@ -11,8 +11,7 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
         <meta name="description" content="Sewerage"/>
         <meta name="author" content="Tobias Studer"/>
-        @Html.Partial("_SpaLinks")
-        @Html.Partial("_SpaScriptsTop")
+        @Html.Partial("_IncludesTop")
         @*@Analytics.GetGoogleHtml("UA-31127002-1")*@
     </head>
     <body>
@@ -43,6 +42,6 @@
                 <p>&copy; @DateTime.Now.Year @SharedStrings.By @SharedStrings.University</p>
             </footer>
         </div>
-        @Html.Partial("_SpaScriptsBottom")
+        @Html.Partial("_IncludesBottom")
     </body>
 </html>

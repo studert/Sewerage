@@ -9,4 +9,4 @@
 /// <reference path="upshot.js" />
 /// <reference path="upshot.compat.knockout.js" />
 /// <reference path="upshot.knockout.extensions.js" />
-/// <reference path="silverlight.player.js" />
+/// <reference path="playerframework.min.js" />

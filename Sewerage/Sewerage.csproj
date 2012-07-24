@@ -38,7 +38,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Build.Mvc3">
+    <Reference Include="Build.Mvc3, Version=2012.4.5.0, Culture=neutral, PublicKeyToken=64911deb3892ec50, processorArchitecture=MSIL">
       <HintPath>..\packages\Build.Mvc3.2012.4.5\lib\net40\Build.Mvc3.dll</HintPath>
     </Reference>
     <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">

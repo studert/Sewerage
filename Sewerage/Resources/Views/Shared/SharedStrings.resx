@@ -119,7 +119,6 @@
   </resheader>
   <data name="About" xml:space="preserve">
     <value>About Sewerage</value>
-    <comment> </comment>
   </data>
   <data name="Admin" xml:space="preserve">
     <value>Admin</value>
@@ -141,6 +140,9 @@
   </data>
   <data name="Elmah" xml:space="preserve">
     <value>Elmah</value>
+  </data>
+  <data name="Glimpse" xml:space="preserve">
+    <value>Glimpse</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>Home</value>

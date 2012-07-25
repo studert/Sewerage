@@ -141,6 +141,9 @@
   <data name="Elmah" xml:space="preserve">
     <value>Elmah</value>
   </data>
+  <data name="Glimpse" xml:space="preserve">
+    <value>Glimpse</value>
+  </data>
   <data name="Home" xml:space="preserve">
     <value>Startseite</value>
   </data>

@@ -1,5 +1,4 @@
-﻿@*@using Microsoft.Web.Helpers*@
-@using Sewerage.Resources.Views.Shared
+﻿@using Sewerage.Resources.Views.Shared
 
 @if (Request.IsAuthenticated) {
     <ul class="nav pull-right">
@@ -9,7 +8,9 @@
                 var user = Membership.GetUser();
                 if (user != null)
                 {
-                    @*<a href="#">@Gravatar.GetHtml(user.Email, 20)</a>*@
+                    <a href="@Url.Gravatar(user.Email, 300, global::GravatarHelper.GravatarHelper.DefaultImageIdenticon)">
+                        @Html.Gravatar(user.Email, 20, new {Title = user.UserName, Alt = "Gravatar"})
+                    </a>
                 }
             }
         </li>
@@ -23,6 +24,7 @@
                 <li class="divider"></li>
                 <li class="nav-header"><i class="icon-lock"></i> @SharedStrings.Admin</li>
                 <li><a href="@Url.Action("Index", "Elmah")"><i class="icon-list"></i> @SharedStrings.Elmah</a></li>
+                <li><a href="@Url.Content("glimpse.axd")"><i class="icon-eye-open"></i> @SharedStrings.Glimpse</a></li>
             </ul>
         </li>
     </ul>

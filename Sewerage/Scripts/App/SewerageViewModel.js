@@ -179,8 +179,8 @@
             self.player = new PlayerFramework.Player("myVideoContainer",
             {
                 mediaPluginFallbackOrder: [ "SilverlightMediaPlugin", "VideoElementMediaPlugin" ], 
-                width: "350px",
-                height: "320px",
+                width: "100%",
+                height: "310px",
                 poster: self.Url + "Content/images/poster.png",
                 autoplay: true,
                 sources:
@@ -222,7 +222,6 @@
         };
 
         self.selectInspection = function (inspection) {
-//            var videoUrl = self.Url + "Videos/" + inspection.VideoUrl() + "/Manifest";
             createPlayer(inspection.VideoUrl());
             
             self.ChosenInspectionId(inspection.InspectionId);
@@ -231,7 +230,7 @@
         };
 
         self.selectObservation = function (observation) {
-            self.player.currentTime(observation.SecondsIntoVideo());
+            self.player.currentTime(observation.SecondsIntoVideo() + 0.1); // hack: it seems that 0 doesn't work on desktop browsers
             
             self.ChosenObservationId(observation.ObservationId);
         };

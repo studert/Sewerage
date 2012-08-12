@@ -115,6 +115,15 @@ namespace Sewerage.Resources.Views.Home {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Source Code.
+        /// </summary>
+        public static string SourceCode {
+            get {
+                return ResourceManager.GetString("SourceCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A prototype for modern web technologies.
         /// </summary>
         public static string Subtitle {

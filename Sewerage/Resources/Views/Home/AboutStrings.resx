@@ -135,6 +135,9 @@
   <data name="Private" xml:space="preserve">
     <value>Private</value>
   </data>
+  <data name="SourceCode" xml:space="preserve">
+    <value>Source Code</value>
+  </data>
   <data name="Subtitle" xml:space="preserve">
     <value>A prototype for modern web technologies</value>
   </data>

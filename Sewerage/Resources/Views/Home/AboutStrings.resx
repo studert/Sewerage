@@ -129,6 +129,9 @@
   <data name="Email" xml:space="preserve">
     <value>E-Mail</value>
   </data>
+  <data name="GitHub" xml:space="preserve">
+    <value>View on GitHub</value>
+  </data>
   <data name="Mobile" xml:space="preserve">
     <value>Mobile</value>
   </data>

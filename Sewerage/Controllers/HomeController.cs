@@ -18,5 +18,11 @@ namespace Sewerage.Controllers
 
             return View();
         }
+
+        [AllowAnonymous]
+        public ActionResult Documentation()
+        {
+            return File("~/Content/Bachelor Thesis.pdf", "application/pdf", "Bachelor Thesis - Tobias Studer.pdf");
+        }
     }
 }

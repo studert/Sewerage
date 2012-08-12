@@ -5,44 +5,57 @@
 
 <div class="row-fluid">
     <div class="span9">
-        <hgroup>
-            <h1>@ViewBag.Title.</h1>
-            <h2>@ViewBag.Message</h2>
-        </hgroup>
+        <div class="page-header">
+            <h1>@ViewBag.Title <small>@ViewBag.Message</small></h1>
+        </div>
         <article>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin luctus tincidunt justo nec tempor. 
-                Aliquam erat volutpat. Fusce facilisis ullamcorper consequat. Vestibulum non sapien lectus. Nam 
-                mi augue, posuere at tempus vel, dignissim vitae nulla. Nullam at quam eu sapien mattis ultrices. 
-                Quisque quis leo mi, at lobortis dolor. Nullam scelerisque facilisis placerat. Fusce a augue 
-                erat, malesuada euismod dui. Duis iaculis risus id felis volutpat elementum. Fusce blandit iaculis 
-                quam a cursus. Cras varius tincidunt cursus. Morbi justo eros, adipiscing ac placerat sed, posuere 
-                et mi. Suspendisse vulputate viverra aliquet. Duis non enim a nibh consequat mollis ac tempor 
-                lorem. Phasellus elit leo, semper eu luctus et, suscipit at lacus. In hac habitasse platea 
-                dictumst. Duis dignissim justo sit amet nulla pulvinar sodales.
-            </p>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin luctus tincidunt justo nec tempor. 
-                Aliquam erat volutpat. Fusce facilisis ullamcorper consequat. Vestibulum non sapien lectus. Nam 
-                mi augue, posuere at tempus vel, dignissim vitae nulla. Nullam at quam eu sapien mattis ultrices. 
-                Quisque quis leo mi, at lobortis dolor. Nullam scelerisque facilisis placerat. Fusce a augue 
-                erat, malesuada euismod dui. Duis iaculis risus id felis volutpat elementum. Fusce blandit iaculis 
-                quam a cursus. Cras varius tincidunt cursus. Morbi justo eros, adipiscing ac placerat sed, posuere 
-                et mi. Suspendisse vulputate viverra aliquet. Duis non enim a nibh consequat mollis ac tempor 
-                lorem. Phasellus elit leo, semper eu luctus et, suscipit at lacus. In hac habitasse platea 
-                dictumst. Duis dignissim justo sit amet nulla pulvinar sodales.
-            </p>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin luctus tincidunt justo nec tempor. 
-                Aliquam erat volutpat. Fusce facilisis ullamcorper consequat. Vestibulum non sapien lectus. Nam 
-                mi augue, posuere at tempus vel, dignissim vitae nulla. Nullam at quam eu sapien mattis ultrices. 
-                Quisque quis leo mi, at lobortis dolor. Nullam scelerisque facilisis placerat. Fusce a augue 
-                erat, malesuada euismod dui. Duis iaculis risus id felis volutpat elementum. Fusce blandit iaculis 
-                quam a cursus. Cras varius tincidunt cursus. Morbi justo eros, adipiscing ac placerat sed, posuere 
-                et mi. Suspendisse vulputate viverra aliquet. Duis non enim a nibh consequat mollis ac tempor 
-                lorem. Phasellus elit leo, semper eu luctus et, suscipit at lacus. In hac habitasse platea 
-                dictumst. Duis dignissim justo sit amet nulla pulvinar sodales.
-            </p>
+            <div class="row-fluid">
+                <div class="alert alert-info">
+                    <h3>Zusammenfassung</h3>
+                    Diese Bachelor Thesis beschäftigt sich mit der Portierung einer Desktopsoftware ins Web. In einem 
+                    ersten Teil wird eine bereits bestehende Teilimplementierung analysiert. In einem zweiten praktischen 
+                    Teil wird ein vereinfachter Prototyp einer Webapplikation mit modernen Technologien erstellt.
+                </div>
+            </div>
+            
+            <div class="row-fluid">
+                <div class="span4">
+                    <h3>Ausgangslage</h3>
+                    <p>
+                        Die Firma CDLab AG in Murten ist einer der führenden Softwarehersteller in der Kanalinspektionsbranche. 
+                        Bei einer modernen Kanalinspektion werden verschiedenartige Daten erfasst, insbesondere Videodaten, 
+                        Textdaten sowie Sensordaten (wie z.B. die Neigung des Kanalabschnittes). Diese Daten werden bisher 
+                        noch bei vielen Stadtverwaltungen auf DVD gebrannt und dann archiviert. Die Verwaltung dieser Daten 
+                        und der Zugriff ist daher sehr umständlich.
+                    </p>
+                </div>
+            
+                <div class="span4">
+                    <h3>Problemstellung</h3>
+                    <p>
+                        Da die bisherige Datensicherung sehr aufwändig ist, soll dies durch eine Webapplikation erheblich 
+                        vereinfacht werden. Folgende Probleme sind zu lösen:
+                        <ul>
+                            <li>
+                                Die Wiedergabe von Videos auf verschiedenen Endgeräten mit unterschiedlich schnellen Datenleitungen.
+                            </li>
+                            <li>
+                                Eine desktopähnliche Webapplikation mit schnellen Reaktionszeiten zu schaffen, um ein gutes Benutzererlebnis zu erzeugen.
+                            </li>
+                        </ul>
+                    </p>
+                </div>
+            
+                <div class="span4">
+                    <h3>Aufgabenstellung</h3>
+                    <p>
+                        Die CDLab arbeitet bereits daran, ihre Desktopsoftware WinCan  ins Web zu portieren. Deshalb wird in 
+                        einem analytischen Teil die bestehende Implementierung untersucht und danach ein Konzept einer Lösung 
+                        erarbeitet und umgesetzt, das ein vereinfachtes Model der kompletten Software mit modernsten Webtechnologien 
+                        darstellt. Dabei werden die aus dem Vorgängerprojekt entstandenen Erkenntnisse ergänzt und eingebaut.
+                    </p>
+                </div>
+            </div>
         </article>
     </div>
     <div class="span3">
@@ -57,6 +70,10 @@
                 <abbr title=@AboutStrings.Private>P:</abbr> +41 62 534 31 64<br />
                 <abbr title=@AboutStrings.Email>E:</abbr> <a href="mailto:tobias.studer@students.fhnw.ch">tobias.studer@students.fhnw.ch</a>
             </address>
+            <p>
+                <strong>@AboutStrings.BachelorThesis</strong><br/>
+                @Html.ActionLink(AboutStrings.Download, "Documentation")
+            </p>
         </aside>
     </div>
 </div>

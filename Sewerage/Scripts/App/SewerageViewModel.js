@@ -178,7 +178,7 @@
             // recreate html for player
             self.player = new PlayerFramework.Player("myVideoContainer",
             {
-                mediaPluginFallbackOrder: [ "SilverlightMediaPlugin", "VideoElementMediaPlugin" ], 
+                mediaPluginFallbackOrder: [ "VideoElementMediaPlugin", "SilverlightMediaPlugin" ], 
                 width: "100%",
                 height: "310px",
                 poster: self.Url + "Content/images/poster.png",
@@ -203,6 +203,26 @@
                     }
                 ]
             });
+            
+            // add code info label
+            frame.append('<div class="pull-right"><span id="playerVideoType" class="label label-info"></span></div>');
+            var infobox = $("#playerVideoType");
+            
+            if(self.player.canPlayType("text/xml")) {
+                infobox.html("silverlight");
+            }
+            else if(self.player.canPlayType("video/mp4")) {
+                infobox.html("mp4");
+            }
+            else if(self.player.canPlayType("video/webm")) {
+                infobox.html("webm");
+            }
+            else if(self.player.canPlayType("video/ogg")) {
+                infobox.html("ogg");
+            }
+            else {
+                infobox.html("video tag not supported.");
+            }
         };
 
         // operations

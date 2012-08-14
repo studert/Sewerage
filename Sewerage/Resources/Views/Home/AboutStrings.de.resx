@@ -120,6 +120,12 @@
   <data name="BachelorThesis" xml:space="preserve">
     <value>Bachelor Thesis</value>
   </data>
+  <data name="BuildServer" xml:space="preserve">
+    <value>TeamCity Build Server</value>
+  </data>
+  <data name="BuildServerText" xml:space="preserve">
+    <value>Zu TeamCity wechseln</value>
+  </data>
   <data name="Contact" xml:space="preserve">
     <value>Kontakt</value>
   </data>
@@ -135,8 +141,26 @@
   <data name="Mobile" xml:space="preserve">
     <value>Mobil</value>
   </data>
+  <data name="Package" xml:space="preserve">
+    <value>Gesamtpaket</value>
+  </data>
+  <data name="PackageText" xml:space="preserve">
+    <value>Zu SkyDrive wechseln</value>
+  </data>
+  <data name="Poster" xml:space="preserve">
+    <value>Poster</value>
+  </data>
+  <data name="PosterText" xml:space="preserve">
+    <value>Poster herunterladen</value>
+  </data>
   <data name="Private" xml:space="preserve">
     <value>Privat</value>
+  </data>
+  <data name="ProjectSite" xml:space="preserve">
+    <value>Projekt Webseite</value>
+  </data>
+  <data name="ProjectSiteText" xml:space="preserve">
+    <value>Zur Webseite wechseln</value>
   </data>
   <data name="SourceCode" xml:space="preserve">
     <value>Quellcode</value>

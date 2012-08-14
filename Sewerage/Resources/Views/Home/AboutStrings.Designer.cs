@@ -70,6 +70,24 @@ namespace Sewerage.Resources.Views.Home {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TeamCity Build Server.
+        /// </summary>
+        public static string BuildServer {
+            get {
+                return ResourceManager.GetString("BuildServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go to TeamCity.
+        /// </summary>
+        public static string BuildServerText {
+            get {
+                return ResourceManager.GetString("BuildServerText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact.
         /// </summary>
         public static string Contact {
@@ -115,11 +133,65 @@ namespace Sewerage.Resources.Views.Home {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full package.
+        /// </summary>
+        public static string Package {
+            get {
+                return ResourceManager.GetString("Package", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go to SkyDrive.
+        /// </summary>
+        public static string PackageText {
+            get {
+                return ResourceManager.GetString("PackageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Poster.
+        /// </summary>
+        public static string Poster {
+            get {
+                return ResourceManager.GetString("Poster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download poster.
+        /// </summary>
+        public static string PosterText {
+            get {
+                return ResourceManager.GetString("PosterText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Private.
         /// </summary>
         public static string Private {
             get {
                 return ResourceManager.GetString("Private", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Project Website.
+        /// </summary>
+        public static string ProjectSite {
+            get {
+                return ResourceManager.GetString("ProjectSite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View website.
+        /// </summary>
+        public static string ProjectSiteText {
+            get {
+                return ResourceManager.GetString("ProjectSiteText", resourceCulture);
             }
         }
         

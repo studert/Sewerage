@@ -30,6 +30,12 @@ namespace Sewerage
             );
 
             routes.MapRoute(
+                name: "Poster",
+                url: "Poster",
+                defaults: new { controller = "Home", action = "Poster" }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

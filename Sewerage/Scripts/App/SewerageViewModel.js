@@ -178,7 +178,7 @@
             // recreate html for player
             self.player = new PlayerFramework.Player("myVideoContainer",
             {
-                mediaPluginFallbackOrder: [ "VideoElementMediaPlugin", "SilverlightMediaPlugin" ], 
+                mediaPluginFallbackOrder: [ "SilverlightMediaPlugin", "VideoElementMediaPlugin" ], 
                 width: "100%",
                 height: "310px",
                 poster: self.Url + "Content/images/poster.png",

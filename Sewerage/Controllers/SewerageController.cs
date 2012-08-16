@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Http.Data.EntityFramework;
 using Sewerage.Models;
 
@@ -33,12 +34,29 @@ namespace Sewerage.Controllers
                 .OrderBy(x => x.ObservationId);
         }
 
-        public void InsertSection(Section section) { InsertEntity(section); }
+        public void InsertSection(Section section)
+        {
+            InsertEntity(section);
+
+            // Fix: handle the first inspection here, because of the JSON date time issue
+            InsertEntity(new Inspection
+                             {
+                                 SectionId = section.SectionId,
+                                 Section = section,
+                                 StartDate = DateTime.Now,
+                                 EndDate = DateTime.Now,
+                                 VideoUrl = "Videos/e544f140-f4ef-4eff-8aad-fe674d5b46ba"
+                             });
+        }
+
         public void UpdateSection(Section section) { UpdateEntity(section); }
         public void DeleteSection(Section section) { DeleteEntity(section); }
 
         public void InsertInspection(Inspection inspection) { InsertEntity(inspection); }
-        public void UpdateInspection(Inspection inspection) { UpdateEntity(inspection); }
+        public void UpdateInspection(Inspection inspection)
+        {
+            UpdateEntity(inspection);
+        }
         public void DeleteInspection(Inspection inspection) { DeleteEntity(inspection); }
 
         public void InsertObservation(Observation observation) { InsertEntity(observation); }

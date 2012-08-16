@@ -4,6 +4,7 @@
 /// <reference path="jquery-1.8.0-vsdoc.js" />
 /// <reference path="jquery.validate.js" />
 /// <reference path="jquery.validate-vsdoc.js" />
+/// <reference path="jquery-ui-1.8.22.js" />
 /// <reference path="knockout-2.1.0.debug.js" />
 /// <reference path="nav.js" />
 /// <reference path="upshot.js" />

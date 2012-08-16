@@ -72,6 +72,9 @@ namespace Sewerage.HtmlHelpers
                         case "Password":
                             y.InternalBuilder.InnerHtml += htmlHelper.BuildPassword(property).Bind("value", property).AddClass("input-xlarge").ToHtmlString();
                             break;
+                        case "DateTime":
+                            y.InternalBuilder.InnerHtml += htmlHelper.BuildTextBox(property).Bind("datepicker", property).AddClass("input-xlarge").ToHtmlString();
+                            break;
                         default:
                             y.InternalBuilder.InnerHtml += htmlHelper.BuildTextBox(property).Bind("value", property).AddClass("input-xlarge").ToHtmlString();
                             break;

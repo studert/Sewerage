@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 using Sewerage.Resources.Models;
 
 namespace Sewerage.Models
@@ -9,10 +10,12 @@ namespace Sewerage.Models
         [Display(Name = "Inspection", ResourceType = typeof(InspectionStrings))]
         public int InspectionId { get; set; }
 
+        [DataType(DataType.DateTime)]
         [Required(ErrorMessageResourceType = typeof(ValidationStrings), ErrorMessageResourceName = "RequiredField")]
         [Display(Name = "StartDate", ResourceType = typeof(InspectionStrings))]
         public DateTime StartDate { get; set; }
 
+        [DataType(DataType.DateTime)]
         [Required(ErrorMessageResourceType = typeof(ValidationStrings), ErrorMessageResourceName = "RequiredField")]
         [Display(Name = "EndDate", ResourceType = typeof(InspectionStrings))]
         public DateTime EndDate { get; set; }

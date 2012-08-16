@@ -138,6 +138,9 @@
   <data name="CreateSection" xml:space="preserve">
     <value>Neuer Abschnitt</value>
   </data>
+  <data name="Diagnostics" xml:space="preserve">
+    <value>MVC Diagnose</value>
+  </data>
   <data name="Elmah" xml:space="preserve">
     <value>Elmah</value>
   </data>

@@ -5,7 +5,6 @@
     // define the namespace
     var Sewerage = window.Sewerage = window.Sewerage || {};
     
-        
     // project classes
     var projectEntityType = "Project:#Sewerage.Models";
     var sectionEntityType = "Section:#Sewerage.Models";
@@ -42,6 +41,10 @@
 
         // add properties managed by upshot
         upshot.addEntityProperties(self);
+        
+        // Fix: add input fields (because of JSON date time formatter issues)
+        self.StartDateInput = self.StartDate();
+        self.EndDateInput = self.EndDate();
     };
 
     Sewerage.Observation = function (data) {
@@ -54,7 +57,7 @@
         upshot.addEntityProperties(self);
     };
 
-
+        
     // define the view model
     Sewerage.SewerageViewModel = function (options) {
         var self = this;
@@ -75,7 +78,7 @@
         self.EditingSection = ko.observable();
         self.EditingInspection = ko.observable();
         self.EditingObservation = ko.observable();
-
+        
         // helpers
         self.Url = window.location.protocol + "//" + window.location.host + "/";
 
@@ -87,6 +90,7 @@
 
         var selectFirstInspection = function() {
             var firstInspection = self.Inspections()[0];
+            
             self.selectInspection(firstInspection);
         };
 
@@ -139,7 +143,7 @@
             result: self.Observations
         };
         var observationsDataSource = new upshot.RemoteDataSource(observationsDataSourceOptions);
-        
+
         var clearAllEdits = function() {
             self.EditingSection(null);
             self.EditingInspection(null);
@@ -162,12 +166,16 @@
         self.errorMessage = ko.observable().extend({ notify: "always" });
         
         // player
-        var createPlayer = function(videoUrl) {
+        var resetPlayer = function() {
             // reset html for player
             var frame = $("#playerFrame");
             frame.empty();
             frame.append('<div id="myVideoContainer" class="pf-container"></div>');
-            
+            return frame;
+        };
+        var createPlayer = function(videoUrl) {
+            var frame = resetPlayer();
+
             // sources
             var urlBase = self.Url + videoUrl;
             var ism = urlBase + ".ism/manifest";
@@ -229,19 +237,32 @@
         self.selectProject = function (project) {
             // reset all editors
             self.showDefaultView();
-
+            
             self.ChosenProjectId(project.ProjectId);
             sectionsDataSourceParameters.projectId = self.ChosenProjectId();
             sectionsDataSource.refresh({ }, selectFirstSection);
         };
 
         self.selectSection = function(section) {
+            if (section == undefined) {
+                self.ChosenSectionId(null);
+                self.ChosenInspectionId(null);
+                resetPlayer();
+                return;
+            }
+            
             self.ChosenSectionId(section.SectionId);
             inspectionsDataSourceParameters.sectionId = self.ChosenSectionId();
             inspectionsDataSource.refresh({ }, selectFirstInspection);
         };
 
         self.selectInspection = function (inspection) {
+            if (inspection == undefined) {
+                self.ChosenInspectionId(null);
+                resetPlayer();
+                return;
+            }
+
             createPlayer(inspection.VideoUrl());
             
             self.ChosenInspectionId(inspection.InspectionId);
@@ -250,7 +271,15 @@
         };
 
         self.selectObservation = function (observation) {
-            self.player.currentTime(observation.SecondsIntoVideo() + 0.1); // hack: it seems that 0 doesn't work on desktop browsers
+            if (observation == undefined) {
+                self.ChosenObservationId(null);
+                return;
+            }
+
+            var seconds = observation.SecondsIntoVideo();
+            if (seconds > 0) {
+                self.player.currentTime(seconds);
+            }
             
             self.ChosenObservationId(observation.ObservationId);
         };
@@ -264,10 +293,21 @@
         };
         self.deleteSection = function (section) {
             if (confirm("Are you sure you want to delete this?")) {
+
+                // get previous item
+                var index = self.Sections.indexOf(section) - 1;
+                if (index < 0) {
+                    index = 0; // first item
+                }
+
                 sectionsDataSource.deleteEntity(section);
                 sectionsDataSource.commitChanges(function() {
                     self.successMessage("Deleted section");
                     self.showDefaultView();
+
+                    // select previous item
+                    var item = self.Sections()[index];
+                    self.selectSection(item);
                 });
             }
         };
@@ -276,6 +316,7 @@
             
             sectionsDataSource.commitChanges(function() {
                 self.successMessage("Saved section changes");
+                self.selectSection(self.EditingSection());
                 self.showDefaultView();
             });
         };
@@ -284,16 +325,33 @@
         // inspections
         self.editInspection = function (inspection) { self.EditingInspection(inspection); };
         self.createInspection = function() {
-            var inspection = new Sewerage.Inspection({ SectionId: self.ChosenSectionId() });
+            // Fix: because of JSON date time formatter issues
+            var inspection = new Sewerage.Inspection({
+                 SectionId: self.ChosenSectionId(), 
+                 StartDate: "/Date(1343227827590+0200)/", 
+                 EndDate: "/Date(1343227827590+0200)/",
+                 VideoUrl: "Videos/e544f140-f4ef-4eff-8aad-fe674d5b46ba"
+            });
             self.EditingInspection(inspection);
             self.Inspections.push(inspection);
         };
         self.deleteInspection = function (inspection) {
             if (confirm("Are you sure you want to delete this?")) {
+
+                // get previous item
+                var index = self.Inspections.indexOf(inspection) - 1;
+                if (index < 0) {
+                    index = 0; // first item
+                }
+
                 inspectionsDataSource.deleteEntity(inspection);
                 inspectionsDataSource.commitChanges(function() {
                     self.successMessage("Deleted inspection");
                     self.showDefaultView();
+
+                    // select previous item
+                    var item = self.Inspections()[index];
+                    self.selectInspection(item);
                 });
             }
         };
@@ -302,6 +360,7 @@
             
             inspectionsDataSource.commitChanges(function() {
                 self.successMessage("Saved inspection changes");
+                self.selectInspection(self.EditingInspection());
                 self.showDefaultView();
             });
         };
@@ -314,12 +373,23 @@
             self.EditingObservation(observation);
             self.Observations.push(observation);
         };
-        self.deleteObservation = function (observation) {
+        self.deleteObservation = function(observation) {
             if (confirm("Are you sure you want to delete this?")) {
+
+                // get previous item
+                var index = self.Observations.indexOf(observation) - 1;
+                if (index < 0) {
+                    index = 0; // first item
+                }
+
                 observationsDataSource.deleteEntity(observation);
                 observationsDataSource.commitChanges(function() {
                     self.successMessage("Deleted observation");
                     self.showDefaultView();
+
+                    // select previous item
+                    var item = self.Observations()[index];
+                    self.selectObservation(item);
                 });
             }
         };
@@ -328,6 +398,7 @@
             
             observationsDataSource.commitChanges(function() {
                 self.successMessage("Saved observation changes");
+                self.selectObservation(self.EditingObservation());
                 self.showDefaultView();
             });
         };

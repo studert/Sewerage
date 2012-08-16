@@ -150,4 +150,10 @@
   <data name="Sections" xml:space="preserve">
     <value>Abschnitte</value>
   </data>
+  <data name="WarningText" xml:space="preserve">
+    <value>In der Beta Version gibt es ein Problem mit dem JSON DateTime Formatter. Deshalb können die Daten nicht verändert werden.</value>
+  </data>
+  <data name="WarningTitle" xml:space="preserve">
+    <value>Achtung</value>
+  </data>
 </root>

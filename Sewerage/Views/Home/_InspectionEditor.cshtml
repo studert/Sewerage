@@ -13,8 +13,27 @@
 
     <fieldset>
         <legend>@IndexStrings.Inspection Id <span data-bind="text: InspectionId"></span></legend>
-        @Html.BuildControlGroupFor(x => Model.StartDate)
-        @Html.BuildControlGroupFor(x => Model.EndDate)
+        
+        <div class="alert alert-block">
+            <h4 class="alert-heading">@IndexStrings.WarningTitle!</h4>
+            @IndexStrings.WarningText
+        </div>
+
+        @* Fix: because of JSON date time formatter issues*@
+        <div class="control-group">
+            <label class="control-label" for="EndDateInput">Start Date</label>
+            <div class="controls">
+                <input class="input-xlarge" data-bind="datepicker:StartDateInput" id="StartDateInput" name="StartDateInput" type="text" value=""/>
+                <i class="icon-exclamation-sign"></i>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="EndDateInput">End Date</label>
+            <div class="controls">
+                <input class="input-xlarge" data-bind="datepicker:EndDateInput" id="EndDateInput" name="EndDateInput" type="text" value="" />
+                <i class="icon-exclamation-sign"></i>
+            </div>
+        </div>
         @Html.BuildControlGroupFor(x => Model.VideoUrl)
 
         @Html.BuildFormActions("$parent.deleteInspection", "list-inspection")

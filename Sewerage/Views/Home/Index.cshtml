@@ -9,15 +9,16 @@
         @Html.Partial("_ProjectsList")
     </div><!--/span-->
     
+    <div class="span9">
+        <div class="alert alert-success flash" data-bind="flash: {text: successMessage, duration: 5000 }"></div>
+        <div class="alert alert-error flash" data-bind="flash: {text: errorMessage, duration: 20000 }"></div>
+    </div>
+    
     <!-- Lists -->
     <div class="span9" data-bind="visible: !EditingSection() && !EditingInspection() && !EditingObservation()">
         <div class="row-fluid">
             <div class="span7">
-
-                <div class="alert alert-success" data-bind="flash: {text: successMessage, duration: 5000 }"></div>
-                <div class="alert alert-error" data-bind="flash: {text: errorMessage, duration: 20000 }"></div>
-
-                    @Html.Partial("_SectionsList")
+                @Html.Partial("_SectionsList")
             </div>
             <div class="span5 pull-right">
                 @Html.Partial("_Player")
@@ -25,8 +26,8 @@
         </div><!--/row-->
         <div class="row-fluid">
             <div class="span12">
-                    @Html.Partial("_InspectionsList")
-                    @Html.Partial("_ObservationsList")
+                @Html.Partial("_InspectionsList")
+                @Html.Partial("_ObservationsList")
             </div>
         </div><!--/row-->
     </div><!--/span-->

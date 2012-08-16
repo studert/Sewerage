@@ -150,4 +150,10 @@
   <data name="Sections" xml:space="preserve">
     <value>Sections</value>
   </data>
+  <data name="WarningText" xml:space="preserve">
+    <value>There is an issue with the current JSON date time formatter in the Beta version. Therefore the dates cannot be changed.</value>
+  </data>
+  <data name="WarningTitle" xml:space="preserve">
+    <value>Heads up</value>
+  </data>
 </root>

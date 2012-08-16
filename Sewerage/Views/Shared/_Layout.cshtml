@@ -33,15 +33,28 @@
                 </div>
             </div>
         </div>
-        <div class="container-fluid">
+        
+        <div class="modal hide" id="initialize">
+            <div class="modal-header">
+                <h3>Initializing database</h3>
+            </div>
+            <div class="modal-body">
+                <p>Please stand by...</p>
+            </div>
+        </div>
+                
+        <div class="container-fluid" id="body">
             @RenderBody()
-      
+        </div>
+        
+        <div class="container-fluid">
             <hr/>
 
             <footer>
                 <p>&copy; @DateTime.Now.Year @SharedStrings.By @SharedStrings.University</p>
             </footer>
         </div>
+
         @Html.Partial("_IncludesBottom")
     </body>
 </html>

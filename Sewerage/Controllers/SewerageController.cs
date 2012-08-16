@@ -7,6 +7,11 @@ namespace Sewerage.Controllers
 {
     public class SewerageController : DbDataController<AppDbContext>
     {
+        public void Recreate()
+        {
+            DbContext.Recreate();
+        }
+
         public IQueryable<Project> GetProjects()
         {
             return DbContext.Projects

@@ -1,9 +1,12 @@
-﻿using System.Web.Mvc;
+﻿using System.Data.Entity;
+using System.Web.Http;
+using System.Web.Mvc;
+using Sewerage.Models;
 using Sewerage.Resources.Views.Home;
 
 namespace Sewerage.Controllers
 {
-    [Authorize]
+    [System.Web.Mvc.Authorize]
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -11,7 +14,7 @@ namespace Sewerage.Controllers
             return View();
         }
 
-        [AllowAnonymous]
+        [System.Web.Mvc.AllowAnonymous]
         public ActionResult About()
         {
             ViewBag.Message = AboutStrings.Subtitle;
@@ -19,13 +22,13 @@ namespace Sewerage.Controllers
             return View();
         }
 
-        [AllowAnonymous]
+        [System.Web.Mvc.AllowAnonymous]
         public ActionResult Documentation()
         {
             return File("~/Content/Bachelor Thesis.pdf", "application/pdf", "Bachelor Thesis - Tobias Studer.pdf");
         }
 
-        [AllowAnonymous]
+        [System.Web.Mvc.AllowAnonymous]
         public ActionResult Poster()
         {
             return File("~/Content/Poster.pdf", "application/pdf", "Video Streaming Web Application - Poster.pdf");

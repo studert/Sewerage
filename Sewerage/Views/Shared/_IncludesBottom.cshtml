@@ -15,5 +15,27 @@
                 $(element).closest(".control-group").removeClass("error");
             }
         });
+
+        $.ajaxSetup({
+            beforeSend: function () {
+                $("#loading").show();
+            },
+            complete: function () {
+                $("#loading").hide();
+            }
+        });
+
+        $("#recreateDatabase").click(function () {
+            $.ajax({
+                url: "api/Sewerage/Recreate",
+                beforeSend: function () {
+                    $("#initialize").modal('show');
+                },
+                complete: function () {
+                    $("#initialize").modal('hide');
+                    window.location.replace("/");
+                }
+            });
+        });
     } ();
 </script>

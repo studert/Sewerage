@@ -205,6 +205,15 @@ namespace Sewerage.Resources.Views.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recreate database.
+        /// </summary>
+        public static string RecreateDatabase {
+            get {
+                return ResourceManager.GetString("RecreateDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Register.
         /// </summary>
         public static string Register {

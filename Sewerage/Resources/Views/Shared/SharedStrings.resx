@@ -165,6 +165,9 @@
   <data name="Projects" xml:space="preserve">
     <value>Projects</value>
   </data>
+  <data name="RecreateDatabase" xml:space="preserve">
+    <value>Recreate database</value>
+  </data>
   <data name="Register" xml:space="preserve">
     <value>Register</value>
   </data>
